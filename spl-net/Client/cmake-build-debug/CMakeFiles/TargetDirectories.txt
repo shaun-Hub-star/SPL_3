@@ -1,0 +1,3 @@
+C:/Users/Shust/Desktop/First_Degree/Courses/SPL/SPL3/SPL_3/spl-net/Client/cmake-build-debug/CMakeFiles/Client.dir
+C:/Users/Shust/Desktop/First_Degree/Courses/SPL/SPL3/SPL_3/spl-net/Client/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/Shust/Desktop/First_Degree/Courses/SPL/SPL3/SPL_3/spl-net/Client/cmake-build-debug/CMakeFiles/rebuild_cache.dir
