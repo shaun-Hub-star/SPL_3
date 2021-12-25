@@ -1,0 +1,5 @@
+
+#ifndef CLIENT_BGSCLIENT_H
+#define CLIENT_BGSCLIENT_H
+
+#endif //CLIENT_BGSCLIENT_H
