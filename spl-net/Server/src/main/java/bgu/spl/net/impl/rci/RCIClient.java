@@ -1,4 +1,4 @@
-package bgu.spl.net.impl.rci;
+package main.java.bgu.spl.net.impl.rci;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;

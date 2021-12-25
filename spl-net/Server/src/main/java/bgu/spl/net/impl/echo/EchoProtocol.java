@@ -1,4 +1,4 @@
-package bgu.spl.net.impl.echo;
+package main.java.bgu.spl.net.impl.echo;
 
 import bgu.spl.net.api.MessagingProtocol;
 import java.time.LocalDateTime;
