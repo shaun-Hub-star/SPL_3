@@ -4,6 +4,8 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
+  "C:/Users/Shust/Desktop/First_Degree/Courses/SPL/SPL3/SPL_3/spl-net/Client/ConnectionHandler.cpp" "C:/Users/Shust/Desktop/First_Degree/Courses/SPL/SPL3/SPL_3/spl-net/Client/cmake-build-debug/CMakeFiles/Client.dir/ConnectionHandler.cpp.obj"
+  "C:/Users/Shust/Desktop/First_Degree/Courses/SPL/SPL3/SPL_3/spl-net/Client/EchoClient.cpp" "C:/Users/Shust/Desktop/First_Degree/Courses/SPL/SPL3/SPL_3/spl-net/Client/cmake-build-debug/CMakeFiles/Client.dir/EchoClient.cpp.obj"
   "C:/Users/Shust/Desktop/First_Degree/Courses/SPL/SPL3/SPL_3/spl-net/Client/main.cpp" "C:/Users/Shust/Desktop/First_Degree/Courses/SPL/SPL3/SPL_3/spl-net/Client/cmake-build-debug/CMakeFiles/Client.dir/main.cpp.obj"
   )
 set(CMAKE_CXX_COMPILER_ID "MSVC")

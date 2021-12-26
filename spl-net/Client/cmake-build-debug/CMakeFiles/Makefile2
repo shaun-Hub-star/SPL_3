@@ -77,12 +77,12 @@ clean: CMakeFiles\Client.dir\clean
 CMakeFiles\Client.dir\all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\Client.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\Client.dir\depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\Client.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\Client.dir\build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=C:\Users\Shust\Desktop\First_Degree\Courses\SPL\SPL3\SPL_3\spl-net\Client\cmake-build-debug\CMakeFiles --progress-num=1,2 "Built target Client"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=C:\Users\Shust\Desktop\First_Degree\Courses\SPL\SPL3\SPL_3\spl-net\Client\cmake-build-debug\CMakeFiles --progress-num=1,2,3,4 "Built target Client"
 .PHONY : CMakeFiles\Client.dir\all
 
 # Build rule for subdir invocation for target.
 CMakeFiles\Client.dir\rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\Shust\Desktop\First_Degree\Courses\SPL\SPL3\SPL_3\spl-net\Client\cmake-build-debug\CMakeFiles 2
+	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\Shust\Desktop\First_Degree\Courses\SPL\SPL3\SPL_3\spl-net\Client\cmake-build-debug\CMakeFiles 4
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 /nologo -$(MAKEFLAGS) CMakeFiles\Client.dir\all
 	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\Shust\Desktop\First_Degree\Courses\SPL\SPL3\SPL_3\spl-net\Client\cmake-build-debug\CMakeFiles 0
 .PHONY : CMakeFiles\Client.dir\rule

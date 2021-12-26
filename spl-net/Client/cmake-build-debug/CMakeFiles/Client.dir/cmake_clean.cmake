@@ -1,4 +1,6 @@
 file(REMOVE_RECURSE
+  "CMakeFiles/Client.dir/ConnectionHandler.cpp.obj"
+  "CMakeFiles/Client.dir/EchoClient.cpp.obj"
   "CMakeFiles/Client.dir/main.cpp.obj"
   "Client.exe"
   "Client.exe.manifest"

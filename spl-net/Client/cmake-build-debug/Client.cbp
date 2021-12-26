@@ -84,6 +84,18 @@
 				</MakeCommands>
 			</Target>
 		</Build>
+		<Unit filename="C:/Users/Shust/Desktop/First_Degree/Courses/SPL/SPL3/SPL_3/spl-net/Client/ConnectionHandler.cpp">
+			<Option target="Client"/>
+		</Unit>
+		<Unit filename="C:/Users/Shust/Desktop/First_Degree/Courses/SPL/SPL3/SPL_3/spl-net/Client/ConnectionHandler.h">
+			<Option target="Client"/>
+		</Unit>
+		<Unit filename="C:/Users/Shust/Desktop/First_Degree/Courses/SPL/SPL3/SPL_3/spl-net/Client/EchoClient.cpp">
+			<Option target="Client"/>
+		</Unit>
+		<Unit filename="C:/Users/Shust/Desktop/First_Degree/Courses/SPL/SPL3/SPL_3/spl-net/Client/EchoClient.h">
+			<Option target="Client"/>
+		</Unit>
 		<Unit filename="C:/Users/Shust/Desktop/First_Degree/Courses/SPL/SPL3/SPL_3/spl-net/Client/main.cpp">
 			<Option target="Client"/>
 		</Unit>

@@ -126,6 +126,60 @@ Client\fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\Client.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\Client.dir\build
 .PHONY : Client\fast
 
+ConnectionHandler.obj: ConnectionHandler.cpp.obj
+
+.PHONY : ConnectionHandler.obj
+
+# target to build an object file
+ConnectionHandler.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Client.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\Client.dir\ConnectionHandler.cpp.obj
+.PHONY : ConnectionHandler.cpp.obj
+
+ConnectionHandler.i: ConnectionHandler.cpp.i
+
+.PHONY : ConnectionHandler.i
+
+# target to preprocess a source file
+ConnectionHandler.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Client.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\Client.dir\ConnectionHandler.cpp.i
+.PHONY : ConnectionHandler.cpp.i
+
+ConnectionHandler.s: ConnectionHandler.cpp.s
+
+.PHONY : ConnectionHandler.s
+
+# target to generate assembly for a file
+ConnectionHandler.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Client.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\Client.dir\ConnectionHandler.cpp.s
+.PHONY : ConnectionHandler.cpp.s
+
+EchoClient.obj: EchoClient.cpp.obj
+
+.PHONY : EchoClient.obj
+
+# target to build an object file
+EchoClient.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Client.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\Client.dir\EchoClient.cpp.obj
+.PHONY : EchoClient.cpp.obj
+
+EchoClient.i: EchoClient.cpp.i
+
+.PHONY : EchoClient.i
+
+# target to preprocess a source file
+EchoClient.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Client.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\Client.dir\EchoClient.cpp.i
+.PHONY : EchoClient.cpp.i
+
+EchoClient.s: EchoClient.cpp.s
+
+.PHONY : EchoClient.s
+
+# target to generate assembly for a file
+EchoClient.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Client.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\Client.dir\EchoClient.cpp.s
+.PHONY : EchoClient.cpp.s
+
 main.obj: main.cpp.obj
 
 .PHONY : main.obj
@@ -162,6 +216,12 @@ help:
 	@echo ... edit_cache
 	@echo ... rebuild_cache
 	@echo ... Client
+	@echo ... ConnectionHandler.obj
+	@echo ... ConnectionHandler.i
+	@echo ... ConnectionHandler.s
+	@echo ... EchoClient.obj
+	@echo ... EchoClient.i
+	@echo ... EchoClient.s
 	@echo ... main.obj
 	@echo ... main.i
 	@echo ... main.s

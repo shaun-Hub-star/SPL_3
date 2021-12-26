@@ -79,17 +79,59 @@ CMakeFiles\Client.dir\main.cpp.s: cmake_force
  /nologo /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoNUL /FAs /FaCMakeFiles\Client.dir\main.cpp.s /c C:\Users\Shust\Desktop\First_Degree\Courses\SPL\SPL3\SPL_3\spl-net\Client\main.cpp
 <<
 
+CMakeFiles\Client.dir\ConnectionHandler.cpp.obj: CMakeFiles\Client.dir\flags.make
+CMakeFiles\Client.dir\ConnectionHandler.cpp.obj: ..\ConnectionHandler.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\Shust\Desktop\First_Degree\Courses\SPL\SPL3\SPL_3\spl-net\Client\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/Client.dir/ConnectionHandler.cpp.obj"
+	C:\PROGRA~2\MICROS~2\2019\COMMUN~1\VC\Tools\MSVC\14.28.29910\bin\Hostx86\x86\cl.exe @<<
+ /nologo /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoCMakeFiles\Client.dir\ConnectionHandler.cpp.obj /FdCMakeFiles\Client.dir\ /FS -c C:\Users\Shust\Desktop\First_Degree\Courses\SPL\SPL3\SPL_3\spl-net\Client\ConnectionHandler.cpp
+<<
+
+CMakeFiles\Client.dir\ConnectionHandler.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Client.dir/ConnectionHandler.cpp.i"
+	C:\PROGRA~2\MICROS~2\2019\COMMUN~1\VC\Tools\MSVC\14.28.29910\bin\Hostx86\x86\cl.exe > CMakeFiles\Client.dir\ConnectionHandler.cpp.i @<<
+ /nologo /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\Shust\Desktop\First_Degree\Courses\SPL\SPL3\SPL_3\spl-net\Client\ConnectionHandler.cpp
+<<
+
+CMakeFiles\Client.dir\ConnectionHandler.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Client.dir/ConnectionHandler.cpp.s"
+	C:\PROGRA~2\MICROS~2\2019\COMMUN~1\VC\Tools\MSVC\14.28.29910\bin\Hostx86\x86\cl.exe @<<
+ /nologo /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoNUL /FAs /FaCMakeFiles\Client.dir\ConnectionHandler.cpp.s /c C:\Users\Shust\Desktop\First_Degree\Courses\SPL\SPL3\SPL_3\spl-net\Client\ConnectionHandler.cpp
+<<
+
+CMakeFiles\Client.dir\EchoClient.cpp.obj: CMakeFiles\Client.dir\flags.make
+CMakeFiles\Client.dir\EchoClient.cpp.obj: ..\EchoClient.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\Shust\Desktop\First_Degree\Courses\SPL\SPL3\SPL_3\spl-net\Client\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/Client.dir/EchoClient.cpp.obj"
+	C:\PROGRA~2\MICROS~2\2019\COMMUN~1\VC\Tools\MSVC\14.28.29910\bin\Hostx86\x86\cl.exe @<<
+ /nologo /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoCMakeFiles\Client.dir\EchoClient.cpp.obj /FdCMakeFiles\Client.dir\ /FS -c C:\Users\Shust\Desktop\First_Degree\Courses\SPL\SPL3\SPL_3\spl-net\Client\EchoClient.cpp
+<<
+
+CMakeFiles\Client.dir\EchoClient.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Client.dir/EchoClient.cpp.i"
+	C:\PROGRA~2\MICROS~2\2019\COMMUN~1\VC\Tools\MSVC\14.28.29910\bin\Hostx86\x86\cl.exe > CMakeFiles\Client.dir\EchoClient.cpp.i @<<
+ /nologo /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\Shust\Desktop\First_Degree\Courses\SPL\SPL3\SPL_3\spl-net\Client\EchoClient.cpp
+<<
+
+CMakeFiles\Client.dir\EchoClient.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Client.dir/EchoClient.cpp.s"
+	C:\PROGRA~2\MICROS~2\2019\COMMUN~1\VC\Tools\MSVC\14.28.29910\bin\Hostx86\x86\cl.exe @<<
+ /nologo /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoNUL /FAs /FaCMakeFiles\Client.dir\EchoClient.cpp.s /c C:\Users\Shust\Desktop\First_Degree\Courses\SPL\SPL3\SPL_3\spl-net\Client\EchoClient.cpp
+<<
+
 # Object files for target Client
 Client_OBJECTS = \
-"CMakeFiles\Client.dir\main.cpp.obj"
+"CMakeFiles\Client.dir\main.cpp.obj" \
+"CMakeFiles\Client.dir\ConnectionHandler.cpp.obj" \
+"CMakeFiles\Client.dir\EchoClient.cpp.obj"
 
 # External object files for target Client
 Client_EXTERNAL_OBJECTS =
 
 Client.exe: CMakeFiles\Client.dir\main.cpp.obj
+Client.exe: CMakeFiles\Client.dir\ConnectionHandler.cpp.obj
+Client.exe: CMakeFiles\Client.dir\EchoClient.cpp.obj
 Client.exe: CMakeFiles\Client.dir\build.make
 Client.exe: CMakeFiles\Client.dir\objects1.rsp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=C:\Users\Shust\Desktop\First_Degree\Courses\SPL\SPL3\SPL_3\spl-net\Client\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable Client.exe"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=C:\Users\Shust\Desktop\First_Degree\Courses\SPL\SPL3\SPL_3\spl-net\Client\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Linking CXX executable Client.exe"
 	"C:\Program Files\JetBrains\CLion 2021.1.1\bin\cmake\win\bin\cmake.exe" -E vs_link_exe --intdir=CMakeFiles\Client.dir --rc=C:\PROGRA~2\WI3CF2~1\10\bin\100183~1.0\x86\rc.exe --mt=C:\PROGRA~2\WI3CF2~1\10\bin\100183~1.0\x86\mt.exe --manifests -- C:\PROGRA~2\MICROS~2\2019\COMMUN~1\VC\Tools\MSVC\14.28.29910\bin\Hostx86\x86\link.exe /nologo @CMakeFiles\Client.dir\objects1.rsp @<<
  /out:Client.exe /implib:Client.lib /pdb:C:\Users\Shust\Desktop\First_Degree\Courses\SPL\SPL3\SPL_3\spl-net\Client\cmake-build-debug\Client.pdb /version:0.0 /machine:X86 /debug /INCREMENTAL /subsystem:console  kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib 
 <<
