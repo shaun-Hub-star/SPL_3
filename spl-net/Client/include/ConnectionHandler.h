@@ -98,7 +98,7 @@ public:
 
     void close();
 
-
+    bool availableHandler();
 
 }; //class ConnectionHandler
 

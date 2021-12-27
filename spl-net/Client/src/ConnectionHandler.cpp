@@ -200,6 +200,10 @@ short ConnectionHandler::bytesToShort(char *bytesArr) {
     return result;
 }
 
+bool ConnectionHandler::availableHandler() {
+    return false;
+}
+
 
 
 

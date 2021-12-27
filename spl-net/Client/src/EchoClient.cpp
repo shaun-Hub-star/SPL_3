@@ -40,7 +40,7 @@ int main (int argc, char *argv[]) {
 
     //From here we will see the rest of the ehco client implementation:
 
-    while (1) {
+    while (true) {
 
         const short bufsize = 1024;
 
