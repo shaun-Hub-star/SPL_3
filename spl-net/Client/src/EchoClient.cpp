@@ -1,7 +1,7 @@
 #include <stdlib.h>
 
 #include "../include/ConnectionHandler.h"
-
+#include "../include/EchoClient.h"
 
 
 /**
@@ -38,7 +38,7 @@ int main (int argc, char *argv[]) {
 
 
 
-    //From here we will see the rest of the ehco client implementation:
+    //From here we will see the rest of the echo client implementation:
 
     while (true) {
 
@@ -116,3 +116,10 @@ int main (int argc, char *argv[]) {
 
 }
 
+void EchoClient::receive(ConnectionHandler *handler) {
+
+}
+
+void EchoClient::write(ConnectionHandler *handler) {
+
+}
