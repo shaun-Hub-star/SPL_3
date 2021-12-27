@@ -262,12 +262,6 @@ bool ConnectionHandler::getFrameAscii(std::string& frame, char delimiter) {
 
             }
 
-
-
-
-
-
-
         }if (opcode==11){
             char op3;
             char op4;
@@ -283,11 +277,6 @@ bool ConnectionHandler::getFrameAscii(std::string& frame, char delimiter) {
             frame="ERROR "+opcode2;
 
         }
-
-      /*  do{
-            getBytes(&ch, 1);
-            frame.append(1, ch);
-        }while (delimiter != ch);*/
     } catch (std::exception& e) {
         std::cerr << "recv failed (Error: " << e.what() << ')' << std::endl;
         return false;

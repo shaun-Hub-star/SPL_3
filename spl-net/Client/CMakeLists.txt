@@ -1,6 +1,8 @@
-cmake_minimum_required(VERSION 3.19)
+cmake_minimum_required(VERSION 3.19.2)
 project(Client)
-
-set(CMAKE_CXX_STANDARD 14)
-
-add_executable(Client main.cpp ConnectionHandler.cpp ConnectionHandler.h EchoClient.cpp EchoClient.h)
+set(CMAKE_CXX_STANDARD 11)
+set(Boost_INCLUDE_DIR /cygdrive/c/cygwin64/usr/include)
+find_package(Boost REQUIRED COMPONENTS system)
+include_directories(${Boost_INCLUDE_DIRS})
+add_executable(Client src/ConnectionHandler.cpp include/ConnectionHandler.h src/EchoClient.cpp include/EchoClient.h)
+target_link_libraries(${PROJECT_NAME} ${Boost_LIBRARIES})

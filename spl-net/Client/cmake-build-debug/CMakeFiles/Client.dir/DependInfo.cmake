@@ -4,14 +4,14 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "C:/Users/Shust/Desktop/First_Degree/Courses/SPL/SPL3/SPL_3/spl-net/Client/ConnectionHandler.cpp" "C:/Users/Shust/Desktop/First_Degree/Courses/SPL/SPL3/SPL_3/spl-net/Client/cmake-build-debug/CMakeFiles/Client.dir/ConnectionHandler.cpp.obj"
-  "C:/Users/Shust/Desktop/First_Degree/Courses/SPL/SPL3/SPL_3/spl-net/Client/EchoClient.cpp" "C:/Users/Shust/Desktop/First_Degree/Courses/SPL/SPL3/SPL_3/spl-net/Client/cmake-build-debug/CMakeFiles/Client.dir/EchoClient.cpp.obj"
-  "C:/Users/Shust/Desktop/First_Degree/Courses/SPL/SPL3/SPL_3/spl-net/Client/main.cpp" "C:/Users/Shust/Desktop/First_Degree/Courses/SPL/SPL3/SPL_3/spl-net/Client/cmake-build-debug/CMakeFiles/Client.dir/main.cpp.obj"
+  "/cygdrive/c/Users/Shust/Desktop/First_Degree/Courses/SPL/SPL3/SPL_3/spl-net/Client/src/ConnectionHandler.cpp" "/cygdrive/c/Users/Shust/Desktop/First_Degree/Courses/SPL/SPL3/SPL_3/spl-net/Client/cmake-build-debug/CMakeFiles/Client.dir/src/ConnectionHandler.cpp.o"
+  "/cygdrive/c/Users/Shust/Desktop/First_Degree/Courses/SPL/SPL3/SPL_3/spl-net/Client/src/EchoClient.cpp" "/cygdrive/c/Users/Shust/Desktop/First_Degree/Courses/SPL/SPL3/SPL_3/spl-net/Client/cmake-build-debug/CMakeFiles/Client.dir/src/EchoClient.cpp.o"
   )
-set(CMAKE_CXX_COMPILER_ID "MSVC")
+set(CMAKE_CXX_COMPILER_ID "GNU")
 
 # The include file search paths:
 set(CMAKE_CXX_TARGET_INCLUDE_PATH
+  "/cygdrive/c/cygwin64/usr/include"
   )
 
 # Targets to which this target links.
