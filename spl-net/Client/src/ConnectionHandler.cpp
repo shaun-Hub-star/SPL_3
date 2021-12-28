@@ -169,7 +169,7 @@ bool ConnectionHandler::getFrameAscii(std::string &frame, char delimiter) {
 bool ConnectionHandler::sendFrameAscii(const std::string &frame, char delimiter) {
     char *opcodeBytes = new char[2];
     char *separator = new char('\0');
-    char* captcha = new char('1');
+    char *captcha = new char('1');
 
     /** I can use the "short to opcodeBytes method" in order to put the opcode
         in the "opcodeBytes array" and then use the sendBytes method which is provided on each part.*/
@@ -190,10 +190,15 @@ bool ConnectionHandler::sendFrameAscii(const std::string &frame, char delimiter)
 
     } else if (keyWord == "LOGIN") {//LOGIN <Username> <Password>
         return loginCommand(keyWordsList, frame, opcodeBytes,
-                            separator,captcha);
+                            separator, captcha);
 
-    } else if(frame == "LOGOUT"){
-         return logoutCommand(opcodeBytes);
+    } else if (frame == "LOGOUT") {
+        return logoutCommand(opcodeBytes);
+    } else if (keyWord == "FOLLOW") {
+        return followCommand(keyWordsList, opcodeBytes);
+
+    } else {
+        return false;
     }
 
 }
@@ -231,7 +236,11 @@ bool ConnectionHandler::availableHandler() {
 }
 
 bool ConnectionHandler::validDate(std::string date) {
-    return true;
+
+    std::vector<string> dateVector;
+
+    boost::split(dateVector, date, boost::is_any_of("-"));
+    return (dateVector.size()==3 && checkDate(stoi(dateVector.at(0)),stoi(dateVector.at(1)),stoi(dateVector.at(2))));
 }
 
 bool ConnectionHandler::registerCommandValidator(const string &frame, std::vector<string> result) {
@@ -259,9 +268,9 @@ ConnectionHandler::registerCommand(std::vector<string> keyWordsList, string fram
         short opcode = 1;
         shortToBytes(opcode, opcodeBytes);
 
-        return sendBytes(opcodeBytes, 2) && sendBytes(userNameBytes, userName.size()) &&
-               sendBytes(separator, 1) && sendBytes(passwordBytes, password.size()) &&
-               sendBytes(separator, 1) && sendBytes(dateBytes, date.size());
+        return sendBytes(opcodeBytes, 2) && sendBytes(userNameBytes, (int) userName.size()) &&
+               sendBytes(separator, 1) && sendBytes(passwordBytes, (int) password.size()) &&
+               sendBytes(separator, 1) && sendBytes(dateBytes, (int) date.size());
     } else return false;
 
 }
@@ -270,8 +279,9 @@ bool ConnectionHandler::loginCommandValidator(std::vector<string> keyWordsList) 
     return (keyWordsList.size() == 3 && !keyWordsList.at(0).empty() &&
             !keyWordsList.at(1).empty());
 }
+
 bool ConnectionHandler::loginCommand(std::vector<string> keyWordsList, const string &basicString, char *opcodeBytes,
-                                     char *separator,char *captcha) {
+                                     char *separator, char *captcha) {
     if (loginCommandValidator(keyWordsList)) {
 
         const string userName = keyWordsList.at(0);
@@ -282,15 +292,54 @@ bool ConnectionHandler::loginCommand(std::vector<string> keyWordsList, const str
         short opcode = 2;
         shortToBytes(opcode, opcodeBytes);
 
-        return sendBytes(opcodeBytes, 2) && sendBytes(userNameBytes, userName.size()) &&
-               sendBytes(separator, 1) && sendBytes(passwordBytes, password.size()) &&
+        return sendBytes(opcodeBytes, 2) && sendBytes(userNameBytes, (int) userName.size()) &&
+               sendBytes(separator, 1) && sendBytes(passwordBytes, (int) password.size()) &&
                sendBytes(separator, 1) && sendBytes(captcha, 1);
-    }else return false;
+    } else return false;
 }
 
-bool ConnectionHandler::logoutCommand(char* opcodeBytes) {
+bool ConnectionHandler::logoutCommand(char *opcodeBytes) {
     short opcode = 3;
     shortToBytes(opcode, opcodeBytes);
-    return sendBytes(opcodeBytes,2);
+    return sendBytes(opcodeBytes, 2);
 }
+
+bool ConnectionHandler::followCommand(std::vector<string> keyWordsList, char *opcodeBytes) {
+    if (keyWordsList.size() == 2 && (keyWordsList.at(0) == "1" || keyWordsList.at(0) == "0") &&
+        !keyWordsList.at(1).empty()) {
+        short opcode = 4;
+        shortToBytes(opcode, opcodeBytes);
+        short follow = std::stoi(keyWordsList.at(0));
+        char *followBytes = new char[2];
+        shortToBytes(follow, followBytes);
+        const char *userNameBytes = keyWordsList.at(1).c_str();
+        return sendBytes(opcodeBytes, 2) && sendBytes(followBytes, 1) &&
+               sendBytes(userNameBytes, keyWordsList.at(1).size());
+
+    } else return false;
+}
+
+bool ConnectionHandler::checkDate( int d,int m, int y) {
+    if (1582 > y)
+        return false;
+    if (!(1 <= m && m <= 12))
+        return false;
+    if (!(1 <= d && d <= 31))
+        return false;
+    if ((d == 31) && (m == 2 || m == 4 || m == 6 || m == 9 || m == 11))
+        return false;
+    if ((d == 30) && (m == 2))
+        return false;
+    if ((m == 2) && (d == 29) && (y % 4 != 0))
+        return false;
+    if ((m == 2) && (d == 29) && (y % 400 == 0))
+        return true;
+    if ((m == 2) && (d == 29) && (y % 100 == 0))
+        return false;
+    if ((m == 2) && (d == 29) && (y % 4 == 0))
+        return true;
+
+    return true;
+}
+
 

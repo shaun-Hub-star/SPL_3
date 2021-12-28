@@ -32,6 +32,23 @@ private:
 
     short bytesToShort(char* bytesArr);
 
+    bool validDate(std::string basicString);
+
+    bool registerCommandValidator(const std::string &frame, std::vector<std::string> result);
+
+    bool registerCommand(std::vector<std::string> keyWordsList,std::string frame,char* opcodeBytes,char* separator);
+
+    bool loginCommandValidator(std::vector<std::string> vector);
+
+    bool loginCommand(std::vector<std::string> keyWordsList,
+                      const std::string &basicString,
+                      char *opcodeBytes, char *separator,
+                      char *captcha);
+    bool logoutCommand(char *opcodeBytes);
+
+    bool followCommand(std::vector<std::string> keyWordsList, char *opcodeBytes);
+    bool checkDate(int m, int d, int y);
+
 public:
 
     ConnectionHandler(std::string host, short port);
@@ -100,19 +117,6 @@ public:
 
     bool availableHandler();
 
-    bool validDate(std::string basicString);
-
-    bool registerCommandValidator(const std::string &frame, std::vector<std::string> result);
-
-    bool registerCommand(std::vector<std::string> keyWordsList,std::string frame,char* opcodeBytes,char* separator);
-
-    bool loginCommandValidator(std::vector<std::string> vector);
-
-    bool loginCommand(std::vector<std::string> keyWordsList,
-                                         const std::string &basicString,
-                                         char *opcodeBytes, char *separator,
-                                         char *captcha);
-    bool logoutCommand(char *opcodeBytes);
 
 }; //class ConnectionHandler
 
