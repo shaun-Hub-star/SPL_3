@@ -8,7 +8,7 @@ bool signedIn = true;
 const int buffersize = 1024;
 char buff[buffersize];
 
-void reicever(ConnectionHandler* handler);
+void receive(ConnectionHandler* handler);
 void writer(ConnectionHandler* handler);
 using namespace std;
 int main (int argc, char *argv[]) {
@@ -35,7 +35,7 @@ int main (int argc, char *argv[]) {
 return 0;
 }
 
-void reicever(ConnectionHandler* handler){
+void receive(ConnectionHandler* handler){
 
     std::string result;
     while(signedIn){

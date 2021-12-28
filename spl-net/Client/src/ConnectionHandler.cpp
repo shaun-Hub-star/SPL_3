@@ -132,18 +132,85 @@ bool ConnectionHandler::getFrameAscii(std::string &frame, char delimiter) {
     // Stop when we encounter the null character.
 
     // Notice that the null character is not appended to the frame string.
-
+    char firstbytes;
+    char secondebyts;
+    char thirdbytes;
+    char fourthbytes;
+    char fiftbyts;
+    char sixthbyts;
+    string messageToClient = "";
     try {
+        char *convertCh = new char[2];
+        getBytes(&firstbytes, 1);
+        convertCh[0] = fourthbytes;
+        getBytes(&fourthbytes, 1);
+        convertCh[1] = fourthbytes;
+        short opcode = getShort(firstbytes, 2);
+        switch (opcode) {
 
-        do {
+            case 9: {
+                messageToClient = "NOTIFICATION";
+                getBytes(&secondebyts, 1);
+                if (secondebyts == 0)
+                    messageToClient += " PM ";
+                else if (secondebyts == 1)
+                    messageToClient += " Public ";
+                string UserName = findWord(thirdbytes, 0);
+                messageToClient += UserName;
+                string Content = findWord(fourthbytes, 0);
+                messageToClient += " " + Content;
+                break;
+            }
+            case 10: {
+                messageToClient = "ACK ";
+                short MessageOpcode = getShort(secondebyts, 2);
+                MessageOpcode += MessageOpcode;
+                if (MessageOpcode == 8 | MessageOpcode == 7) {
+                    char *age = getChar(thirdbytes, 2);
+                    char *NumPosts = getChar(thirdbytes, 2);
+                    char *NumFollowers = getChar(thirdbytes, 2);
+                    char *NumFollowing = getChar(thirdbytes, 2);
+                    messageToClient =
+                            messageToClient + " " + age + " " + NumPosts + " " + NumFollowers + " " + NumFollowing;
 
-            getBytes(&ch, 1);
+                } else if (MessageOpcode == 4) {
 
-            frame.append(1, ch);
+                    getBytes(&thirdbytes, 1);
+                    string UserName = findWord(thirdbytes, 0);
+                    messageToClient += UserName;
 
-        } while (delimiter != ch);
+                } else if (MessageOpcode == 3) {
+                    messageToClient += " LOGOUT ";
+                } else if (MessageOpcode == 1) {
 
-    } catch (std::exception &e) {
+                    messageToClient += "  successful  REGISTER ";
+
+                }
+
+
+            }
+
+
+            case 11: {
+                messageToClient = "ERROR ";
+                getBytes(&secondebyts, 1);
+                string MessageOpcode = findWord(secondebyts,delimiter);
+                break;
+            }
+            case 12: {
+                messageToClient = "BLOCK ";
+                getBytes(&secondebyts, 1);
+                string username = findWord(secondebyts,delimiter);
+                messageToClient += username;
+                break;
+            }
+            default: {
+                messageToClient = "";
+            }
+        }
+        frame = messageToClient;
+    }
+    catch (std::exception &e) {
 
         std::cerr << "recv failed (Error: " << e.what() << ')' << std::endl;
 
@@ -154,7 +221,38 @@ bool ConnectionHandler::getFrameAscii(std::string &frame, char delimiter) {
     return true;
 
 }
+short ConnectionHandler::getShort(char ch, int a) {
+    short opcodeshort;
+    char *bytestoSort = new char[a];
+    int counter = 0;
+    while (counter < a) {
+        getBytes(&ch, a);
+        bytestoSort[counter] = ch;
+    }
+    opcodeshort = bytesToShort(bytestoSort);
+    return opcodeshort;
+}
 
+std::string ConnectionHandler::findWord(char ch, char delimiter) {
+    string output = "";
+    getBytes(&ch, 1);
+    while (ch != delimiter) {
+        output += ch;
+        getBytes(&ch, 1);
+    }
+    return output;
+}
+
+char *ConnectionHandler::getChar(char ch, int a) {
+
+    char *bytestoChar = new char[a];
+    int counter = 0;
+    while (counter < a) {
+        getBytes(&ch, 1);
+        bytestoChar[counter] = ch;
+    }
+    return bytestoChar;
+}
 
 bool ConnectionHandler::sendFrameAscii(const std::string &frame, char delimiter) {
     char *opcodeBytes = new char[2];
@@ -166,7 +264,7 @@ bool ConnectionHandler::sendFrameAscii(const std::string &frame, char delimiter)
     unsigned const int indexOfEndOfFirstWord = frame.find(' ');
 
     string keyWord = frame.substr(0, indexOfEndOfFirstWord);
-    string result = frame.substr(indexOfEndOfFirstWord, frame.size());
+    string result = frame.substr(indexOfEndOfFirstWord+1, frame.size());
     std::vector<string> keyWordsList;
 
     boost::split(keyWordsList, result, boost::is_any_of(" "));
@@ -273,7 +371,7 @@ ConnectionHandler::registerCommand(std::vector<string> keyWordsList, string fram
 }
 
 bool ConnectionHandler::loginCommandValidator(std::vector<string> keyWordsList) {
-    return (keyWordsList.size() == 3 && !keyWordsList.at(0).empty() &&
+    return (keyWordsList.size() == 2 && !keyWordsList.at(0).empty() &&
             !keyWordsList.at(1).empty());
 }
 

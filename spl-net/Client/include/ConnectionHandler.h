@@ -3,7 +3,6 @@
 #define CONNECTION_HANDLER__
 
 
-
 #include <string>
 
 #include <iostream>
@@ -11,9 +10,7 @@
 #include <boost/asio.hpp>
 
 
-
 using boost::asio::ip::tcp;
-
 
 
 class ConnectionHandler {
@@ -28,15 +25,15 @@ private:
 
     tcp::socket socket_;
 
-    void shortToBytes(short num, char* bytesArr);
+    void shortToBytes(short num, char *bytesArr);
 
-    short bytesToShort(char* bytesArr);
+    short bytesToShort(char *bytesArr);
 
     bool validDate(std::string basicString);
 
     bool registerCommandValidator(const std::string &frame, std::vector<std::string> result);
 
-    bool registerCommand(std::vector<std::string> keyWordsList,std::string frame,char* opcodeBytes,char* separator);
+    bool registerCommand(std::vector<std::string> keyWordsList, std::string frame, char *opcodeBytes, char *separator);
 
     bool loginCommandValidator(std::vector<std::string> vector);
 
@@ -44,6 +41,7 @@ private:
                       const std::string &basicString,
                       char *opcodeBytes, char *separator,
                       char *captcha);
+
     bool logoutCommand(char *opcodeBytes);
 
     bool followCommand(std::vector<std::string> keyWordsList, char *opcodeBytes);
@@ -51,6 +49,12 @@ private:
     bool checkDate(int d, int m, int y);
 
     bool postCommand(std::vector<std::string> keyWordsList, char *opcodeBytes);
+
+    short getShort(char ch, int a);
+
+    char *getChar(char ch, int a);
+
+    std::string findWord(char ch, char delimiter);
 
 public:
 
@@ -86,7 +90,7 @@ public:
 
     // Returns false in case connection closed before a newline can be read.
 
-    bool getLine(std::string& line);
+    bool getLine(std::string &line);
 
 
 
@@ -94,7 +98,7 @@ public:
 
     // Returns false in case connection closed before all the data is sent.
 
-    bool sendLine(std::string& line);
+    bool sendLine(std::string &line);
 
 
 
@@ -102,7 +106,7 @@ public:
 
     // Returns false in case connection closed before null can be read.
 
-    bool getFrameAscii(std::string& frame, char delimiter);
+    bool getFrameAscii(std::string &frame, char delimiter);
 
 
 
@@ -110,7 +114,7 @@ public:
 
     // Returns false in case connection is closed before all the data is sent.
 
-    bool sendFrameAscii(const std::string& frame, char delimiter);
+    bool sendFrameAscii(const std::string &frame, char delimiter);
 
 
 

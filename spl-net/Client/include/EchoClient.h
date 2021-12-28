@@ -6,7 +6,8 @@
 #define CLIENT_ECHOCLIENT_H
 class EchoClient {
 private:
-    void receive(ConnectionHandler* handler);
-    void write(ConnectionHandler* handler);
+    //void receive(ConnectionHandler* handler);
+   // void write(ConnectionHandler* handler);
+    //bool loggedIn=true;
 };
 #endif //CLIENT_ECHOCLIENT_H

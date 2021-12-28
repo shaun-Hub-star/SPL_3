@@ -1416,8 +1416,7 @@ CMakeFiles/Client.dir/src/ConnectionHandler.cpp.o
  /cygdrive/c/cygwin64/usr/include/wchar.h
  /cygdrive/c/cygwin64/usr/include/wctype.h
 CMakeFiles/Client.dir/src/EchoClient.cpp.o
- /cygdrive/c/Users/Shust/Desktop/First_Degree/Courses/SPL/SPL3/SPL_3/spl-net/Client/include/ConnectionHandler.h
- /cygdrive/c/Users/Shust/Desktop/First_Degree/Courses/SPL/SPL3/SPL_3/spl-net/Client/include/EchoClient.h
+ /cygdrive/c/Users/Shust/Desktop/First_Degree/Courses/SPL/SPL3/SPL_3/spl-net/Client/include/connectionHandler.h
  /cygdrive/c/Users/Shust/Desktop/First_Degree/Courses/SPL/SPL3/SPL_3/spl-net/Client/src/EchoClient.cpp
  /cygdrive/c/cygwin64/usr/include/_ansi.h
  /cygdrive/c/cygwin64/usr/include/_newlib_version.h
@@ -1852,14 +1851,23 @@ CMakeFiles/Client.dir/src/EchoClient.cpp.o
  /cygdrive/c/cygwin64/usr/include/boost/asio/write.hpp
  /cygdrive/c/cygwin64/usr/include/boost/asio/write_at.hpp
  /cygdrive/c/cygwin64/usr/include/boost/assert.hpp
+ /cygdrive/c/cygwin64/usr/include/boost/bind.hpp
  /cygdrive/c/cygwin64/usr/include/boost/bind/arg.hpp
+ /cygdrive/c/cygwin64/usr/include/boost/bind/bind.hpp
+ /cygdrive/c/cygwin64/usr/include/boost/bind/bind_cc.hpp
+ /cygdrive/c/cygwin64/usr/include/boost/bind/bind_mf2_cc.hpp
+ /cygdrive/c/cygwin64/usr/include/boost/bind/bind_mf_cc.hpp
+ /cygdrive/c/cygwin64/usr/include/boost/bind/bind_template.hpp
  /cygdrive/c/cygwin64/usr/include/boost/bind/mem_fn.hpp
  /cygdrive/c/cygwin64/usr/include/boost/bind/mem_fn_cc.hpp
  /cygdrive/c/cygwin64/usr/include/boost/bind/mem_fn_template.hpp
  /cygdrive/c/cygwin64/usr/include/boost/bind/mem_fn_vw.hpp
+ /cygdrive/c/cygwin64/usr/include/boost/bind/placeholders.hpp
+ /cygdrive/c/cygwin64/usr/include/boost/bind/storage.hpp
  /cygdrive/c/cygwin64/usr/include/boost/call_traits.hpp
  /cygdrive/c/cygwin64/usr/include/boost/cerrno.hpp
  /cygdrive/c/cygwin64/usr/include/boost/checked_delete.hpp
+ /cygdrive/c/cygwin64/usr/include/boost/chrono/ceil.hpp
  /cygdrive/c/cygwin64/usr/include/boost/chrono/chrono.hpp
  /cygdrive/c/cygwin64/usr/include/boost/chrono/clock_string.hpp
  /cygdrive/c/cygwin64/usr/include/boost/chrono/config.hpp
@@ -1928,6 +1936,7 @@ CMakeFiles/Client.dir/src/EchoClient.cpp.o
  /cygdrive/c/cygwin64/usr/include/boost/config/platform/vxworks.hpp
  /cygdrive/c/cygwin64/usr/include/boost/config/platform/win32.hpp
  /cygdrive/c/cygwin64/usr/include/boost/config/platform/zos.hpp
+ /cygdrive/c/cygwin64/usr/include/boost/config/requires_threads.hpp
  /cygdrive/c/cygwin64/usr/include/boost/config/stdlib/dinkumware.hpp
  /cygdrive/c/cygwin64/usr/include/boost/config/stdlib/libcomo.hpp
  /cygdrive/c/cygwin64/usr/include/boost/config/stdlib/libcpp.hpp
@@ -1946,9 +1955,12 @@ CMakeFiles/Client.dir/src/EchoClient.cpp.o
  /cygdrive/c/cygwin64/usr/include/boost/core/checked_delete.hpp
  /cygdrive/c/cygwin64/usr/include/boost/core/demangle.hpp
  /cygdrive/c/cygwin64/usr/include/boost/core/enable_if.hpp
+ /cygdrive/c/cygwin64/usr/include/boost/core/ignore_unused.hpp
+ /cygdrive/c/cygwin64/usr/include/boost/core/is_same.hpp
  /cygdrive/c/cygwin64/usr/include/boost/core/no_exceptions_support.hpp
  /cygdrive/c/cygwin64/usr/include/boost/core/noncopyable.hpp
  /cygdrive/c/cygwin64/usr/include/boost/core/ref.hpp
+ /cygdrive/c/cygwin64/usr/include/boost/core/scoped_enum.hpp
  /cygdrive/c/cygwin64/usr/include/boost/core/swap.hpp
  /cygdrive/c/cygwin64/usr/include/boost/core/typeinfo.hpp
  /cygdrive/c/cygwin64/usr/include/boost/cstdint.hpp
@@ -1965,6 +1977,8 @@ CMakeFiles/Client.dir/src/EchoClient.cpp.o
  /cygdrive/c/cygwin64/usr/include/boost/date_time/date_generators.hpp
  /cygdrive/c/cygwin64/usr/include/boost/date_time/date_iterator.hpp
  /cygdrive/c/cygwin64/usr/include/boost/date_time/dst_rules.hpp
+ /cygdrive/c/cygwin64/usr/include/boost/date_time/filetime_functions.hpp
+ /cygdrive/c/cygwin64/usr/include/boost/date_time/gregorian/conversion.hpp
  /cygdrive/c/cygwin64/usr/include/boost/date_time/gregorian/greg_calendar.hpp
  /cygdrive/c/cygwin64/usr/include/boost/date_time/gregorian/greg_date.hpp
  /cygdrive/c/cygwin64/usr/include/boost/date_time/gregorian/greg_day.hpp
@@ -1982,6 +1996,7 @@ CMakeFiles/Client.dir/src/EchoClient.cpp.o
  /cygdrive/c/cygwin64/usr/include/boost/date_time/locale_config.hpp
  /cygdrive/c/cygwin64/usr/include/boost/date_time/microsec_time_clock.hpp
  /cygdrive/c/cygwin64/usr/include/boost/date_time/period.hpp
+ /cygdrive/c/cygwin64/usr/include/boost/date_time/posix_time/conversion.hpp
  /cygdrive/c/cygwin64/usr/include/boost/date_time/posix_time/date_duration_operators.hpp
  /cygdrive/c/cygwin64/usr/include/boost/date_time/posix_time/posix_time_config.hpp
  /cygdrive/c/cygwin64/usr/include/boost/date_time/posix_time/posix_time_duration.hpp
@@ -2003,14 +2018,30 @@ CMakeFiles/Client.dir/src/EchoClient.cpp.o
  /cygdrive/c/cygwin64/usr/include/boost/detail/atomic_count.hpp
  /cygdrive/c/cygwin64/usr/include/boost/detail/call_traits.hpp
  /cygdrive/c/cygwin64/usr/include/boost/detail/container_fwd.hpp
+ /cygdrive/c/cygwin64/usr/include/boost/detail/interlocked.hpp
  /cygdrive/c/cygwin64/usr/include/boost/detail/iterator.hpp
  /cygdrive/c/cygwin64/usr/include/boost/detail/no_exceptions_support.hpp
  /cygdrive/c/cygwin64/usr/include/boost/detail/sp_typeinfo.hpp
+ /cygdrive/c/cygwin64/usr/include/boost/detail/winapi/access_rights.hpp
+ /cygdrive/c/cygwin64/usr/include/boost/detail/winapi/config.hpp
  /cygdrive/c/cygwin64/usr/include/boost/detail/winapi/detail/deprecated_namespace.hpp
+ /cygdrive/c/cygwin64/usr/include/boost/detail/winapi/dll.hpp
+ /cygdrive/c/cygwin64/usr/include/boost/detail/winapi/event.hpp
+ /cygdrive/c/cygwin64/usr/include/boost/detail/winapi/get_current_process.hpp
+ /cygdrive/c/cygwin64/usr/include/boost/detail/winapi/get_current_process_id.hpp
+ /cygdrive/c/cygwin64/usr/include/boost/detail/winapi/get_current_thread.hpp
+ /cygdrive/c/cygwin64/usr/include/boost/detail/winapi/get_current_thread_id.hpp
  /cygdrive/c/cygwin64/usr/include/boost/detail/winapi/get_last_error.hpp
+ /cygdrive/c/cygwin64/usr/include/boost/detail/winapi/handles.hpp
+ /cygdrive/c/cygwin64/usr/include/boost/detail/winapi/heap_memory.hpp
+ /cygdrive/c/cygwin64/usr/include/boost/detail/winapi/semaphore.hpp
+ /cygdrive/c/cygwin64/usr/include/boost/detail/winapi/system.hpp
+ /cygdrive/c/cygwin64/usr/include/boost/detail/winapi/thread.hpp
  /cygdrive/c/cygwin64/usr/include/boost/detail/winapi/time.hpp
  /cygdrive/c/cygwin64/usr/include/boost/detail/winapi/timers.hpp
+ /cygdrive/c/cygwin64/usr/include/boost/detail/winapi/wait.hpp
  /cygdrive/c/cygwin64/usr/include/boost/detail/workaround.hpp
+ /cygdrive/c/cygwin64/usr/include/boost/enable_shared_from_this.hpp
  /cygdrive/c/cygwin64/usr/include/boost/exception/exception.hpp
  /cygdrive/c/cygwin64/usr/include/boost/function.hpp
  /cygdrive/c/cygwin64/usr/include/boost/function/detail/maybe_include.hpp
@@ -2043,16 +2074,27 @@ CMakeFiles/Client.dir/src/EchoClient.cpp.o
  /cygdrive/c/cygwin64/usr/include/boost/integer/static_log2.hpp
  /cygdrive/c/cygwin64/usr/include/boost/integer_fwd.hpp
  /cygdrive/c/cygwin64/usr/include/boost/integer_traits.hpp
+ /cygdrive/c/cygwin64/usr/include/boost/intrusive_ptr.hpp
+ /cygdrive/c/cygwin64/usr/include/boost/io/ios_state.hpp
+ /cygdrive/c/cygwin64/usr/include/boost/io_fwd.hpp
  /cygdrive/c/cygwin64/usr/include/boost/is_placeholder.hpp
  /cygdrive/c/cygwin64/usr/include/boost/limits.hpp
  /cygdrive/c/cygwin64/usr/include/boost/mem_fn.hpp
+ /cygdrive/c/cygwin64/usr/include/boost/move/adl_move_swap.hpp
  /cygdrive/c/cygwin64/usr/include/boost/move/core.hpp
+ /cygdrive/c/cygwin64/usr/include/boost/move/default_delete.hpp
  /cygdrive/c/cygwin64/usr/include/boost/move/detail/config_begin.hpp
  /cygdrive/c/cygwin64/usr/include/boost/move/detail/config_end.hpp
+ /cygdrive/c/cygwin64/usr/include/boost/move/detail/fwd_macros.hpp
  /cygdrive/c/cygwin64/usr/include/boost/move/detail/meta_utils.hpp
  /cygdrive/c/cygwin64/usr/include/boost/move/detail/meta_utils_core.hpp
  /cygdrive/c/cygwin64/usr/include/boost/move/detail/type_traits.hpp
+ /cygdrive/c/cygwin64/usr/include/boost/move/detail/unique_ptr_meta_utils.hpp
  /cygdrive/c/cygwin64/usr/include/boost/move/detail/workaround.hpp
+ /cygdrive/c/cygwin64/usr/include/boost/move/make_unique.hpp
+ /cygdrive/c/cygwin64/usr/include/boost/move/traits.hpp
+ /cygdrive/c/cygwin64/usr/include/boost/move/unique_ptr.hpp
+ /cygdrive/c/cygwin64/usr/include/boost/move/utility.hpp
  /cygdrive/c/cygwin64/usr/include/boost/move/utility_core.hpp
  /cygdrive/c/cygwin64/usr/include/boost/mpl/and.hpp
  /cygdrive/c/cygwin64/usr/include/boost/mpl/assert.hpp
@@ -2454,6 +2496,8 @@ CMakeFiles/Client.dir/src/EchoClient.cpp.o
  /cygdrive/c/cygwin64/usr/include/boost/smart_ptr/detail/spinlock_sync.hpp
  /cygdrive/c/cygwin64/usr/include/boost/smart_ptr/detail/spinlock_w32.hpp
  /cygdrive/c/cygwin64/usr/include/boost/smart_ptr/detail/yield_k.hpp
+ /cygdrive/c/cygwin64/usr/include/boost/smart_ptr/enable_shared_from_this.hpp
+ /cygdrive/c/cygwin64/usr/include/boost/smart_ptr/intrusive_ptr.hpp
  /cygdrive/c/cygwin64/usr/include/boost/smart_ptr/scoped_array.hpp
  /cygdrive/c/cygwin64/usr/include/boost/smart_ptr/scoped_ptr.hpp
  /cygdrive/c/cygwin64/usr/include/boost/smart_ptr/shared_ptr.hpp
@@ -2466,7 +2510,53 @@ CMakeFiles/Client.dir/src/EchoClient.cpp.o
  /cygdrive/c/cygwin64/usr/include/boost/system/detail/local_free_on_destruction.hpp
  /cygdrive/c/cygwin64/usr/include/boost/system/error_code.hpp
  /cygdrive/c/cygwin64/usr/include/boost/system/system_error.hpp
+ /cygdrive/c/cygwin64/usr/include/boost/thread/condition_variable.hpp
+ /cygdrive/c/cygwin64/usr/include/boost/thread/csbl/memory/config.hpp
+ /cygdrive/c/cygwin64/usr/include/boost/thread/csbl/memory/unique_ptr.hpp
+ /cygdrive/c/cygwin64/usr/include/boost/thread/cv_status.hpp
+ /cygdrive/c/cygwin64/usr/include/boost/thread/detail/config.hpp
+ /cygdrive/c/cygwin64/usr/include/boost/thread/detail/delete.hpp
+ /cygdrive/c/cygwin64/usr/include/boost/thread/detail/invoke.hpp
+ /cygdrive/c/cygwin64/usr/include/boost/thread/detail/is_convertible.hpp
+ /cygdrive/c/cygwin64/usr/include/boost/thread/detail/lockable_wrapper.hpp
+ /cygdrive/c/cygwin64/usr/include/boost/thread/detail/make_tuple_indices.hpp
+ /cygdrive/c/cygwin64/usr/include/boost/thread/detail/move.hpp
+ /cygdrive/c/cygwin64/usr/include/boost/thread/detail/platform.hpp
+ /cygdrive/c/cygwin64/usr/include/boost/thread/detail/thread.hpp
+ /cygdrive/c/cygwin64/usr/include/boost/thread/detail/thread_group.hpp
+ /cygdrive/c/cygwin64/usr/include/boost/thread/detail/thread_heap_alloc.hpp
+ /cygdrive/c/cygwin64/usr/include/boost/thread/detail/thread_interruption.hpp
+ /cygdrive/c/cygwin64/usr/include/boost/thread/exceptions.hpp
+ /cygdrive/c/cygwin64/usr/include/boost/thread/is_locked_by_this_thread.hpp
+ /cygdrive/c/cygwin64/usr/include/boost/thread/lock_guard.hpp
+ /cygdrive/c/cygwin64/usr/include/boost/thread/lock_options.hpp
+ /cygdrive/c/cygwin64/usr/include/boost/thread/lock_types.hpp
+ /cygdrive/c/cygwin64/usr/include/boost/thread/lockable_traits.hpp
+ /cygdrive/c/cygwin64/usr/include/boost/thread/mutex.hpp
+ /cygdrive/c/cygwin64/usr/include/boost/thread/pthread/condition_variable.hpp
+ /cygdrive/c/cygwin64/usr/include/boost/thread/pthread/condition_variable_fwd.hpp
+ /cygdrive/c/cygwin64/usr/include/boost/thread/pthread/mutex.hpp
+ /cygdrive/c/cygwin64/usr/include/boost/thread/pthread/pthread_mutex_scoped_lock.hpp
+ /cygdrive/c/cygwin64/usr/include/boost/thread/pthread/shared_mutex.hpp
+ /cygdrive/c/cygwin64/usr/include/boost/thread/pthread/thread_data.hpp
+ /cygdrive/c/cygwin64/usr/include/boost/thread/pthread/thread_heap_alloc.hpp
+ /cygdrive/c/cygwin64/usr/include/boost/thread/pthread/timespec.hpp
+ /cygdrive/c/cygwin64/usr/include/boost/thread/shared_mutex.hpp
+ /cygdrive/c/cygwin64/usr/include/boost/thread/thread.hpp
+ /cygdrive/c/cygwin64/usr/include/boost/thread/thread_only.hpp
+ /cygdrive/c/cygwin64/usr/include/boost/thread/thread_time.hpp
+ /cygdrive/c/cygwin64/usr/include/boost/thread/v2/thread.hpp
+ /cygdrive/c/cygwin64/usr/include/boost/thread/win32/basic_timed_mutex.hpp
+ /cygdrive/c/cygwin64/usr/include/boost/thread/win32/condition_variable.hpp
+ /cygdrive/c/cygwin64/usr/include/boost/thread/win32/interlocked_read.hpp
+ /cygdrive/c/cygwin64/usr/include/boost/thread/win32/mutex.hpp
+ /cygdrive/c/cygwin64/usr/include/boost/thread/win32/shared_mutex.hpp
+ /cygdrive/c/cygwin64/usr/include/boost/thread/win32/thread_data.hpp
+ /cygdrive/c/cygwin64/usr/include/boost/thread/win32/thread_heap_alloc.hpp
+ /cygdrive/c/cygwin64/usr/include/boost/thread/win32/thread_primitives.hpp
+ /cygdrive/c/cygwin64/usr/include/boost/thread/xtime.hpp
  /cygdrive/c/cygwin64/usr/include/boost/throw_exception.hpp
+ /cygdrive/c/cygwin64/usr/include/boost/type.hpp
  /cygdrive/c/cygwin64/usr/include/boost/type_index.hpp
  /cygdrive/c/cygwin64/usr/include/boost/type_index/ctti_type_index.hpp
  /cygdrive/c/cygwin64/usr/include/boost/type_index/detail/compile_time_type_info.hpp
@@ -2548,16 +2638,30 @@ CMakeFiles/Client.dir/src/EchoClient.cpp.o
  /cygdrive/c/cygwin64/usr/include/boost/utility/enable_if.hpp
  /cygdrive/c/cygwin64/usr/include/boost/utility/result_of.hpp
  /cygdrive/c/cygwin64/usr/include/boost/version.hpp
+ /cygdrive/c/cygwin64/usr/include/boost/visit_each.hpp
  /cygdrive/c/cygwin64/usr/include/boost/weak_ptr.hpp
+ /cygdrive/c/cygwin64/usr/include/boost/winapi/access_rights.hpp
  /cygdrive/c/cygwin64/usr/include/boost/winapi/basic_types.hpp
  /cygdrive/c/cygwin64/usr/include/boost/winapi/character_code_conversion.hpp
  /cygdrive/c/cygwin64/usr/include/boost/winapi/config.hpp
+ /cygdrive/c/cygwin64/usr/include/boost/winapi/dll.hpp
  /cygdrive/c/cygwin64/usr/include/boost/winapi/error_codes.hpp
  /cygdrive/c/cygwin64/usr/include/boost/winapi/error_handling.hpp
+ /cygdrive/c/cygwin64/usr/include/boost/winapi/event.hpp
+ /cygdrive/c/cygwin64/usr/include/boost/winapi/get_current_process.hpp
+ /cygdrive/c/cygwin64/usr/include/boost/winapi/get_current_process_id.hpp
+ /cygdrive/c/cygwin64/usr/include/boost/winapi/get_current_thread.hpp
+ /cygdrive/c/cygwin64/usr/include/boost/winapi/get_current_thread_id.hpp
  /cygdrive/c/cygwin64/usr/include/boost/winapi/get_last_error.hpp
+ /cygdrive/c/cygwin64/usr/include/boost/winapi/handles.hpp
+ /cygdrive/c/cygwin64/usr/include/boost/winapi/heap_memory.hpp
  /cygdrive/c/cygwin64/usr/include/boost/winapi/local_memory.hpp
+ /cygdrive/c/cygwin64/usr/include/boost/winapi/semaphore.hpp
+ /cygdrive/c/cygwin64/usr/include/boost/winapi/system.hpp
+ /cygdrive/c/cygwin64/usr/include/boost/winapi/thread.hpp
  /cygdrive/c/cygwin64/usr/include/boost/winapi/time.hpp
  /cygdrive/c/cygwin64/usr/include/boost/winapi/timers.hpp
+ /cygdrive/c/cygwin64/usr/include/boost/winapi/wait.hpp
  /cygdrive/c/cygwin64/usr/include/cygwin/_socketflags.h
  /cygdrive/c/cygwin64/usr/include/cygwin/_ucred.h
  /cygdrive/c/cygwin64/usr/include/cygwin/config.h

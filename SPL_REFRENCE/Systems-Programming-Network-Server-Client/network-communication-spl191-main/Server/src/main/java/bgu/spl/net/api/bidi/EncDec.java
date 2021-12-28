@@ -10,8 +10,8 @@ public class EncDec implements MessageEncoderDecoder<String> {
     private byte[] bytes = new byte[1 << 10]; //start with 1k
     private int len = 0;
     private int counter = 0;
-  private short ops = 0;
-  private short num=0;
+	private short ops = 0;
+	private short num=0;
     @Override
     public String decodeNextByte(byte nextByte) {
 
