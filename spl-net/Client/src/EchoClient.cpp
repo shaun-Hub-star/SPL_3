@@ -53,11 +53,8 @@ int main (int argc, char *argv[]) {
         int len=line.length();
 
         if (!connectionHandler.sendLine(line)) {
-
             std::cout << "Disconnected. Exiting...\n" << std::endl;
-
             break;
-
         }
 
         // connectionHandler.sendLine(line) appends '\n' to the message. Therefor we send len+1 bytes.

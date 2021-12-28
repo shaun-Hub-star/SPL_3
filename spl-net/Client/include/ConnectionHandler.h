@@ -47,7 +47,10 @@ private:
     bool logoutCommand(char *opcodeBytes);
 
     bool followCommand(std::vector<std::string> keyWordsList, char *opcodeBytes);
-    bool checkDate(int m, int d, int y);
+
+    bool checkDate(int d, int m, int y);
+
+    bool postCommand(std::vector<std::string> keyWordsList, char *opcodeBytes);
 
 public:
 
@@ -118,6 +121,11 @@ public:
     bool availableHandler();
 
 
+    bool pmCommand(std::vector<std::string> keyWordsList, char *opcodeBytes);
+
+    bool logStatCommand(char *opcodeBytes);
+
+    bool statCommand(std::vector<std::string> keyWordsList, char *opcodeBytes);
 }; //class ConnectionHandler
 
 
