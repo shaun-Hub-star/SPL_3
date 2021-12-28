@@ -169,14 +169,15 @@ bool ConnectionHandler::getFrameAscii(std::string &frame, char delimiter) {
 bool ConnectionHandler::sendFrameAscii(const std::string &frame, char delimiter) {
     char *opcodeBytes = new char[2];
     char *separator = new char('\0');
+    char* captcha = new char('1');
 
     /** I can use the "short to opcodeBytes method" in order to put the opcode
         in the "opcodeBytes array" and then use the sendBytes method which is provided on each part.*/
     unsigned const int indexOfEndOfFirstWord = frame.find(' ');
-    if (frame == "LOGSTAT") {
+    /*if (frame == "LOGSTAT") {
         //logstat logic
 
-    } else if (indexOfEndOfFirstWord == string::npos)return false;
+    } else if (indexOfEndOfFirstWord == string::npos)return false;*/
 
     string keyWord = frame.substr(0, indexOfEndOfFirstWord);
     string result = frame.substr(indexOfEndOfFirstWord, frame.size());
@@ -188,10 +189,12 @@ bool ConnectionHandler::sendFrameAscii(const std::string &frame, char delimiter)
                                separator);
 
     } else if (keyWord == "LOGIN") {//LOGIN <Username> <Password>
-        return loginCommand(keyWordsList, frame, opcodeBytes, separator);
+        return loginCommand(keyWordsList, frame, opcodeBytes,
+                            separator,captcha);
 
-
-    } else return false;
+    } else if(frame == "LOGOUT"){
+         return logoutCommand(opcodeBytes);
+    }
 
 }
 
@@ -268,7 +271,7 @@ bool ConnectionHandler::loginCommandValidator(std::vector<string> keyWordsList) 
             !keyWordsList.at(1).empty());
 }
 bool ConnectionHandler::loginCommand(std::vector<string> keyWordsList, const string &basicString, char *opcodeBytes,
-                                     char *separator) {
+                                     char *separator,char *captcha) {
     if (loginCommandValidator(keyWordsList)) {
 
         const string userName = keyWordsList.at(0);
@@ -280,7 +283,14 @@ bool ConnectionHandler::loginCommand(std::vector<string> keyWordsList, const str
         shortToBytes(opcode, opcodeBytes);
 
         return sendBytes(opcodeBytes, 2) && sendBytes(userNameBytes, userName.size()) &&
-               sendBytes(separator, 1) && sendBytes(passwordBytes, password.size());
+               sendBytes(separator, 1) && sendBytes(passwordBytes, password.size()) &&
+               sendBytes(separator, 1) && sendBytes(captcha, 1);
     }else return false;
+}
+
+bool ConnectionHandler::logoutCommand(char* opcodeBytes) {
+    short opcode = 3;
+    shortToBytes(opcode, opcodeBytes);
+    return sendBytes(opcodeBytes,2);
 }
 

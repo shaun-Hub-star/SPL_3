@@ -108,7 +108,12 @@ public:
 
     bool loginCommandValidator(std::vector<std::string> vector);
 
-    bool ConnectionHandler::loginCommand(std::vector<std::string> keyWordsList, const std::string &basicString, char *opcodeBytes, char *separator);
+    bool loginCommand(std::vector<std::string> keyWordsList,
+                                         const std::string &basicString,
+                                         char *opcodeBytes, char *separator,
+                                         char *captcha);
+    bool logoutCommand(char *opcodeBytes);
+
 }; //class ConnectionHandler
 
 
