@@ -1,5 +1,6 @@
 #include "../include/ConnectionHandler.h"
-
+#include <bits/stdc++.h>
+#include <boost/algorithm/string.hpp>
 
 using boost::asio::ip::tcp;
 
@@ -160,17 +161,34 @@ bool ConnectionHandler::getFrameAscii(std::string &frame, char delimiter) {
 
 }
 
+/**------------------------------register structure---------------------------------|
+ *  2 bytes       string      1 byte      string       1 byte     string     1 byte |
+ *   Opcode      Username       0        Password        0       birthday       0   |
+ * */
 
 bool ConnectionHandler::sendFrameAscii(const std::string &frame, char delimiter) {
+    char *opcodeBytes = new char[2];
+    char *separator = new char('\0');
 
-    bool result = sendBytes(frame.c_str(), frame.length());
+    /** I can use the "short to opcodeBytes method" in order to put the opcode
+        in the "opcodeBytes array" and then use the sendBytes method which is provided on each part.*/
+    unsigned const int indexOfEndOfFirstWord = frame.find(' ');
+    if (frame == "LOGSTAT") {
+        //logstat logic
 
-    if (!result) return false;
+    } else if (indexOfEndOfFirstWord == string::npos)return false;
 
-    return sendBytes(&delimiter, 1);
+    string keyWord = frame.substr(0, indexOfEndOfFirstWord);
+    string result = frame.substr(indexOfEndOfFirstWord, frame.size());
+    std::vector<string> keyWordsList;
+
+    boost::split(keyWordsList, result, boost::is_any_of(" "));
+    if (keyWord == "REGISTER") {
+        return registerCommand(keyWordsList, frame, opcodeBytes, separator);
+
+    } else return false;
 
 }
-
 
 
 // Close down the connection properly.
@@ -204,6 +222,33 @@ bool ConnectionHandler::availableHandler() {
     return false;
 }
 
+bool ConnectionHandler::validDate(std::string date) {
+    return true;
+}
+
+bool ConnectionHandler::registerCommandValidator(const string &frame, std::vector<string> result) {
+
+    return (result.size() == 3 && !result.at(0).empty() &&
+            !result.at(1).empty() &&
+            !result.at(2).empty() && validDate(result.at(2)));
 
 
+}
 
+bool
+ConnectionHandler::registerCommand(std::vector<string> keyWordsList, string frame, char *opcodeBytes, char *separator) {
+    const string userName = keyWordsList.at(0);
+    const string password = keyWordsList.at(1);
+    const string date = keyWordsList.at(2);
+    const char *userNameBytes = userName.c_str();
+    const char *passwordBytes = password.c_str();
+    const char *dateBytes = date.c_str();
+    if (registerCommandValidator(frame, keyWordsList)) {
+        short opcode = 1;
+        shortToBytes(opcode, opcodeBytes);
+
+        return sendBytes(opcodeBytes, 2) && sendBytes(userNameBytes, userName.size()) &&
+               sendBytes(separator, 1) && sendBytes(passwordBytes, password.size()) &&
+               sendBytes(separator, 1) && sendBytes(dateBytes, date.size());
+    }
+}

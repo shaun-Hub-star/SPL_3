@@ -40,12 +40,12 @@ int main (int argc, char *argv[]) {
 
     //From here we will see the rest of the echo client implementation:
 
-    while (true) {
+    while (1) {
 
         const short bufsize = 1024;
 
         char buf[bufsize];
-
+        std::cout<<"print"<<std::endl;
         std::cin.getline(buf, bufsize);
 
         std::string line(buf);

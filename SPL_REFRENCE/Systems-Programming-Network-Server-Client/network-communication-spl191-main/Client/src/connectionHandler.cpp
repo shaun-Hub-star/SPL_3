@@ -293,9 +293,6 @@ bool ConnectionHandler::sendFrameAscii(const std::string& frame, char delimiter)
         type=frame.substr(0,frame.find(' '));
     } else
         type=frame;
-
-
-
     if (type=="REGISTER"){
         opcode=1;
         shortToBytes(opcode,bytesarr);

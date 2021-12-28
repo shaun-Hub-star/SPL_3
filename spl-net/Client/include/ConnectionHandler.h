@@ -100,7 +100,13 @@ public:
 
     bool availableHandler();
 
-}; //class ConnectionHandler
+    bool validDate(std::string basicString);
+
+    bool registerCommandValidator(const std::string &frame, std::vector<std::string> result);
+
+    bool registerCommand(std::vector<std::string> keyWordsList,std::string frame,char* opcodeBytes,char* separator);
+
+    }; //class ConnectionHandler
 
 
 

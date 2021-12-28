@@ -1238,6 +1238,7 @@ CMakeFiles/Client.dir/src/ConnectionHandler.cpp.o: /cygdrive/c/cygwin64/usr/incl
 CMakeFiles/Client.dir/src/ConnectionHandler.cpp.o: /cygdrive/c/cygwin64/usr/include/wctype.h
 
 CMakeFiles/Client.dir/src/EchoClient.cpp.o: ../include/ConnectionHandler.h
+CMakeFiles/Client.dir/src/EchoClient.cpp.o: ../include/EchoClient.h
 CMakeFiles/Client.dir/src/EchoClient.cpp.o: ../src/EchoClient.cpp
 CMakeFiles/Client.dir/src/EchoClient.cpp.o: /cygdrive/c/cygwin64/usr/include/_ansi.h
 CMakeFiles/Client.dir/src/EchoClient.cpp.o: /cygdrive/c/cygwin64/usr/include/_newlib_version.h
