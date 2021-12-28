@@ -106,7 +106,10 @@ public:
 
     bool registerCommand(std::vector<std::string> keyWordsList,std::string frame,char* opcodeBytes,char* separator);
 
-    }; //class ConnectionHandler
+    bool loginCommandValidator(std::vector<std::string> vector);
+
+    bool ConnectionHandler::loginCommand(std::vector<std::string> keyWordsList, const std::string &basicString, char *opcodeBytes, char *separator);
+}; //class ConnectionHandler
 
 
 

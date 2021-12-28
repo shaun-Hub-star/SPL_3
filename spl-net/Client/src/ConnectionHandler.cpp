@@ -184,7 +184,12 @@ bool ConnectionHandler::sendFrameAscii(const std::string &frame, char delimiter)
 
     boost::split(keyWordsList, result, boost::is_any_of(" "));
     if (keyWord == "REGISTER") {
-        return registerCommand(keyWordsList, frame, opcodeBytes, separator);
+        return registerCommand(keyWordsList, frame, opcodeBytes,
+                               separator);
+
+    } else if (keyWord == "LOGIN") {//LOGIN <Username> <Password>
+        return loginCommand(keyWordsList, frame, opcodeBytes, separator);
+
 
     } else return false;
 
@@ -236,19 +241,46 @@ bool ConnectionHandler::registerCommandValidator(const string &frame, std::vecto
 }
 
 bool
-ConnectionHandler::registerCommand(std::vector<string> keyWordsList, string frame, char *opcodeBytes, char *separator) {
-    const string userName = keyWordsList.at(0);
-    const string password = keyWordsList.at(1);
-    const string date = keyWordsList.at(2);
-    const char *userNameBytes = userName.c_str();
-    const char *passwordBytes = password.c_str();
-    const char *dateBytes = date.c_str();
+ConnectionHandler::registerCommand(std::vector<string> keyWordsList, string frame, char *opcodeBytes,
+                                   char *separator) {
     if (registerCommandValidator(frame, keyWordsList)) {
+
+
+        const string userName = keyWordsList.at(0);
+        const string password = keyWordsList.at(1);
+        const string date = keyWordsList.at(2);
+        const char *userNameBytes = userName.c_str();
+        const char *passwordBytes = password.c_str();
+        const char *dateBytes = date.c_str();
+
         short opcode = 1;
         shortToBytes(opcode, opcodeBytes);
 
         return sendBytes(opcodeBytes, 2) && sendBytes(userNameBytes, userName.size()) &&
                sendBytes(separator, 1) && sendBytes(passwordBytes, password.size()) &&
                sendBytes(separator, 1) && sendBytes(dateBytes, date.size());
-    }
+    } else return false;
+
 }
+
+bool ConnectionHandler::loginCommandValidator(std::vector<string> keyWordsList) {
+    return (keyWordsList.size() == 3 && !keyWordsList.at(0).empty() &&
+            !keyWordsList.at(1).empty());
+}
+bool ConnectionHandler::loginCommand(std::vector<string> keyWordsList, const string &basicString, char *opcodeBytes,
+                                     char *separator) {
+    if (loginCommandValidator(keyWordsList)) {
+
+        const string userName = keyWordsList.at(0);
+        const string password = keyWordsList.at(1);
+        const char *userNameBytes = userName.c_str();
+        const char *passwordBytes = password.c_str();
+
+        short opcode = 2;
+        shortToBytes(opcode, opcodeBytes);
+
+        return sendBytes(opcodeBytes, 2) && sendBytes(userNameBytes, userName.size()) &&
+               sendBytes(separator, 1) && sendBytes(passwordBytes, password.size());
+    }else return false;
+}
+
