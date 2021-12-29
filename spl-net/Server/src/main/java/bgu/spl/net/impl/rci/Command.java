@@ -1,4 +1,4 @@
-package main.java.bgu.spl.net.impl.rci;
+package bgu.spl.net.impl.rci;
 
 import java.io.Serializable;
 

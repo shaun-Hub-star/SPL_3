@@ -1,4 +1,4 @@
-package main.java.bgu.spl.net.srv;
+package bgu.spl.net.srv;
 
 import java.util.LinkedList;
 import java.util.Map;

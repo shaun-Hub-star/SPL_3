@@ -1,5 +1,6 @@
 package bgu.spl.net.api;
 
+
 public interface MessagingProtocol<T> {
  
     /**
@@ -13,5 +14,6 @@ public interface MessagingProtocol<T> {
      * @return true if the connection should be terminated
      */
     boolean shouldTerminate();
- 
+
+    void start(int connectionId, Connections<T> connections);
 }

@@ -1,5 +1,6 @@
-package main.java.bgu.spl.net.impl.echo;
+package bgu.spl.net.impl.echo;
 
+import bgu.spl.net.api.Connections;
 import bgu.spl.net.api.MessagingProtocol;
 import java.time.LocalDateTime;
 
@@ -22,5 +23,10 @@ public class EchoProtocol implements MessagingProtocol<String> {
     @Override
     public boolean shouldTerminate() {
         return shouldTerminate;
+    }
+
+    @Override
+    public void start(int connectionId, Connections<String> connections) {
+
     }
 }

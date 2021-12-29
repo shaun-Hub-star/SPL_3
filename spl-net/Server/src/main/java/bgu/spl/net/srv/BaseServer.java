@@ -1,8 +1,8 @@
-package main.java.bgu.spl.net.srv;
+package bgu.spl.net.srv;
 
 import bgu.spl.net.api.MessageEncoderDecoder;
 import bgu.spl.net.api.MessagingProtocol;
-import main.java.bgu.spl.net.srv.BlockingConnectionHandler;
+import bgu.spl.net.srv.BlockingConnectionHandler;
 
 import java.io.IOException;
 import java.net.ServerSocket;

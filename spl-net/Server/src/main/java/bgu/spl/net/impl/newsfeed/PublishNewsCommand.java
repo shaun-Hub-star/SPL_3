@@ -1,6 +1,6 @@
-package main.java.bgu.spl.net.impl.newsfeed;
+package bgu.spl.net.impl.newsfeed;
 
-import main.java.bgu.spl.net.impl.rci.Command;
+import bgu.spl.net.impl.rci.Command;
 
 import java.io.Serializable;
 
