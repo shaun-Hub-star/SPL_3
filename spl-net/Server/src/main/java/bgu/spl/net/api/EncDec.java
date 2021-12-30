@@ -63,7 +63,8 @@ public class EncDec<T> implements MessageEncoderDecoder<T>{
                     outputMessage="successful POST Messages";
                 else if(MessageOpcode=='6')
                     outputMessage="successful PM Messages";
-                output=toByetsOutput(MessageOpcode,outputMessage);}
+                output=toByetsOutput(MessageOpcode,outputMessage);
+                return output;}
 
                 else if(MessageOpcode=='4'){
                     String[] messageOutput=new String[1];
@@ -128,7 +129,7 @@ public class EncDec<T> implements MessageEncoderDecoder<T>{
                 output[counter]=Byte.parseByte("0");
                 return output;
             }
-            throw new Exception("Illigal");
+            throw new Exception("Illegal");
     }
 
     private byte[] toByetsOutput(char MessageOpcode,String messageOutput) {
