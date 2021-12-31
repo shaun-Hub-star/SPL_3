@@ -56,6 +56,8 @@ public class NonBlockingConnectionHandler<T> implements ConnectionHandler<T> {
                             }
                         }
                     }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 } finally {
                     releaseBuffer(buf);
                 }

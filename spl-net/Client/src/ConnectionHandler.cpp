@@ -406,10 +406,11 @@ bool ConnectionHandler::followCommand(std::vector<string> keyWordsList, char *op
         shortToBytes(opcode, opcodeBytes);
         short follow = std::stoi(keyWordsList.at(0));
         char *followBytes = new char[2];
+        char *delimiter = new char('\0');
         shortToBytes(follow, followBytes);
         const char *userNameBytes = keyWordsList.at(1).c_str();
         return sendBytes(opcodeBytes, 2) && sendBytes(followBytes, 1) &&
-               sendBytes(userNameBytes, keyWordsList.at(1).size());
+               sendBytes(userNameBytes, (int)keyWordsList.at(1).size()) && sendBytes(delimiter,1);
 
     } else return false;
 }
@@ -443,7 +444,7 @@ bool ConnectionHandler::postCommand(std::vector<std::string> keyWordsList, char 
         shortToBytes(opcode, opcodeBytes);
         string message = keyWordsList.at(0);
         const char *messageBytes = message.c_str();
-        char *delimiter = new char('0');
+        char *delimiter = new char('\0');
         return sendBytes(opcodeBytes, 2) && sendBytes(messageBytes, (int) message.size()) && sendBytes(delimiter, 1);
     } else return false;
 

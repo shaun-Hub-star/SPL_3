@@ -43,6 +43,8 @@ public class BlockingConnectionHandler<T> implements Runnable, ConnectionHandler
 
         } catch (IOException ex) {
             ex.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
     }
