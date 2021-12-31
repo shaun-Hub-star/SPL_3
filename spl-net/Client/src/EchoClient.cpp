@@ -19,10 +19,10 @@ int main (int argc, char *argv[]) {
 
     Keyboard keyboard(connectionHandler);
     ServerListener serverListener(connectionHandler);
-    std::thread th1(&Keyboard::run, &keyboard);
-    std::thread th2(&ServerListener::run, &serverListener);
-    th1.join();
-    th2.join();
+    std::thread thread1(&Keyboard::run, &keyboard);
+    std::thread thread2(&ServerListener::run, &serverListener);
+    thread1.join();
+    thread2.join();
 
     return 0;
 }

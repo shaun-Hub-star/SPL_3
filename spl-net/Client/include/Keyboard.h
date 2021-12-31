@@ -17,5 +17,6 @@ public:
     virtual ~Keyboard();
 
     void run();
+    void logout();
 };
 #endif //CLIENT_KEYBOARD_H
