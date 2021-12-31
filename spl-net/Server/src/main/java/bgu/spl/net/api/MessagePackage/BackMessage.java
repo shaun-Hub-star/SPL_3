@@ -1,11 +1,11 @@
-package bgu.spl.net.api;
+package bgu.spl.net.api.MessagePackage;
 
 import java.util.LinkedList;
 import java.util.List;
 
 public class BackMessage {
 
-    enum Status{
+    public enum Status{
         ERROR, PASSED
     }
     private Status status;
@@ -25,5 +25,13 @@ public class BackMessage {
 
     public List<String> getMessages() {
         return messages;
+    }
+
+    public String getMessage(){
+        return messages.get(0);
+    }
+
+    public Status getStatus(){
+        return this.status;
     }
 }

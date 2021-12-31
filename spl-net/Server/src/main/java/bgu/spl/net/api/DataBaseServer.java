@@ -1,16 +1,23 @@
 package bgu.spl.net.api;
 
+import bgu.spl.net.api.MessagePackage.BackMessage;
+import bgu.spl.net.api.MessagePackage.Messages;
+import bgu.spl.net.api.MessagePackage.Notification;
+
 import java.util.List;
-import java.util.Map;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class DataBaseServer implements DataBaseQueries {
-    public Map<String,User>userMap;
-    public Map<String,List<messages>> userToHerMessages;
+    private ConcurrentHashMap<String,User> userMap;
+    private ConcurrentHashMap<String,List<Messages>> userToHerMessages;
     
-    private static DataBaseServer dataBaseServer = null;
+    private static DataBaseServer dataBaseServer = null;//TODO thread safe singleton
 
     private DataBaseServer(){
         //TODO
+        userMap = new ConcurrentHashMap<>();
+        userToHerMessages = new ConcurrentHashMap<>();
     }
     public static DataBaseServer getInstance(){
         if(dataBaseServer == null){
@@ -45,7 +52,7 @@ public class DataBaseServer implements DataBaseQueries {
     }
 
     @Override
-    public BackMessage PM(String me, String userTo, String msg, String dateAndTimeD) {
+    public BackMessage PM(String me, String userTo, String msg, String dateAndTime) {
         return null;
     }
 
@@ -66,6 +73,11 @@ public class DataBaseServer implements DataBaseQueries {
 
     @Override
     public BackMessage block(String me, String toBlock) {
+        return null;
+    }
+
+    @Override
+    public Queue<Notification> getNotifications(String userName) {
         return null;
     }
 }

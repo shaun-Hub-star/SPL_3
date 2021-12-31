@@ -2,6 +2,7 @@ package bgu.spl.net.srv;
 
 import bgu.spl.net.api.MessageEncoderDecoder;
 import bgu.spl.net.api.MessagingProtocol;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.IOException;
@@ -32,19 +33,12 @@ public class BlockingConnectionHandler<T> implements Runnable, ConnectionHandler
 
             while (!protocol.shouldTerminate() && connected && (read = in.read()) >= 0) {
                 T nextMessage = encdec.decodeNextByte((byte) read);
-                if (nextMessage != null) {
-                    T response = protocol.process(nextMessage);
-                    if (response != null) {
-                        out.write(encdec.encode(response));
-                        out.flush();
-                    }
-                }
+                if (nextMessage != null)
+                    protocol.process(nextMessage);
             }
 
         } catch (IOException ex) {
             ex.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
         }
 
     }
@@ -56,7 +50,14 @@ public class BlockingConnectionHandler<T> implements Runnable, ConnectionHandler
     }
 
     @Override
-    public void send(T msg) {
-
+    public void send(T response) {
+        if (response != null) {
+            try {
+                out.write(encdec.encode(response));
+                out.flush();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
