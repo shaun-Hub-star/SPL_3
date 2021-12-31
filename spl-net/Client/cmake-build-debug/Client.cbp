@@ -88,10 +88,22 @@
 		<Unit filename="/cygdrive/c/Users/Shust/Desktop/First_Degree/Courses/SPL/SPL3/SPL_3/spl-net/Client/include/EchoClient.h">
 			<Option target="Client"/>
 		</Unit>
+		<Unit filename="/cygdrive/c/Users/Shust/Desktop/First_Degree/Courses/SPL/SPL3/SPL_3/spl-net/Client/include/Keyboard.h">
+			<Option target="Client"/>
+		</Unit>
+		<Unit filename="/cygdrive/c/Users/Shust/Desktop/First_Degree/Courses/SPL/SPL3/SPL_3/spl-net/Client/include/ServerListener.h">
+			<Option target="Client"/>
+		</Unit>
 		<Unit filename="/cygdrive/c/Users/Shust/Desktop/First_Degree/Courses/SPL/SPL3/SPL_3/spl-net/Client/src/ConnectionHandler.cpp">
 			<Option target="Client"/>
 		</Unit>
 		<Unit filename="/cygdrive/c/Users/Shust/Desktop/First_Degree/Courses/SPL/SPL3/SPL_3/spl-net/Client/src/EchoClient.cpp">
+			<Option target="Client"/>
+		</Unit>
+		<Unit filename="/cygdrive/c/Users/Shust/Desktop/First_Degree/Courses/SPL/SPL3/SPL_3/spl-net/Client/src/Keyboard.cpp">
+			<Option target="Client"/>
+		</Unit>
+		<Unit filename="/cygdrive/c/Users/Shust/Desktop/First_Degree/Courses/SPL/SPL3/SPL_3/spl-net/Client/src/ServerListener.cpp">
 			<Option target="Client"/>
 		</Unit>
 		<Unit filename="/cygdrive/c/Users/Shust/Desktop/First_Degree/Courses/SPL/SPL3/SPL_3/spl-net/Client/CMakeLists.txt">
