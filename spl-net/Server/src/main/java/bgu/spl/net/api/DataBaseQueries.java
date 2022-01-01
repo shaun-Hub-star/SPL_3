@@ -7,9 +7,9 @@ import java.util.List;
 import java.util.Queue;
 
 public interface DataBaseQueries {
-    BackMessage register(String userName);
+    BackMessage register(String userName,String password,String birthDay,int id);
 
-    BackMessage login(String userName);
+    BackMessage login(String userName,String password);
 
     BackMessage logout(String userName);
 

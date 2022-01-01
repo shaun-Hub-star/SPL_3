@@ -1,4 +1,4 @@
-package bgu.spl.net.impl;
+package bgu.spl.net.impl.BGSRunner;
 
 import bgu.spl.net.api.ClientProtocol;
 import bgu.spl.net.api.DataBaseServer;

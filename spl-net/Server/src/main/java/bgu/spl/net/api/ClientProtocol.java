@@ -145,7 +145,8 @@ public class ClientProtocol implements BidiMessagingProtocol<String> {
     private void login(String[] separated) {//TODO make the backMessage an ack message
         BackMessage backMessage;
         userName = getUserName(separated);
-        backMessage = dataBaseServer.login(userName);
+        String password = getUserPassword(separated);
+        backMessage = dataBaseServer.login(userName,password);
         if (backMessage.getStatus() == BackMessage.Status.PASSED) {
             if (!connections.send(connectionId, userName)) {
                 System.out.println("error while sending login ack");
@@ -166,10 +167,21 @@ public class ClientProtocol implements BidiMessagingProtocol<String> {
     private void register(String[] separated) {//TODO make the backMessage an ack message
         BackMessage backMessage;
         userName = getUserName(separated);
-        backMessage = dataBaseServer.register(userName);
+        String password = getUserPassword(separated);
+        String date = getUserBirthday(separated);
+        
+        backMessage = dataBaseServer.register(userName,password,date,connectionId);
         String name = "register";
         sendMessage(backMessage, name);
 
+    }
+
+    private String getUserBirthday(String[] separated) {
+        return separated[2];
+    }
+
+    private String getUserPassword(String[] separated) {
+        return separated[3];
     }
 
 

@@ -11,35 +11,47 @@ import java.util.concurrent.ConcurrentHashMap;
 public class DataBaseServer implements DataBaseQueries {
     private ConcurrentHashMap<String,User> userMap;
     private ConcurrentHashMap<String,List<Messages>> userToHerMessages;
-    
-    private static DataBaseServer dataBaseServer = null;//TODO thread safe singleton
-
+    private final Object o1=new Object();
+    private Object o2=new Object();
 
     public DataBaseServer(){
         this.userToHerMessages = new ConcurrentHashMap<>();
         this.userMap = new ConcurrentHashMap<>();
     }
 
-   /* private DataBaseServer(){
-        //TODO
-        userMap = new ConcurrentHashMap<>();
-        userToHerMessages = new ConcurrentHashMap<>();
-    }
-    public static DataBaseServer getInstance(){
-        if(dataBaseServer == null){
-            dataBaseServer = new DataBaseServer();
+
+    @Override
+    public BackMessage register(String userName,String password,String birthDay,int id) {
+        BackMessage backMessage;
+        synchronized (o1) {
+            if (!userMap.containsKey(userName)) {
+                User user = new User(userName, password, birthDay, id);
+                userMap.put(userName, user);
+                backMessage = new BackMessage("ACK 1", BackMessage.Status.PASSED);
+            } else {
+                backMessage = new BackMessage("ERROR 1", BackMessage.Status.ERROR);
+            }
+            return backMessage;
         }
-        return dataBaseServer;
-    }*/
-
-    @Override
-    public BackMessage register(String userName) {
-        return null;
     }
 
     @Override
-    public BackMessage login(String userName) {
-        return null;
+    public BackMessage login(String userName,String password) {
+        BackMessage backMessage;
+        synchronized (o1) {
+            if (userMap.containsKey(userName)) {
+                User currentUser = userMap.get(userName);
+                if (!currentUser.isLogin()) {
+                    backMessage = new BackMessage("ACK 2", BackMessage.Status.PASSED);
+                    currentUser.setLogin(true);
+                } else
+                    backMessage = new BackMessage("ERROR 2", BackMessage.Status.ERROR);
+
+            } else {
+                backMessage = new BackMessage("ERROR 2", BackMessage.Status.ERROR);
+            }
+            return backMessage;
+        }
     }
 
     @Override

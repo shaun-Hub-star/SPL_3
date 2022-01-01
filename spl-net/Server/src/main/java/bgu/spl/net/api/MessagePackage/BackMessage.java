@@ -16,12 +16,18 @@ public class BackMessage {
         this.messages = new LinkedList<>();
     }
 
+    public BackMessage(String message,Status status){
+        setMessage(message);
+        this.status = status;
+    }
 
-    public void setMessage(List<String> messages,Status status) {
+    public void setMessages(List<String> messages,Status status) {
         this.messages = messages;
         this.status= status;
     }
-
+    public void setMessage(String msg){
+        this.messages.add(msg);
+    }
 
     public List<String> getMessages() {
         return messages;
