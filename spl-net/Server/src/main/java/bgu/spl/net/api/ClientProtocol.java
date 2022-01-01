@@ -23,7 +23,7 @@ public class ClientProtocol implements BidiMessagingProtocol<String> {
     @Override
     public void process(String msg) {
         if (msg != null) {
-            String[] separatedBySpace = msg.split(" ");
+            String[] separatedBySpace = msg.split("\0");
             switch (getOpcode(msg)) {
                 case 1://register
                     register(separatedBySpace);

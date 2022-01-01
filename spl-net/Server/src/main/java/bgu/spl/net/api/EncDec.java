@@ -25,11 +25,12 @@ public class EncDec<T> implements MessageEncoderDecoder<T> {
             opcodeSize++;
         }
         if (opcodeSize > 2 && numberOfWords == 1 && (opcode == 4 || opcode == 9)) {
-            pushByte(SPACE_BYTE);
+            byte b = 0;
+            pushByte(b);
             numberOfWords += 1;
         }
         if (nextByte == '\0') {
-            pushByte(SPACE_BYTE);
+           // pushByte(SPACE_BYTE);
             numberOfWords += 1;
         }
         if (opcode == 2 && numberOfWords == 3 && nextByte != '\0') captcha = true;
