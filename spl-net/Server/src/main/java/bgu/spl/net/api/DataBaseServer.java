@@ -14,7 +14,13 @@ public class DataBaseServer implements DataBaseQueries {
     
     private static DataBaseServer dataBaseServer = null;//TODO thread safe singleton
 
-    private DataBaseServer(){
+
+    public DataBaseServer(){
+        this.userToHerMessages = new ConcurrentHashMap<>();
+        this.userMap = new ConcurrentHashMap<>();
+    }
+
+   /* private DataBaseServer(){
         //TODO
         userMap = new ConcurrentHashMap<>();
         userToHerMessages = new ConcurrentHashMap<>();
@@ -24,7 +30,7 @@ public class DataBaseServer implements DataBaseQueries {
             dataBaseServer = new DataBaseServer();
         }
         return dataBaseServer;
-    }
+    }*/
 
     @Override
     public BackMessage register(String userName) {
