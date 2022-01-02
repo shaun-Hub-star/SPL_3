@@ -6,20 +6,78 @@ import java.lang.Integer;
 
 public class EncDec<T> implements MessageEncoderDecoder<T>{
     private byte[] bytes = new byte[1 << 10]; //start with 1k
-    private int len = 0;
-    int counter;
+    private int len = 0;//current word size. we use in the pop string method
+    private int counter = 0;
+    private int opcodeSize = 0;//indicates the number of bytes there are in the opcode array of bytes
+    private short opcode = -1;
+    private int numberOfWords = 0;
+    private final byte SPACE_BYTE = 32;
+    private boolean captcha = false;
 
     @Override
     public T decodeNextByte(byte nextByte) {
         //notice that the top 128 ascii characters have the same representation as their utf-8 counterparts
         //this allow us to do the following comparison
-        if (nextByte == '\n') {
-            return popString();
+        if (opcodeSize == 2) {
+            pushByte(nextByte);
+            opcode = bytesToShort(new byte[]{bytes[0], bytes[1]});
+            numberOfWords += 1;
+        } else {
+            pushByte(nextByte);
+            opcodeSize++;
         }
+        if (opcodeSize > 2 && numberOfWords == 1 && (opcode == 4 || opcode == 9)) {
+            byte b = 0;
+            pushByte(b);
+            numberOfWords += 1;
+        }
+        if (nextByte == '\0') {
+            //pushByte(SPACE_BYTE);
+            numberOfWords += 1;
+        }
+        if (opcode == 2 && numberOfWords == 3 && nextByte != '\0') captcha = true;
+        switch (opcode) {
+            case (1)://register
+                if (numberOfWords == 4) {
+                    return (T) popString();
+                }
+                break;
+            case (2)://login
+                if (numberOfWords == 3 && captcha) {
+                    return (T) popString();
+                }
+                break;
+            case (3 | 7)://logout logstat
+                if (numberOfWords == 1)
+                    return (T) popString();
+                break;
+            case (4)://follow
+                if (numberOfWords == 3)//opcode follow username \0
+                    return (T) popString();
+                break;
+            case (5 | 8)://post | stat
+                if (numberOfWords == 2)
+                    return (T) popString();
+                break;
+            case (6 | 9)://pm
+                if (numberOfWords == 4)
+                    return (T) popString();
+                break;
 
-        pushByte(nextByte);
+
+        }
         return null; //not a line yet
     }
+
+    public short bytesToShort(byte[] byteArr) {
+        short result = (short) ((byteArr[0] & 0xff) << 8);
+
+        result += (short) (byteArr[1] & 0xff);
+
+        return result;
+
+    }
+
 
     @Override
     public byte[] encode(T message) throws Exception {
@@ -181,13 +239,14 @@ public class EncDec<T> implements MessageEncoderDecoder<T>{
         bytes[len++] = nextByte;
     }
 
-    private T popString() {
+    private String popString() {
         //notice that we explicitly requesting that the string will be decoded from UTF-8
         //this is not actually required as it is the default encoding in java.
         String result = new String(bytes, 0, len, StandardCharsets.UTF_8);
         len = 0;
-        //return result;
-        return null;
+        captcha = false;
+        numberOfWords = 0;
+        return result;
     }
 
     public byte[] shortToBytes(short num)
