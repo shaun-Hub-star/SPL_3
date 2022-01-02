@@ -2,6 +2,7 @@ package bgu.spl.net.api;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
+import java.lang.Integer;
 
 public class EncDec<T> implements MessageEncoderDecoder<T>{
     private byte[] bytes = new byte[1 << 10]; //start with 1k
@@ -23,14 +24,15 @@ public class EncDec<T> implements MessageEncoderDecoder<T>{
     @Override
     public byte[] encode(T message) throws Exception {
         String messageS=(String)message;
-        short opcode = Short.parseShort(messageS.substring(0, messageS.indexOf(" ")));
+        String opcode =(messageS.substring(0, messageS.indexOf(" ")));
         byte[] output;
         int length=1;
         int counter;
 
-            if(opcode==9) {
+            if(opcode=="notification") {
+                length=opcode.length();
 
-                char notificationType = messageS.substring(messageS.indexOf(" ") + length).charAt(0);
+                char notificationType = messageS.substring(length+1, messageS.indexOf(" ")).charAt(0);
                 length++;//the notificationType is 0/1 - one step foreword
                 String postingUser = messageS.substring(messageS.indexOf(" ") + length);
                 byte[] postingUserBytes = postingUser.getBytes();
@@ -48,25 +50,27 @@ public class EncDec<T> implements MessageEncoderDecoder<T>{
             }
 
 
-            else if(opcode==10)
+            else if(opcode=="ack")
             {
-                char MessageOpcode=messageS.substring(messageS.indexOf(" ")+1).charAt(1);//TODO chck if charat 1/0
+                length=opcode.length();
+                String MessageOpcode=messageS.substring(length+1,messageS.indexOf(" "));//TODO check if charat 1/0
                 String outputMessage="";
-                if(MessageOpcode=='1'|MessageOpcode=='2'|MessageOpcode=='3'|MessageOpcode=='5'|MessageOpcode=='6'){
-                if(MessageOpcode=='1')
+                if(MessageOpcode=="1"|MessageOpcode=="2"|MessageOpcode=="3"|MessageOpcode=="5"|MessageOpcode=="6"){
+                if(MessageOpcode=="1")
                     outputMessage="successful register";
-                else if(MessageOpcode=='2')
+                else if(MessageOpcode=="2")
                     outputMessage="successful Login";
-                else if(MessageOpcode=='3')
+                else if(MessageOpcode=="3")
                     outputMessage="LOGOUT";
-                else if(MessageOpcode=='5')
+                else if(MessageOpcode=="5")
                     outputMessage="successful POST Messages";
-                else if(MessageOpcode=='6')
+                else if(MessageOpcode=="6")
                     outputMessage="successful PM Messages";
+
                 output=toByetsOutput(MessageOpcode,outputMessage);
                 return output;}
 
-                else if(MessageOpcode=='4'){
+                else if(MessageOpcode=="4"){
                     String[] messageOutput=new String[1];
                     messageOutput[0]=messageS.substring(4, messageS.indexOf(" "));
                     byte[] mesBackByte = messageOutput[0].getBytes();
@@ -78,9 +82,9 @@ public class EncDec<T> implements MessageEncoderDecoder<T>{
                     output[output.length-1]=Byte.parseByte("0");
                     return output;
                 }
-                else if(MessageOpcode=='7'|MessageOpcode=='8'){
+                else if(MessageOpcode=="7"|MessageOpcode=="8"){
                     String [] number=new String[4];
-                    if(MessageOpcode=='7'){
+                    if(MessageOpcode=="7"){
                         number= new String[]{"1", "0", "0", "7"};}
                     else   number = new String[]{"1", "0", "0", "8"};
                     output=new byte[12];
@@ -98,7 +102,8 @@ public class EncDec<T> implements MessageEncoderDecoder<T>{
                     return  output;
                 }
             }
-            else if(opcode==11){
+            else if(opcode=="error"){
+                length=opcode.length();
                 String mesBack=messageS.substring(messageS.indexOf(" ")+1);
                 byte[] mesBackByte = mesBack.getBytes();
                 output=new byte[4+mesBackByte.length];
@@ -113,7 +118,7 @@ public class EncDec<T> implements MessageEncoderDecoder<T>{
                 return output;
 
             }
-
+            /*
             else if(opcode==12){
                 String[] messageOutput=new String[1];
                 messageOutput[0]=messageS.substring(messageS.indexOf(" ")+1);
@@ -128,21 +133,24 @@ public class EncDec<T> implements MessageEncoderDecoder<T>{
                 }
                 output[counter]=Byte.parseByte("0");
                 return output;
-            }
+            }*/
             throw new Exception("Illegal");
     }
 
-    private byte[] toByetsOutput(char MessageOpcode,String messageOutput) {
+    private byte[] toByetsOutput(String MessageOpcode,String messageOutput) {
         byte[] outputMessageByte = messageOutput.getBytes();
-        byte[]output = new byte[4 + outputMessageByte.length];
-        output[0] = 1;
-        output[1] = 0;
-        output[2] = 0;
-        output[3] = Byte.parseByte(Character.toString(MessageOpcode));
-        this.counter = 4;
-        for (int i = 0; i < outputMessageByte.length; i++, counter++) {
-            output[counter] = outputMessageByte[i];
-        }
+        byte[] first =shortToBytes((short) 10);
+        int num = (Integer.parseInt(MessageOpcode));
+        byte[] second =shortToBytes((short) num);
+        byte[]output = new byte[first.length+second.length + outputMessageByte.length];
+        int conter=0;
+        for(int i= 0;i< first.length;i++,conter++)
+            output[conter]=first[i];
+        for(int i= 0;i< second.length;i++,conter++)
+            output[conter]=second[i];
+        for(int i= 0;i< outputMessageByte.length;i++,conter++)
+            output[conter]=outputMessageByte[i];
+
         return output;
     }
 
@@ -181,4 +189,13 @@ public class EncDec<T> implements MessageEncoderDecoder<T>{
         //return result;
         return null;
     }
+
+    public byte[] shortToBytes(short num)
+    {
+        byte[] bytesArr = new byte[2];
+        bytesArr[0] = (byte)((num >> 8) & 0xFF);
+        bytesArr[1] = (byte)(num & 0xFF);
+        return bytesArr;
+    }
+
 }
