@@ -4,6 +4,7 @@ import bgu.spl.net.api.MessagePackage.BackMessage;
 import bgu.spl.net.api.MessagePackage.Messages;
 import bgu.spl.net.api.MessagePackage.Notification;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentHashMap;
@@ -36,7 +37,7 @@ public class DataBaseServer implements DataBaseQueries {
     }
 
     @Override
-    public BackMessage login(String userName,String password) {
+    public BackMessage login(String userName,String password) {//ERROR 2
         BackMessage backMessage;
         synchronized (o1) {
             if (userMap.containsKey(userName)) {
@@ -59,26 +60,35 @@ public class DataBaseServer implements DataBaseQueries {
         return null;
     }
 
+    //CLIENT#1< FOLLOW 1 Bird-person
+    //CLIENT#1> ACK 4 Bird-person
     @Override
-    public BackMessage follow(String me, String to) {
+    public BackMessage follow(String me, String to) {//backMessage(1) holds the actual message
         return null;
     }
 
     @Override
     public BackMessage post(String msg, String userName, List<String> tags) {
+        //NOTIFICATION Public Rick Gubba @Bird-person Gubba should be backMessage[1]
+        List<User> users = getUsers(tags);
         return null;
     }
-
-    @Override
+    private List<User> getUsers(List<String> userNames){
+        List<User> users = new LinkedList<>();
+        for(String username : userNames)
+            users.add(userMap.get(username));
+        return users;
+    }
+    @Override//NOTIFICATION PM Morty Bird-personaaaa [1]
     public BackMessage PM(String me, String userTo, String msg, String dateAndTime) {
         return null;
     }
-
+    //CLIENT#1> ACK 8 47 1 2 0 NOT EXACTLY
     @Override
     public BackMessage logStat() {
         return null;
     }
-
+    //CLIENT#1> ACK 8 47 1 2 0 NOT EXACTLY
     @Override
     public BackMessage stat(List<String> userNames) {
         return null;
@@ -95,7 +105,13 @@ public class DataBaseServer implements DataBaseQueries {
     }
 
     @Override
-    public Queue<Notification> getNotifications(String userName) {
+    public Queue<Notification> getNotifications(String userName) {//TODO delete the notifications which i got or to save all the no' in Q and take from there
         return null;
+    }
+
+
+    @Override
+    public int getId(String userName) {//todo
+        return userMap.get(userName).getId();
     }
 }

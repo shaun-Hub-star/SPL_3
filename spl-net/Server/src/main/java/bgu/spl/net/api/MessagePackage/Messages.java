@@ -19,7 +19,7 @@ public class Messages {
 
     public LocalDateTime getDate(String massageDate) throws ParseException {
         //change the string of birthday to Local Date
-        SimpleDateFormat sdf = new SimpleDateFormat("dd-mm-yyyy-HH:MM");
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy-HH:mm");
         Date D = sdf.parse(massageDate);
         Calendar c = Calendar.getInstance();
         c.setTime(D);
@@ -42,8 +42,6 @@ public class Messages {
 
     public boolean checkIfNeedToGetMessage(String LastTimeGetMessage) throws ParseException {
         LocalDateTime l2 = getDate(LastTimeGetMessage);
-        if (l2.compareTo(this.date) > 0) {
-            return true;
-        } else return false;
+        return l2.compareTo(this.date) > 0;
     }
 }

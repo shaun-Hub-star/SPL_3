@@ -63,7 +63,7 @@ public class ClientProtocol implements BidiMessagingProtocol<String> {
         if (backMessage.getStatus() == BackMessage.Status.PASSED) {
             List<String> ackStatMessages = backMessage.getMessages();
             for (String message : ackStatMessages) {
-                if (!connections.send(connectionId, message)) {
+                if (!connections.send(connectionId, backMessage.getMessage())) {
                     System.out.println("failed to send ack message " + message);
                 }
             }
@@ -93,17 +93,34 @@ public class ClientProtocol implements BidiMessagingProtocol<String> {
         String time = getDateAndTime(separated);
         backMessage = dataBaseServer.PM(userName, to, messageContent, time);
         String name = "pm";
-        sendMessage(backMessage, name);
+        sendMessage(backMessage, name);//ack
+        int to_id = dataBaseServer.getId(to);
+        List<Integer> lst = new LinkedList<>();
+        lst.add(to_id);
+        sendMessage(backMessage,name,lst);//actual message
     }
 
     private void sendMessage(BackMessage backMessage, String name) {
-        if (backMessage.getStatus() == BackMessage.Status.PASSED) {//logical error
+        if (backMessage.getStatus() == BackMessage.Status.PASSED) {//logical
             if (!connections.send(connectionId, backMessage.getMessage())) {//connection error
-                System.out.println("failed to send ack " + name + " message");
+                System.out.println("failed to send ack " + name + " message");//debugging
             }
         } else {
             if (!connections.send(connectionId, backMessage.getMessage())) {//ERROR 1
-                System.out.println("failed to send error " + name + " message");
+                System.out.println("failed to send error " + name + " message");//connection problem
+            }
+        }
+    }
+    private void sendMessage(BackMessage backMessage, String name,List<Integer> tags) {
+        for(Integer tag_id : tags) {
+            if (backMessage.getStatus() == BackMessage.Status.PASSED) {//logical
+                if (!connections.send(tag_id, backMessage.getMessages().get(1))) {//connection error
+                    System.out.println("failed to send " + name + " message");//debugging
+                }
+            } else {
+                if (!connections.send(tag_id, backMessage.getMessages().get(1))) {//ERROR 1
+                    System.out.println("failed to send error " + name + " message");//connection problem
+                }
             }
         }
     }
@@ -114,7 +131,10 @@ public class ClientProtocol implements BidiMessagingProtocol<String> {
         List<String> tags = getTags(separated);
         backMessage = dataBaseServer.post(content, this.userName, tags);
         String name = "post";
+        List<Integer> tag_ids = dataBaseServer.getIds(tags);
         sendMessage(backMessage, name);
+        sendMessage(backMessage,name,tag_ids);
+
     }
 
     private void follow(String[] separated) {
@@ -123,6 +143,10 @@ public class ClientProtocol implements BidiMessagingProtocol<String> {
         backMessage = dataBaseServer.follow(userName, follow);
         String name = "follow";
         sendMessage(backMessage, name);
+        int id = dataBaseServer.getId(follow);
+        List<Integer> lst = new LinkedList<>();
+        lst.add(id);
+        sendMessage(backMessage,name,lst);
     }
 
     private void logout() {//TODO make the backMessage an ack message
@@ -140,18 +164,18 @@ public class ClientProtocol implements BidiMessagingProtocol<String> {
         }
     }
 
-    private void login(String[] separated) {//TODO make the backMessage an ack message
+    private void login(String[] separated) {
         BackMessage backMessage;
         userName = getUserName(separated);
         String password = getUserPassword(separated);
         backMessage = dataBaseServer.login(userName,password);
-        if (backMessage.getStatus() == BackMessage.Status.PASSED) {
-            if (!connections.send(connectionId, userName)) {
+        if (backMessage.getStatus() == BackMessage.Status.PASSED) {// i need to send ACK 2 notification1
+            if (!connections.send(connectionId, backMessage.getMessage())) {//send ACK 2
                 System.out.println("error while sending login ack");
             } else {
-                Queue<Notification> notifications = dataBaseServer.getNotifications(userName);
+                Queue<Notification> notifications = dataBaseServer.getNotifications(userName);//Notification....
                 while (!notifications.isEmpty()) {
-                    if (!connections.send(connectionId, notifications.poll().getMessages()))
+                    if (!connections.send(connectionId, notifications.poll().getMessages()))//NOTIFICATION
                         System.out.println("error while sending the notification");
                 }
             }
@@ -162,9 +186,9 @@ public class ClientProtocol implements BidiMessagingProtocol<String> {
         }
     }
 
-    private void register(String[] separated) {//TODO make the backMessage an ack message
+    private void register(String[] separated) {
         BackMessage backMessage;
-        userName = getUserName(separated);
+        this.userName = getUserName(separated);
         String password = getUserPassword(separated);
         String date = getUserBirthday(separated);
         

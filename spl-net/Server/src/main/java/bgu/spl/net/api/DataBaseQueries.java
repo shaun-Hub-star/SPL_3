@@ -3,6 +3,7 @@ package bgu.spl.net.api;
 import bgu.spl.net.api.MessagePackage.BackMessage;
 import bgu.spl.net.api.MessagePackage.Notification;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
@@ -30,4 +31,13 @@ public interface DataBaseQueries {
     BackMessage block(String me, String toBlock);
 
     Queue<Notification> getNotifications(String userName);
+
+    default List<Integer> getIds(List<String> tags){
+        List<Integer> ids = new LinkedList<>();
+        for (String tag : tags){
+            ids.add(getId(tag));
+        }
+        return ids;
+    }
+    int getId(String userName);
 }

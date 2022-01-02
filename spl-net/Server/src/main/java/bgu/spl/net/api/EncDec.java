@@ -87,7 +87,7 @@ public class EncDec<T> implements MessageEncoderDecoder<T>{
         int counter;
 
         switch (opcode) {
-            case "NOTIFICATION": {
+            case "NOTIFICATION": {//TODO: NOTIFICATION- Public- Rick- Gubba @Bird-person Gubba
                 length = opcode.length();
 
                 char notificationType = messageS.substring(length + 1, messageS.indexOf(" ")).charAt(0);
