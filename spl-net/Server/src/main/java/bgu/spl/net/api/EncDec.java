@@ -11,7 +11,6 @@ public class EncDec<T> implements MessageEncoderDecoder<T>{
     private int opcodeSize = 0;//indicates the number of bytes there are in the opcode array of bytes
     private short opcode = -1;
     private int numberOfWords = 0;
-    private final byte SPACE_BYTE = 32;
     private boolean captcha = false;
 
     @Override
