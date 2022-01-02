@@ -1,32 +1,57 @@
 package bgu.spl.net.api;
 
+import bgu.spl.net.api.MessagePackage.BackMessage;
+import bgu.spl.net.api.MessagePackage.Messages;
+import bgu.spl.net.api.MessagePackage.Notification;
+
 import java.util.List;
-import java.util.Map;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class DataBaseServer implements DataBaseQueries {
-    public Map<String,User>userMap;
-    public Map<String,List<messages>> userToHerMessages;
-    
-    private static DataBaseServer dataBaseServer = null;
+    private ConcurrentHashMap<String,User> userMap;
+    private ConcurrentHashMap<String,List<Messages>> userToHerMessages;
+    private final Object o1=new Object();
+    private Object o2=new Object();
 
-    private DataBaseServer(){
-        //TODO
+    public DataBaseServer(){
+        this.userToHerMessages = new ConcurrentHashMap<>();
+        this.userMap = new ConcurrentHashMap<>();
     }
-    public static DataBaseServer getInstance(){
-        if(dataBaseServer == null){
-            dataBaseServer = new DataBaseServer();
+
+
+    @Override
+    public BackMessage register(String userName,String password,String birthDay,int id) {
+        BackMessage backMessage;
+        synchronized (o1) {
+            if (!userMap.containsKey(userName)) {
+                User user = new User(userName, password, birthDay, id);
+                userMap.put(userName, user);
+                backMessage = new BackMessage("ACK 1", BackMessage.Status.PASSED);
+            } else {
+                backMessage = new BackMessage("ERROR 1", BackMessage.Status.ERROR);
+            }
+            return backMessage;
         }
-        return dataBaseServer;
     }
 
     @Override
-    public BackMessage register(String userName) {
-        return null;
-    }
+    public BackMessage login(String userName,String password) {
+        BackMessage backMessage;
+        synchronized (o1) {
+            if (userMap.containsKey(userName)) {
+                User currentUser = userMap.get(userName);
+                if (!currentUser.isLogin()) {
+                    backMessage = new BackMessage("ACK 2", BackMessage.Status.PASSED);
+                    currentUser.setLogin(true);
+                } else
+                    backMessage = new BackMessage("ERROR 2", BackMessage.Status.ERROR);
 
-    @Override
-    public BackMessage login(String userName) {
-        return null;
+            } else {
+                backMessage = new BackMessage("ERROR 2", BackMessage.Status.ERROR);
+            }
+            return backMessage;
+        }
     }
 
     @Override
@@ -45,7 +70,7 @@ public class DataBaseServer implements DataBaseQueries {
     }
 
     @Override
-    public BackMessage PM(String me, String userTo, String msg, String dateAndTimeD) {
+    public BackMessage PM(String me, String userTo, String msg, String dateAndTime) {
         return null;
     }
 
@@ -66,6 +91,11 @@ public class DataBaseServer implements DataBaseQueries {
 
     @Override
     public BackMessage block(String me, String toBlock) {
+        return null;
+    }
+
+    @Override
+    public Queue<Notification> getNotifications(String userName) {
         return null;
     }
 }

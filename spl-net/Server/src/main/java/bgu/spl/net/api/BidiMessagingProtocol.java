@@ -2,7 +2,7 @@ package bgu.spl.net.api;
 
 public interface BidiMessagingProtocol<T>{
 
-    public T process(T msg);
+    public void process(T msg);
 
 
     public boolean shouldTerminate();

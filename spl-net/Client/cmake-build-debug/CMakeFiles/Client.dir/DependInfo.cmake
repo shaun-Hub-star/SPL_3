@@ -6,6 +6,8 @@ set(CMAKE_DEPENDS_LANGUAGES
 set(CMAKE_DEPENDS_CHECK_CXX
   "/cygdrive/c/Users/Shust/Desktop/First_Degree/Courses/SPL/SPL3/SPL_3/spl-net/Client/src/ConnectionHandler.cpp" "/cygdrive/c/Users/Shust/Desktop/First_Degree/Courses/SPL/SPL3/SPL_3/spl-net/Client/cmake-build-debug/CMakeFiles/Client.dir/src/ConnectionHandler.cpp.o"
   "/cygdrive/c/Users/Shust/Desktop/First_Degree/Courses/SPL/SPL3/SPL_3/spl-net/Client/src/EchoClient.cpp" "/cygdrive/c/Users/Shust/Desktop/First_Degree/Courses/SPL/SPL3/SPL_3/spl-net/Client/cmake-build-debug/CMakeFiles/Client.dir/src/EchoClient.cpp.o"
+  "/cygdrive/c/Users/Shust/Desktop/First_Degree/Courses/SPL/SPL3/SPL_3/spl-net/Client/src/Keyboard.cpp" "/cygdrive/c/Users/Shust/Desktop/First_Degree/Courses/SPL/SPL3/SPL_3/spl-net/Client/cmake-build-debug/CMakeFiles/Client.dir/src/Keyboard.cpp.o"
+  "/cygdrive/c/Users/Shust/Desktop/First_Degree/Courses/SPL/SPL3/SPL_3/spl-net/Client/src/ServerListener.cpp" "/cygdrive/c/Users/Shust/Desktop/First_Degree/Courses/SPL/SPL3/SPL_3/spl-net/Client/cmake-build-debug/CMakeFiles/Client.dir/src/ServerListener.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 

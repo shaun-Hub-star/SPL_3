@@ -196,6 +196,60 @@ src/EchoClient.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Client.dir/build.make CMakeFiles/Client.dir/src/EchoClient.cpp.s
 .PHONY : src/EchoClient.cpp.s
 
+src/Keyboard.o: src/Keyboard.cpp.o
+
+.PHONY : src/Keyboard.o
+
+# target to build an object file
+src/Keyboard.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Client.dir/build.make CMakeFiles/Client.dir/src/Keyboard.cpp.o
+.PHONY : src/Keyboard.cpp.o
+
+src/Keyboard.i: src/Keyboard.cpp.i
+
+.PHONY : src/Keyboard.i
+
+# target to preprocess a source file
+src/Keyboard.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Client.dir/build.make CMakeFiles/Client.dir/src/Keyboard.cpp.i
+.PHONY : src/Keyboard.cpp.i
+
+src/Keyboard.s: src/Keyboard.cpp.s
+
+.PHONY : src/Keyboard.s
+
+# target to generate assembly for a file
+src/Keyboard.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Client.dir/build.make CMakeFiles/Client.dir/src/Keyboard.cpp.s
+.PHONY : src/Keyboard.cpp.s
+
+src/ServerListener.o: src/ServerListener.cpp.o
+
+.PHONY : src/ServerListener.o
+
+# target to build an object file
+src/ServerListener.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Client.dir/build.make CMakeFiles/Client.dir/src/ServerListener.cpp.o
+.PHONY : src/ServerListener.cpp.o
+
+src/ServerListener.i: src/ServerListener.cpp.i
+
+.PHONY : src/ServerListener.i
+
+# target to preprocess a source file
+src/ServerListener.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Client.dir/build.make CMakeFiles/Client.dir/src/ServerListener.cpp.i
+.PHONY : src/ServerListener.cpp.i
+
+src/ServerListener.s: src/ServerListener.cpp.s
+
+.PHONY : src/ServerListener.s
+
+# target to generate assembly for a file
+src/ServerListener.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Client.dir/build.make CMakeFiles/Client.dir/src/ServerListener.cpp.s
+.PHONY : src/ServerListener.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -211,6 +265,12 @@ help:
 	@echo "... src/EchoClient.o"
 	@echo "... src/EchoClient.i"
 	@echo "... src/EchoClient.s"
+	@echo "... src/Keyboard.o"
+	@echo "... src/Keyboard.i"
+	@echo "... src/Keyboard.s"
+	@echo "... src/ServerListener.o"
+	@echo "... src/ServerListener.i"
+	@echo "... src/ServerListener.s"
 .PHONY : help
 
 
