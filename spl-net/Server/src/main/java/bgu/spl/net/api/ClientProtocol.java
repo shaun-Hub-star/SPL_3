@@ -31,11 +31,9 @@ public class ClientProtocol implements BidiMessagingProtocol<String> {
                 case 2://login
                     login(separatedBySpace);
                     break;
-
                 case 3://logout
                     logout();
                     break;
-
                 case 4:
                     follow(separatedBySpace);
                     break;
@@ -99,12 +97,12 @@ public class ClientProtocol implements BidiMessagingProtocol<String> {
     }
 
     private void sendMessage(BackMessage backMessage, String name) {
-        if (backMessage.getStatus() == BackMessage.Status.PASSED) {
-            if (!connections.send(connectionId, backMessage.getMessage())) {
+        if (backMessage.getStatus() == BackMessage.Status.PASSED) {//logical error
+            if (!connections.send(connectionId, backMessage.getMessage())) {//connection error
                 System.out.println("failed to send ack " + name + " message");
             }
         } else {
-            if (!connections.send(connectionId, backMessage.getMessage())) {
+            if (!connections.send(connectionId, backMessage.getMessage())) {//ERROR 1
                 System.out.println("failed to send error " + name + " message");
             }
         }

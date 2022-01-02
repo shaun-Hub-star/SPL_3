@@ -26,7 +26,7 @@ public class EncDec<T> implements MessageEncoderDecoder<T> {
         }
         if (opcodeSize > 2 && numberOfWords == 1 && (opcode == 4 || opcode == 9)) {
             byte b = 0;
-            pushByte(b);
+            pushByte(b);// push \0
             numberOfWords += 1;
         }
         if (nextByte == '\0') {
@@ -94,7 +94,7 @@ public class EncDec<T> implements MessageEncoderDecoder<T> {
     }
 
     @Override
-    public byte[] encode(T message) throws Exception {
+    public byte[] encode(T message) throws Exception {//ACK 1 optional
         String messageS = (String) message;
         short opcode = Short.parseShort(messageS.substring(0, messageS.indexOf(" ")));
         byte[] output;
@@ -118,8 +118,8 @@ public class EncDec<T> implements MessageEncoderDecoder<T> {
             bytes(messageOutput, output);
             output[output.length - 1] = 0;
             return output;
-        } else if (opcode == 10) {
-            char MessageOpcode = messageS.substring(messageS.indexOf(" ") + 1).charAt(1);//TODO chck if charat 1/0
+        } else if (opcode == 10) {//ACK 1-> 10 1
+            char MessageOpcode = messageS.substring(messageS.indexOf(" ") + 1).charAt(1);//TODO cheack if charat 1/0
             String outputMessage = "";
             if (MessageOpcode == '1' | MessageOpcode == '2' | MessageOpcode == '3' | MessageOpcode == '5' | MessageOpcode == '6') {
                 if (MessageOpcode == '1')
@@ -130,7 +130,6 @@ public class EncDec<T> implements MessageEncoderDecoder<T> {
                     outputMessage = "LOGOUT";
                 else if (MessageOpcode == '5')
                     outputMessage = "successful POST Messages";
-
                 else outputMessage = "successful PM Messages";
                 output = toBytesOutput(MessageOpcode, outputMessage);
                 return output;
