@@ -29,7 +29,7 @@ public class EncDec<T> implements MessageEncoderDecoder<T>{
         int length=1;
         int counter;
 
-            if(opcode=="notification") {
+            if(opcode=="NOTIFICATION") {
                 length=opcode.length();
 
                 char notificationType = messageS.substring(length+1, messageS.indexOf(" ")).charAt(0);
@@ -50,7 +50,7 @@ public class EncDec<T> implements MessageEncoderDecoder<T>{
             }
 
 
-            else if(opcode=="ack")
+            else if(opcode=="ACK")
             {
                 length=opcode.length();
                 String MessageOpcode=messageS.substring(length+1,messageS.indexOf(" "));//TODO check if charat 1/0
@@ -102,7 +102,7 @@ public class EncDec<T> implements MessageEncoderDecoder<T>{
                     return  output;
                 }
             }
-            else if(opcode=="error"){
+            else if(opcode=="ERROR"){
                 length=opcode.length();
                 String mesBack=messageS.substring(messageS.indexOf(" ")+1);
                 byte[] mesBackByte = mesBack.getBytes();
