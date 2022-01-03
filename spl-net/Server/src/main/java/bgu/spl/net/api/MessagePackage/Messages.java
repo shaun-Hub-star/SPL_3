@@ -2,19 +2,26 @@ package bgu.spl.net.api.MessagePackage;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.Period;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 
 public class Messages {
     private String message;
     private LocalDateTime date;
+    private List<String> filter;
 
     public Messages(String message, String date) throws ParseException {
-        this.message = message;
+        this.message = fixFilter(message);
         this.date = getDate(date);
+        this.filter = new LinkedList<>();
+    }
+    public Messages(String message, String date,List<String> filter) throws ParseException {
+        this.message = fixFilter(message);
+        this.date = getDate(date);
+        this.filter = new LinkedList<>(filter);
     }
 
     public LocalDateTime getDate(String massageDate) throws ParseException {
@@ -34,6 +41,20 @@ public class Messages {
 
     public String getMessage() {
         return message;
+    }
+
+    public String fixFilter(String msg){//TODO - change the word
+        StringBuilder output = new StringBuilder();
+        String[] splitBySpace = msg.split(" ");
+        for(String word : splitBySpace){
+            if(filter.contains(word)){
+                output.append("<filtered> ");
+            }else{
+                output.append(word).append(" ");
+            }
+        }
+
+        return output.toString();
     }
 
     public LocalDateTime getDate() {

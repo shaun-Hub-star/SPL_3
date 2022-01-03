@@ -3,6 +3,7 @@ package bgu.spl.net.api;
 import bgu.spl.net.api.MessagePackage.BackMessage;
 import bgu.spl.net.api.MessagePackage.Notification;
 
+import java.text.ParseException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
@@ -14,15 +15,15 @@ public interface DataBaseQueries {
 
     BackMessage logout(String userName);//
 
-    BackMessage follow(String me, String to);
+    BackMessage follow(String me, String to, int todo);
 
     BackMessage post(String msg, String userName, List<String> tags);
 
     BackMessage PM(String me, String userTo, String msg, String dateAndTimeD);
 
-    BackMessage logStat();
+    BackMessage logStat(String me);
 
-    BackMessage stat(List<String> userNames);
+    BackMessage stat(String currentUser,List<String> userNames) throws ParseException;
 
     BackMessage notification(String userName);//we dont need this
 
@@ -30,8 +31,8 @@ public interface DataBaseQueries {
     // BackMessage error();
     BackMessage block(String me, String toBlock);//shaun do also in client protocol.
 
-    Queue<Notification> getNotifications(String userName);
-
+    Queue<String> getNotifications(String userName);
+    void deleteNotifications(String userName);
     default List<Integer> getIds(List<String> tags){
         List<Integer> ids = new LinkedList<>();
         for (String tag : tags){

@@ -1,8 +1,5 @@
 package bgu.spl.net.api;
 
-import bgu.spl.net.api.MessagePackage.Messages;
-import bgu.spl.net.api.MessagePackage.Notification;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -19,7 +16,7 @@ public class User {
     private List<String> following;
     private List<String> blocked;
     private int numPosts;
-
+    private Queue<String> notification;
 
     public User(String userName, String password, String birthday, int id) {
         this.userName = userName;
@@ -31,6 +28,7 @@ public class User {
         this.following = new LinkedList<>();
         this.numPosts = 0;
         this.blocked = new LinkedList<>();
+        this.notification = new LinkedList<>();
     }
 
     public List<String> getBlocked() {
@@ -40,7 +38,9 @@ public class User {
     public void setBlocked(List<String> blocked) {
         this.blocked = blocked;
     }
-
+    public void addBlock(String userToBlock){
+        blocked.add(userName);
+    }
     public String getUserName() {
         return userName;
     }
@@ -120,6 +120,32 @@ public class User {
     public void addPost() {
         this.numPosts = numPosts++;
     }
+    public Queue<String> getNotification() {
+        return notification;
+    }
 
+    public void addNotification(String msg) {
+        notification.add(msg);
+    }
+
+    public void deleteNotification()
+    {
+        while (!notification.isEmpty()){
+            notification.remove();}
+    }
+
+
+    public String details(){
+        String output;
+        try {
+            output= this.getAge()+" "+this.getNumPosts()+" "+this.getFollowers().size()+" "+this.getFollowers().size();
+        }
+        catch (ParseException e){
+            output="ERROR";
+        }
+        return output;
+
+
+    }
 
 }
