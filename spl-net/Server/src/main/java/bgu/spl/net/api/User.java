@@ -10,13 +10,14 @@ import java.time.Period;
 import java.util.*;
 
 public class User {
-    private String userName;
-    private String password;
-    private String birthday;
-    private int id;
+    private final String userName;
+    private final String password;
+    private final String birthday;
+    private final int id;
     private boolean login;
     private List<String> followers;
     private List<String> following;
+    private List<String> blocked;
     private int numPosts;
 
 
@@ -29,6 +30,15 @@ public class User {
         this.followers = new LinkedList<>();
         this.following = new LinkedList<>();
         this.numPosts = 0;
+        this.blocked = new LinkedList<>();
+    }
+
+    public List<String> getBlocked() {
+        return blocked;
+    }
+
+    public void setBlocked(List<String> blocked) {
+        this.blocked = blocked;
     }
 
     public String getUserName() {

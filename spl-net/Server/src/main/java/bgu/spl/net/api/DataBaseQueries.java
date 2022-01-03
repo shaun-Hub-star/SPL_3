@@ -8,11 +8,11 @@ import java.util.List;
 import java.util.Queue;
 
 public interface DataBaseQueries {
-    BackMessage register(String userName,String password,String birthDay,int id);
+    BackMessage register(String userName,String password,String birthDay,int id);//done
 
-    BackMessage login(String userName,String password);
+    BackMessage login(String userName,String password);//done
 
-    BackMessage logout(String userName);
+    BackMessage logout(String userName);//
 
     BackMessage follow(String me, String to);
 
@@ -24,11 +24,11 @@ public interface DataBaseQueries {
 
     BackMessage stat(List<String> userNames);
 
-    BackMessage notification(String userName);
+    BackMessage notification(String userName);//we dont need this
 
     //BackMessage ack();
     // BackMessage error();
-    BackMessage block(String me, String toBlock);
+    BackMessage block(String me, String toBlock);//shaun do also in client protocol.
 
     Queue<Notification> getNotifications(String userName);
 

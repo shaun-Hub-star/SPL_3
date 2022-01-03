@@ -58,17 +58,18 @@ public class DataBaseServer implements DataBaseQueries {
     @Override
     public BackMessage logout(String userName) {
         return null;
-    }
+    }//shaun
 
     //CLIENT#1< FOLLOW 1 Bird-person
     //CLIENT#1> ACK 4 Bird-person
     @Override
     public BackMessage follow(String me, String to) {//backMessage(1) holds the actual message
         return null;
-    }
+    }//lior
 
     @Override
-    public BackMessage post(String msg, String userName, List<String> tags) {
+    public BackMessage post(String msg, String userName, List<String> tags) {//shaun
+        //ack will be in 0
         //NOTIFICATION Public Rick Gubba @Bird-person Gubba should be backMessage[1]
         List<User> users = getUsers(tags);
         return null;
@@ -82,17 +83,17 @@ public class DataBaseServer implements DataBaseQueries {
     @Override//NOTIFICATION PM Morty Bird-personaaaa [1]
     public BackMessage PM(String me, String userTo, String msg, String dateAndTime) {
         return null;
-    }
+    }//lior
     //CLIENT#1> ACK 8 47 1 2 0 NOT EXACTLY
     @Override
     public BackMessage logStat() {
         return null;
-    }
+    }//lior
     //CLIENT#1> ACK 8 47 1 2 0 NOT EXACTLY
     @Override
     public BackMessage stat(List<String> userNames) {
         return null;
-    }
+    }//shaun
 
     @Override
     public BackMessage notification(String userName) {
@@ -102,13 +103,12 @@ public class DataBaseServer implements DataBaseQueries {
     @Override
     public BackMessage block(String me, String toBlock) {
         return null;
-    }
+    }//shaun
 
     @Override
     public Queue<Notification> getNotifications(String userName) {//TODO delete the notifications which i got or to save all the no' in Q and take from there
         return null;
-    }
-
+    }//lior
 
     @Override
     public int getId(String userName) {//todo
