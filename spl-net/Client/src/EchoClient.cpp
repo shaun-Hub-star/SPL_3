@@ -23,11 +23,11 @@ int main (int argc, char *argv[]) {
     Keyboard keyboard(connectionHandler);
     ServerListener serverListener(connectionHandler);
     std::thread thread1(&Keyboard::run, &keyboard);
-    //std::thread thread2(&ServerListener::run, &serverListener);
+    std::thread thread2(&ServerListener::run, &serverListener);
     thread1.join();
-    //thread2.join();
+    thread2.join();
 
     return 0;
 }
 
-
+//REGISTER shaun 123 28-04-2002

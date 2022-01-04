@@ -15,7 +15,9 @@ public class ConnectionsImplementation<T> implements Connections<T> {
     @Override
     public boolean send(int connectionId, T msg) {
         ConnectionHandler<T> connectionHandler = clientsConnections.get(connectionId);
+        System.out.println("send out");
         if (connectionHandler != null) {
+            System.out.println("send in");
             connectionHandler.send(msg);
             return true;
         }
@@ -33,6 +35,6 @@ public class ConnectionsImplementation<T> implements Connections<T> {
         clientsConnections.remove(connId);
     }
     public void addConnection(int id,ConnectionHandler<T> connectionHandler){
-        clientsConnections.putIfAbsent(id, connectionHandler);
+        clientsConnections.put(id, connectionHandler);
     }
 }

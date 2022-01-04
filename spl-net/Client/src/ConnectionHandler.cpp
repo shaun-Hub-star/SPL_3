@@ -352,20 +352,21 @@ ConnectionHandler::registerCommand(std::vector<string> keyWordsList, string fram
                                    char *separator) {
     if (registerCommandValidator(frame, keyWordsList)) {
 
-
+        string endLineString =";";
         const string userName = keyWordsList.at(0);
         const string password = keyWordsList.at(1);
         const string date = keyWordsList.at(2);
         const char *userNameBytes = userName.c_str();
         const char *passwordBytes = password.c_str();
         const char *dateBytes = date.c_str();
-
+        const char *endOfLine = endLineString.c_str();
         short opcode = 1;
         shortToBytes(opcode, opcodeBytes);
 
         return sendBytes(opcodeBytes, 2) && sendBytes(userNameBytes, (int) userName.size()) &&
                sendBytes(separator, 1) && sendBytes(passwordBytes, (int) password.size()) &&
-               sendBytes(separator, 1) && sendBytes(dateBytes, (int) date.size())&& sendBytes(separator,1);
+               sendBytes(separator, 1) && sendBytes(dateBytes, (int) date.size())&& sendBytes(separator,1)
+               && sendBytes(endOfLine,1);
     } else return false;
 
 }

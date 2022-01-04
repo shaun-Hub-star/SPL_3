@@ -9,7 +9,7 @@ public class BackMessage {
         ERROR, PASSED
     }
     private Status status;
-    private List<String> messages;
+    private List<String> messages = new LinkedList<>();
 
     public BackMessage(){
         this.status = Status.PASSED;

@@ -37,6 +37,8 @@ public class BlockingConnectionHandler<T> implements Runnable, ConnectionHandler
                 if (nextMessage != null)
                     protocol.process(nextMessage);//String[] split = 1,shaun,123asdqwerty11
             }
+            if (protocol.shouldTerminate())
+                close();
 
         } catch (IOException ex) {
             ex.printStackTrace();
@@ -60,5 +62,9 @@ public class BlockingConnectionHandler<T> implements Runnable, ConnectionHandler
                 e.printStackTrace();
             }
         }
+    }
+    //-------------------------------------------=========--------
+    public BidiMessagingProtocol<T> getProtocol() {
+        return protocol;
     }
 }

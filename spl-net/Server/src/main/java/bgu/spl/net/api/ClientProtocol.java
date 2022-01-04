@@ -19,14 +19,18 @@ public class ClientProtocol implements BidiMessagingProtocol<String> {
 
     public ClientProtocol(DataBaseServer dataBaseServer) {
         this.dataBaseServer = dataBaseServer;
+        connections = new ConnectionsImplementation<>();
     }
 
     @Override
     public void process(String msg) {
-        System.out.println("process");
+        System.out.println("process "+msg);
         if (msg != null) {
-            String[] separatedBySpace = msg.split("/");
-            switch (getOpcode(msg)) {
+            String opcode = msg.substring(0,2);
+            msg = msg.substring(2);
+            System.out.println(msg);
+            String[] separatedBySpace = msg.split(":");
+            switch (getOpcode(opcode)) {
                 case 1://register
                     System.out.println("register");
                     register(separatedBySpace);
@@ -130,6 +134,7 @@ public class ClientProtocol implements BidiMessagingProtocol<String> {
 
     private void sendMessage(BackMessage backMessage, String name) {
         if (backMessage.getStatus() == BackMessage.Status.PASSED) {//logical
+            System.out.println(backMessage.getMessage());
             if (!connections.send(connectionId, backMessage.getMessage())) {//connection error
                 System.out.println("failed to send ack " + name + " message");//debugging
             }
@@ -240,12 +245,12 @@ public class ClientProtocol implements BidiMessagingProtocol<String> {
     }
 
     private String getUserPassword(String[] separated) {
-        return separated[3];
+        return separated[1];
     }
 
 
     private int getOpcode(String msg) {
-        return Integer.parseInt(msg.substring(2));
+        return Integer.parseInt(msg);
     }
 
     private List<String> getUsers(String[] separated) {

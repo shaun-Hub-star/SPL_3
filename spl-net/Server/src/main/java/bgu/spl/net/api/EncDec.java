@@ -12,22 +12,27 @@ public class EncDec<T> implements MessageEncoderDecoder<T> {
     private short opcode = -1;
     private int numberOfWords = 0;
     private boolean captcha = false;
-
+    private byte endOfLine;
+    private boolean end = false;
     @Override
     public T decodeNextByte(byte nextByte) {
         //notice that the top 128 ascii characters have the same representation as their utf-8 counterparts
         //this allow us to do the following comparison
+        if(nextByte == ';'){
+            endOfLine = nextByte;
+            end = true;
+        }
         if (opcodeSize == 2) {
             pushByte(nextByte);//the 3rd byte
             opcode = bytesToShort(new byte[]{bytes[0], bytes[1]});
-            System.out.println((int) opcode + "*****");
+            System.out.println((int) opcode + " op code");
             numberOfWords += 1;
             opcodeSize++;
         } else {
             if (nextByte == '\0') {
                 pushByte(nextByte);
                 numberOfWords += 1;
-            }else
+            } else
                 pushByte(nextByte);
             opcodeSize++;
         }
@@ -41,7 +46,7 @@ public class EncDec<T> implements MessageEncoderDecoder<T> {
         if (opcodeSize > 2) {
             switch (opcode) {
                 case (1)://register
-                    if (numberOfWords == 4) {
+                    if (end) {
                         return (T) popString();
                     }
                     break;
@@ -168,11 +173,30 @@ public class EncDec<T> implements MessageEncoderDecoder<T> {
     private String popString() {
         //notice that we explicitly requesting that the string will be decoded from UTF-8
         //this is not actually required as it is the default encoding in java.
-        String result = new String(bytes, 0, len, StandardCharsets.UTF_8);
+        String result = "";
+        int start = 2;
+        for (byte aByte : bytes) System.out.print(" " + aByte);
+        for (int i = 2; i < bytes.length; i++) {
+            if (bytes[i] == ';') break;
+            if (bytes[i] == '\0') {
+                String accu = new String(bytes, start, i-start+1, StandardCharsets.UTF_8);
+                System.out.println("accu: "+accu);
+                result = result + accu + ":";
+                start = i+1;
+            }
+        }
+        result = result.substring(0,result.length()-2);
+        //String result = new String(bytes, 2, len, StandardCharsets.UTF_8);
+        if (opcode <= 9)
+            result = "0" + opcode + result;
+        else
+            result = opcode + result;
+        System.out.println(result);
         len = 0;
         captcha = false;
         numberOfWords = 0;
         opcodeSize = 0;
+        this.end = false;
         return result;
     }
 
