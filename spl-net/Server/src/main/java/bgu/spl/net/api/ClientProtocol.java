@@ -185,7 +185,7 @@ public class ClientProtocol implements BidiMessagingProtocol<String> {
     }
 
     private int getSign(String[] separated) {
-        return Integer.parseInt(separated[3]);
+        return Integer.parseInt(separated[0]);
     }
 
     private void logout() {//TODO make the backMessage an ack message
@@ -207,7 +207,9 @@ public class ClientProtocol implements BidiMessagingProtocol<String> {
         BackMessage backMessage;
         userName = getUserName(separated);
         String password = getUserPassword(separated);
-        backMessage = dataBaseServer.login(userName,password);
+        int captcha = getUserCaptcha(separated);
+
+        backMessage = dataBaseServer.login(userName,password,captcha);
         if (backMessage.getStatus() == BackMessage.Status.PASSED) {// i need to send ACK 2 notification1
             if (!connections.send(connectionId, backMessage.getMessage())) {//send ACK 2
                 System.out.println("error while sending login ack");
@@ -226,6 +228,10 @@ public class ClientProtocol implements BidiMessagingProtocol<String> {
                 System.out.println("error while sending register error " + backMessage.getMessage());
             }
         }
+    }
+
+    private int getUserCaptcha(String[] separated) {
+        return Integer.parseInt(separated[2]);
     }
 
     private void register(String[] separated) {
@@ -275,7 +281,7 @@ public class ClientProtocol implements BidiMessagingProtocol<String> {
 
     private List<String> getTags(String[] separated) {
         List<String> userNameList = new LinkedList<>();
-        String[] spaceSeparated = separated[1].split(" ");
+        String[] spaceSeparated = separated[0].split(" ");
         for (String s : spaceSeparated) {
             if (s.charAt(0) == '@') {
                 userNameList.add(s.substring(1));
@@ -285,11 +291,11 @@ public class ClientProtocol implements BidiMessagingProtocol<String> {
     }
 
     private String getContent(String[] separated) {
-        return separated[1];
+        return separated[0];
     }
 
     private String getFollow(String[] separated) {//the person i want to follow
-        return separated[2];
+        return separated[1];
     }
 
     @Override

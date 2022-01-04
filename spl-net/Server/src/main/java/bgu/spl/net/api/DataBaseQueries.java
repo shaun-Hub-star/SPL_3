@@ -11,7 +11,7 @@ import java.util.Queue;
 public interface DataBaseQueries {
     BackMessage register(String userName,String password,String birthDay,int id);//done
 
-    BackMessage login(String userName,String password);//done
+    BackMessage login(String userName,String password,int captcha);//done
 
     BackMessage logout(String userName);//
 

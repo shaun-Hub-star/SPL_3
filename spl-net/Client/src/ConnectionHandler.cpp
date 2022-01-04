@@ -126,7 +126,7 @@ bool ConnectionHandler::sendLine(std::string &line) {
 
 
 bool ConnectionHandler::getFrameAscii(std::string &frame, char delimiter) {
-    std::cout<<"are you in?1"<<std::endl;
+    std::cout << "are you in?1" << std::endl;
     char ch;
 
     // Stop when we encounter the null character.
@@ -164,7 +164,7 @@ bool ConnectionHandler::getFrameAscii(std::string &frame, char delimiter) {
                 break;*/
 
             case 10:
-               // std::cout << "case 10" << std::endl;
+                // std::cout << "case 10" << std::endl;
                 messageToClient = "ACK ";
 
                 char *opcodemes = new char[2];
@@ -190,22 +190,22 @@ bool ConnectionHandler::getFrameAscii(std::string &frame, char delimiter) {
                 frame = messageToClient;
                 break;
 
-           /* case 11:
-                messageToClient = "ERROR ";
-                getBytes(&secondebyts, 1);
-                string MessageOpcode = findWord(secondebyts, delimiter);
-                break;
+                /* case 11:
+                     messageToClient = "ERROR ";
+                     getBytes(&secondebyts, 1);
+                     string MessageOpcode = findWord(secondebyts, delimiter);
+                     break;
 
-            case 12:
-                messageToClient = "BLOCK ";
-                getBytes(&secondebyts, 1);
-                string username = findWord(secondebyts, delimiter);
-                messageToClient += username;
-                break;
+                 case 12:
+                     messageToClient = "BLOCK ";
+                     getBytes(&secondebyts, 1);
+                     string username = findWord(secondebyts, delimiter);
+                     messageToClient += username;
+                     break;
 
-            default:
-                messageToClient = "";
-                break;*/
+                 default:
+                     messageToClient = "";
+                     break;*/
         }
 
 
@@ -223,6 +223,7 @@ bool ConnectionHandler::getFrameAscii(std::string &frame, char delimiter) {
     return true;
 
 }
+
 /*short ConnectionHandler::getShort(char ch, int a) {
     short opcodeshort;
     char *bytestoSort = new char[a];
@@ -259,14 +260,13 @@ char *ConnectionHandler::getChar(char ch, int a) {
 bool ConnectionHandler::sendFrameAscii(const std::string &frame, char delimiter) {
     char *opcodeBytes = new char[2];
     char *separator = new char('\0');
-    char *captcha = new char('1');
 
     /** I can use the "short to opcodeBytes method" in order to put the opcode
         in the "opcodeBytes array" and then use the sendBytes method which is provided on each part.*/
     unsigned const int indexOfEndOfFirstWord = frame.find(' ');
 
     string keyWord = frame.substr(0, indexOfEndOfFirstWord);
-    string result = frame.substr(indexOfEndOfFirstWord+1, frame.size());
+    string result = frame.substr(indexOfEndOfFirstWord + 1, frame.size());
     std::vector<string> keyWordsList;
 
     boost::split(keyWordsList, result, boost::is_any_of(" "));
@@ -276,7 +276,7 @@ bool ConnectionHandler::sendFrameAscii(const std::string &frame, char delimiter)
 
     } else if (keyWord == "LOGIN") {//LOGIN <Username> <Password>
         return loginCommand(keyWordsList, frame, opcodeBytes,
-                            separator, captcha);
+                            separator);
     } else if (frame == "LOGOUT") {
         return logoutCommand(opcodeBytes);
     } else if (keyWord == "FOLLOW") {
@@ -354,7 +354,7 @@ ConnectionHandler::registerCommand(std::vector<string> keyWordsList, string fram
                                    char *separator) {
     if (registerCommandValidator(frame, keyWordsList)) {
 
-        string endLineString =";";
+        string endLineString = ";";
         const string userName = keyWordsList.at(0);
         const string password = keyWordsList.at(1);
         const string date = keyWordsList.at(2);
@@ -367,45 +367,53 @@ ConnectionHandler::registerCommand(std::vector<string> keyWordsList, string fram
 
         return sendBytes(opcodeBytes, 2) && sendBytes(userNameBytes, (int) userName.size()) &&
                sendBytes(separator, 1) && sendBytes(passwordBytes, (int) password.size()) &&
-               sendBytes(separator, 1) && sendBytes(dateBytes, (int) date.size())&& sendBytes(separator,1)
-               && sendBytes(endOfLine,1);
+               sendBytes(separator, 1) && sendBytes(dateBytes, (int) date.size()) && sendBytes(separator, 1)
+               && sendBytes(endOfLine, 1);
     } else return false;
 
 }
 
 bool ConnectionHandler::loginCommandValidator(std::vector<string> keyWordsList) {
-    return (keyWordsList.size() == 2 && !keyWordsList.at(0).empty() &&
-            !keyWordsList.at(1).empty());
+    return (keyWordsList.size() == 3 && !keyWordsList.at(0).empty() &&
+            !keyWordsList.at(1).empty() && !keyWordsList.at(2).empty());
 }
 
 bool ConnectionHandler::loginCommand(std::vector<string> keyWordsList, const string &basicString, char *opcodeBytes,
-                                     char *separator, char *captcha) {
+                                     char *separator) {
     if (loginCommandValidator(keyWordsList)) {
-
+        std::cout << "login" << std::endl;
+        string endLineString = ";";
         const string userName = keyWordsList.at(0);
         const string password = keyWordsList.at(1);
+        const string captcha = keyWordsList.at(2);
         const char *userNameBytes = userName.c_str();
         const char *passwordBytes = password.c_str();
-
+        const char *captchaBytes = captcha.c_str();
+        const char *endOfLine = endLineString.c_str();
         short opcode = 2;
         shortToBytes(opcode, opcodeBytes);
 
         return sendBytes(opcodeBytes, 2) && sendBytes(userNameBytes, (int) userName.size()) &&
                sendBytes(separator, 1) && sendBytes(passwordBytes, (int) password.size()) &&
-               sendBytes(separator, 1) && sendBytes(captcha, 1);
+               sendBytes(separator, 1) && sendBytes(captchaBytes, 1) && sendBytes(separator, 1) &&
+               sendBytes(endOfLine, 1);
     } else return false;
 }
 
 bool ConnectionHandler::logoutCommand(char *opcodeBytes) {
     short opcode = 3;
     shortToBytes(opcode, opcodeBytes);
-    return sendBytes(opcodeBytes, 2);
+    string endLineString = ";";
+    const char *endOfLine = endLineString.c_str();
+    return sendBytes(opcodeBytes, 2) && sendBytes(endOfLine, 1);
 }
 
 bool ConnectionHandler::followCommand(std::vector<string> keyWordsList, char *opcodeBytes) {
     if (keyWordsList.size() == 2 && (keyWordsList.at(0) == "1" || keyWordsList.at(0) == "0") &&
         !keyWordsList.at(1).empty()) {
         short opcode = 4;
+        string endLineString = ";";
+        const char *endOfLine = endLineString.c_str();
         shortToBytes(opcode, opcodeBytes);
         short follow = std::stoi(keyWordsList.at(0));
         char *followBytes = new char[2];
@@ -413,7 +421,8 @@ bool ConnectionHandler::followCommand(std::vector<string> keyWordsList, char *op
         shortToBytes(follow, followBytes);
         const char *userNameBytes = keyWordsList.at(1).c_str();
         return sendBytes(opcodeBytes, 2) && sendBytes(followBytes, 1) &&
-               sendBytes(userNameBytes, (int)keyWordsList.at(1).size()) && sendBytes(delimiter,1);
+               sendBytes(userNameBytes, (int) keyWordsList.at(1).size()) && sendBytes(delimiter, 1) &&
+               sendBytes(endOfLine, 1);
 
     } else return false;
 }
@@ -442,20 +451,32 @@ bool ConnectionHandler::checkDate(int d, int m, int y) {
 }
 
 bool ConnectionHandler::postCommand(std::vector<std::string> keyWordsList, char *opcodeBytes) {
-    if (keyWordsList.size() == 1 && !keyWordsList.at(0).empty()) {
-        short opcode = 5;
-        shortToBytes(opcode, opcodeBytes);
-        string message = keyWordsList.at(0);
-        const char *messageBytes = message.c_str();
-        char *delimiter = new char('\0');
-        return sendBytes(opcodeBytes, 2) && sendBytes(messageBytes, (int) message.size()) && sendBytes(delimiter, 1);
-    } else return false;
+    string message = "";
+    short opcode = 5;
+    string endLineString = ";";
+
+    const char *endOfLine = endLineString.c_str();
+    shortToBytes(opcode, opcodeBytes);
+
+    for (int i = 0; i < keyWordsList.size(); i++) {
+        message += keyWordsList.at(i);
+
+        if (i < keyWordsList.size() - 1)
+            message += " ";
+
+    }
+    const char *messageBytes = message.c_str();
+    char *delimiter = new char('\0');
+    return sendBytes(opcodeBytes, 2) && sendBytes(messageBytes, (int) message.size()) &&
+           sendBytes(delimiter, 1) && sendBytes(endOfLine, 1);
 
 }
 
 bool ConnectionHandler::pmCommand(std::vector<std::string> keyWordsList, char *opcodeBytes) {
     if (keyWordsList.size() == 2 && !keyWordsList.at(0).empty() && !keyWordsList.at(1).empty()) {
         short opcode = 6;
+        string endLineString = ";";
+        const char *endOfLine = endLineString.c_str();
         time_t now = time(0);
         tm *ltm = localtime(&now);
         int day = ltm->tm_mday;
@@ -474,7 +495,7 @@ bool ConnectionHandler::pmCommand(std::vector<std::string> keyWordsList, char *o
         return sendBytes(opcodeBytes, 2) && sendBytes(userNameBytes, (int) userName.size()) &&
                sendBytes(delimiter, 1) && sendBytes(contentBytes, (int) content.size()) &&
                sendBytes(delimiter, 1) && sendBytes(dateBytes, (int) date.size()) &&
-               sendBytes(delimiter, 1);
+               sendBytes(delimiter, 1) && sendBytes(endOfLine, 1);
 
     } else return false;
 
@@ -482,8 +503,10 @@ bool ConnectionHandler::pmCommand(std::vector<std::string> keyWordsList, char *o
 
 bool ConnectionHandler::logStatCommand(char *opcodeBytes) {
     short opcode = 7;
+    string endLineString = ";";
+    const char *endOfLine = endLineString.c_str();
     shortToBytes(opcode, opcodeBytes);
-    return sendBytes(opcodeBytes, 2);
+    return sendBytes(opcodeBytes, 2) && sendBytes(endOfLine, 1);
 }
 
 bool ConnectionHandler::statCommand(std::vector<std::string> keyWordsList, char *opcodeBytes) {
@@ -491,11 +514,14 @@ bool ConnectionHandler::statCommand(std::vector<std::string> keyWordsList, char 
         //std::vector<std::string> users;
         //boost::split(users, keyWordsList.at(0), boost::is_any_of("|"));
         short opcode = 8;
+        string endLineString = ";";
+        const char *endOfLine = endLineString.c_str();
         string users = keyWordsList.at(0);
         const char *usersByte = users.c_str();
         const char *delimiter = new char('\0');
         shortToBytes(opcode, opcodeBytes);
-        return sendBytes(opcodeBytes, 2) && sendBytes(usersByte, (int)users.size()) && sendBytes(delimiter,1);
+        return sendBytes(opcodeBytes, 2) && sendBytes(usersByte, (int) users.size())
+               && sendBytes(delimiter, 1) && sendBytes(endOfLine, 1);
     } else return false;
 
 }

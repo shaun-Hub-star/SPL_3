@@ -28,15 +28,14 @@ public class EncDec<T> implements MessageEncoderDecoder<T> {
             opcode = bytesToShort(new byte[]{bytes[0], bytes[1]});
             System.out.println((int) opcode + " op code");
             numberOfWords += 1;
-            opcodeSize++;
         } else {
             if (nextByte == '\0') {
                 pushByte(nextByte);
                 numberOfWords += 1;
             } else
                 pushByte(nextByte);
-            opcodeSize++;
         }
+        opcodeSize++;
         if (opcodeSize > 2 && numberOfWords == 1 && (opcode == 4 || opcode == 9)) {
             byte b = 0;
             pushByte(b);
@@ -44,15 +43,16 @@ public class EncDec<T> implements MessageEncoderDecoder<T> {
         }
 
         if (opcode == 2 && numberOfWords == 3 && nextByte != '\0') captcha = true;
-        if (opcodeSize > 2) {
-            switch (opcode) {
+        if (end) {
+            return (T)popString();
+            /*switch (opcode) {
                 case (1)://register
                     if (end) {
                         return (T) popString();
                     }
                     break;
                 case (2)://login
-                    if (numberOfWords == 3 && captcha) {
+                    if (end && captcha) {
                         return (T) popString();
                     }
                     break;
@@ -71,9 +71,9 @@ public class EncDec<T> implements MessageEncoderDecoder<T> {
                 case (6 | 9)://pm
                     if (numberOfWords == 4)
                         return (T) popString();
-                    break;
+                    break;*/
 
-            }
+            //}
         }
         return null; //not a line yet
     }
@@ -236,19 +236,27 @@ public class EncDec<T> implements MessageEncoderDecoder<T> {
         for (int i = 2; i < bytes.length; i++) {
             if (bytes[i] == ';') break;
             if (bytes[i] == '\0') {
-                String accu = new String(bytes, start, i - start + 1, StandardCharsets.UTF_8);
-                System.out.println("accu: " + accu);
-                result = result + accu + ":";
+                if(i==2 && opcode == 4){
+                    result += "0:";
+                }else {
+                    String accu = new String(bytes, start, i - start + 1, StandardCharsets.UTF_8);
+                    System.out.println("accu: " + accu);
+                    result = result + accu + ":";
+                }
                 start = i + 1;
             }
         }
-        result = result.substring(0, result.length() - 2);
+        System.out.println(result);
+        if(result.length()>=3)
+            result = result.substring(0, result.length() - 2);
+
         //String result = new String(bytes, 2, len, StandardCharsets.UTF_8);
         if (opcode <= 9)
             result = "0" + opcode + result;
         else
             result = opcode + result;
         System.out.println(result);
+        Arrays.fill(bytes, (byte) '\0');
         len = 0;
         captcha = false;
         numberOfWords = 0;

@@ -39,8 +39,7 @@ private:
 
     bool loginCommand(std::vector<std::string> keyWordsList,
                       const std::string &basicString,
-                      char *opcodeBytes, char *separator,
-                      char *captcha);
+                      char *opcodeBytes, char *separator);
 
     bool logoutCommand(char *opcodeBytes);
 

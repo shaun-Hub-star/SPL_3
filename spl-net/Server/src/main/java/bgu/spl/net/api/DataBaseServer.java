@@ -38,11 +38,11 @@ public class DataBaseServer implements DataBaseQueries {
 
 
     @Override
-    public synchronized BackMessage login(String userName, String password) {//ERROR 2
+    public synchronized BackMessage login(String userName, String password,int captcha) {//ERROR 2
         BackMessage backMessage;
         if (userMap.containsKey(userName)) {
             User currentUser = userMap.get(userName);
-            if (!currentUser.isLogin()) {
+            if (!currentUser.isLogin() && captcha == 1) {
                 backMessage = new BackMessage("ACK 2", BackMessage.Status.PASSED);
                 currentUser.setLogin(true);
             } else
@@ -329,7 +329,7 @@ public class DataBaseServer implements DataBaseQueries {
 
     }
     @Override
-    public int getId(String userName) {//todo
+    public int getId(String userName) {//todo make sure when there is no such user
         return userMap.get(userName).getId();
     }
 }
