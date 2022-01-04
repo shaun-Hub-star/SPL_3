@@ -22,7 +22,8 @@ void ServerListener::run() {
             std::cout << "Disconnected. Exiting..\n" << std::endl;
             break;
         }
-        if (answer == "LOGOUT") {
+        std::cout<<answer<<std::endl;
+        if (answer == "ACK 3") {
             loggedIn = false;
         }
 

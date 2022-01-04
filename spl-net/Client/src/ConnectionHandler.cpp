@@ -126,7 +126,7 @@ bool ConnectionHandler::sendLine(std::string &line) {
 
 
 bool ConnectionHandler::getFrameAscii(std::string &frame, char delimiter) {
-
+    std::cout<<"are you in?1"<<std::endl;
     char ch;
 
     // Stop when we encounter the null character.
@@ -140,32 +140,40 @@ bool ConnectionHandler::getFrameAscii(std::string &frame, char delimiter) {
     char sixthbyts;
     string messageToClient = "";
     try {
-        char *convertCh = new char[2];
-        getBytes(&firstbytes, 1);
-        convertCh[0] = fourthbytes;
-        getBytes(&fourthbytes, 1);
-        convertCh[1] = fourthbytes;
-        short opcode = getShort(firstbytes, 2);
+        char *opcodeBytes = new char[2];
+        getBytes(opcodeBytes, 2);
+        //char *opcodeBytes = new char[2]
+        //getBytes(&opcodeBytes,2)
+        //short op
+
+        short opcode = bytesToShort(opcodeBytes);
+        //std::cout<<"opcode "<<opcode<<std::endl;
         switch (opcode) {
 
-            case 9: {
+            /*case 9:
                 messageToClient = "NOTIFICATION";
                 getBytes(&secondebyts, 1);
                 if (secondebyts == 0)
                     messageToClient += " PM ";
                 else if (secondebyts == 1)
                     messageToClient += " Public ";
-                string UserName = findWord(thirdbytes, 0);
+                string UserName = findWord(thirdbytes, '\0');
                 messageToClient += UserName;
-                string Content = findWord(fourthbytes, 0);
+                string Content = findWord(fourthbytes, '\0');
                 messageToClient += " " + Content;
-                break;
-            }
-            case 10: {
+                break;*/
+
+            case 10:
+               // std::cout << "case 10" << std::endl;
                 messageToClient = "ACK ";
-                short MessageOpcode = getShort(secondebyts, 2);
-                MessageOpcode += MessageOpcode;
-                if (MessageOpcode == 8 | MessageOpcode == 7) {
+
+                char *opcodemes = new char[2];
+                getBytes(opcodemes, 2);
+                short messageOpcode = bytesToShort(opcodemes);
+                //std::cout << (int) messageOpcode << std::endl;
+                messageToClient += std::to_string((int) messageOpcode);
+                //std::cout << "Message to client" << messageToClient << std::endl;
+                if (messageOpcode == 8 | messageOpcode == 7) {
                     char *age = getChar(thirdbytes, 2);
                     char *NumPosts = getChar(thirdbytes, 2);
                     char *NumFollowers = getChar(thirdbytes, 2);
@@ -173,42 +181,36 @@ bool ConnectionHandler::getFrameAscii(std::string &frame, char delimiter) {
                     messageToClient =
                             messageToClient + " " + age + " " + NumPosts + " " + NumFollowers + " " + NumFollowing;
 
-                } else if (MessageOpcode == 4) {
+                } else if (messageOpcode == 4) {
 
                     getBytes(&thirdbytes, 1);
-                    string UserName = findWord(thirdbytes, 0);
+                    string UserName = findWord(thirdbytes, '\0');
                     messageToClient += UserName;
-
-                } else if (MessageOpcode == 3) {
-                    messageToClient += " LOGOUT ";
-                } else if (MessageOpcode == 1) {
-
-                    messageToClient += "  successful  REGISTER ";
-
                 }
+                frame = messageToClient;
+                break;
 
-
-            }
-
-
-            case 11: {
+           /* case 11:
                 messageToClient = "ERROR ";
                 getBytes(&secondebyts, 1);
-                string MessageOpcode = findWord(secondebyts,delimiter);
+                string MessageOpcode = findWord(secondebyts, delimiter);
                 break;
-            }
-            case 12: {
+
+            case 12:
                 messageToClient = "BLOCK ";
                 getBytes(&secondebyts, 1);
-                string username = findWord(secondebyts,delimiter);
+                string username = findWord(secondebyts, delimiter);
                 messageToClient += username;
                 break;
-            }
-            default: {
+
+            default:
                 messageToClient = "";
-            }
+                break;*/
         }
+
+
         frame = messageToClient;
+        //std::cout<<frame<<std::endl;
     }
     catch (std::exception &e) {
 
@@ -221,7 +223,7 @@ bool ConnectionHandler::getFrameAscii(std::string &frame, char delimiter) {
     return true;
 
 }
-short ConnectionHandler::getShort(char ch, int a) {
+/*short ConnectionHandler::getShort(char ch, int a) {
     short opcodeshort;
     char *bytestoSort = new char[a];
     int counter = 0;
@@ -231,7 +233,7 @@ short ConnectionHandler::getShort(char ch, int a) {
     }
     opcodeshort = bytesToShort(bytestoSort);
     return opcodeshort;
-}
+}*/
 
 std::string ConnectionHandler::findWord(char ch, char delimiter) {
     string output = "";

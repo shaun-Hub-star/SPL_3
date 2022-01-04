@@ -14,11 +14,12 @@ public class EncDec<T> implements MessageEncoderDecoder<T> {
     private boolean captcha = false;
     private byte endOfLine;
     private boolean end = false;
+
     @Override
     public T decodeNextByte(byte nextByte) {
         //notice that the top 128 ascii characters have the same representation as their utf-8 counterparts
         //this allow us to do the following comparison
-        if(nextByte == ';'){
+        if (nextByte == ';') {
             endOfLine = nextByte;
             end = true;
         }
@@ -88,49 +89,53 @@ public class EncDec<T> implements MessageEncoderDecoder<T> {
 
 
     @Override
-    public byte[] encode(T message) throws Exception {
-
+    public byte[] encode(T message) throws Exception {//ACK 1
+        System.out.println(message.toString());
         String[] splitBySpace = ((String) message).split(" ");
-        String opcode = splitBySpace[0];
+        System.out.println("**" + splitBySpace[0] + "**" + splitBySpace[1]);
+        String opcode = splitBySpace[0];//ack
         String[] toBytes = new String[6];
         switch (opcode) {
-            case "NOTIFICATION": {
+            case "NOTIFICATION":
                 toBytes[0] = "09";//NOTIFICATION
                 toBytes[1] = splitBySpace[1];//Public/PM
                 toBytes[2] = splitBySpace[2];//PostingUser
                 toBytes[3] = "0";
                 switch (splitBySpace[1]) {
-                    case ("PM"): {
+                    case ("PM"):
                         toBytes[4] = ((String) message).substring(15);//Content
-                    }
-                    case ("PUBLIC"): {
+                        break;
+
+                    case ("PUBLIC"):
                         toBytes[4] = ((String) message).substring(19);//Content
-                    }
+                        break;
+
                 }
                 toBytes[5] = "0";
                 return bytes(toBytes);
-            }
-
 
             case "ACK":
+                System.out.println("we in ack");
                 toBytes[0] = "10";//ACK
                 toBytes[1] = splitBySpace[1];//Message Opcode
+                System.out.println("in ack"+Integer.parseInt(splitBySpace[1]));
                 switch (Integer.parseInt(splitBySpace[1])) {
-                    case (1 | 2 | 3 | 5 | 6): {//Message Opcode
-                        return bytes(toBytes);
-                    }
-                    case (4): {
+                    case (1 ): //Message Opcode//| 2 | 3 | 5 | 6
+                        System.out.println("we in case one register");
+                        return bytes1(toBytes);
+
+                    case (4):
                         toBytes[2] = splitBySpace[3];//username;
                         toBytes[3] = "0";//end of byts
                         return bytes(toBytes);
-                    }
-                    case (7 | 8): {
+
+                    case (7 | 8):
                         toBytes[2] = splitBySpace[2];//age
                         toBytes[3] = splitBySpace[3];//NumPosts
                         toBytes[4] = splitBySpace[4];//NumFollowers
                         toBytes[5] = splitBySpace[5];//NumFollowing
                         return bytes(toBytes);
-                    }
+
                 }
 
             case "ERROR": {
@@ -143,24 +148,76 @@ public class EncDec<T> implements MessageEncoderDecoder<T> {
 
     }
 
-
-    private byte[] bytes(String[] messageOutput) {
+    private byte[] bytes1(String[] messageOutput) {
+        System.out.println("we in bytes1");
         int length = 0;
         int counter = 0;
+        int c = 0;
+        byte[] outputMessageByt;
         for (String s : messageOutput) {
-            byte[] outputMessageByte = s.getBytes();
-            length += outputMessageByte.length;
+            if (s != null) {
+                if (c > 1) {
+                    byte[] outputMessageByte = s.getBytes();
+                    length += outputMessageByte.length;
+                } else c++;
+            }
         }
-        byte[] output = new byte[length];
+        byte[] output = new byte[length + 4];
+        System.out.println("output init"+messageOutput[1]);
+        if (messageOutput[1].equals("1")) {
+            c = 2;
+        }
         for (String s : messageOutput) {
-            byte[] outputMessageByte = s.getBytes();
-            for (int i = 0; i < outputMessageByte.length; i++, counter++) {
-                output[counter] = outputMessageByte[i];
+            if (s != null) {
+                if (c == 0) {
+                    System.out.println("check for shaun");
+                    outputMessageByt = s.getBytes(StandardCharsets.UTF_8);
+                } else {
+                    outputMessageByt = shortToBytes((short) Integer.parseInt(s));
+                    System.out.println(bytesToShort(outputMessageByt));
+                    c--;
+                }
+                for (int i = 0; i < outputMessageByt.length; i++, counter++) {
+                    output[counter] = outputMessageByt[i];
+                }
             }
         }
         return output;
     }
 
+
+    private byte[] bytes(String[] messageOutput) {
+        int length = 0;
+        int counter = 0;
+        for (String s : messageOutput) {
+            if (s != null) {
+                byte[] outputMessageByte = s.getBytes();
+                length += outputMessageByte.length;
+            }
+        }
+        byte[] output = new byte[length];
+        for (String s : messageOutput) {
+            if (s != null) {
+                byte[] outputMessageByte = s.getBytes();
+                for (int i = 0; i < outputMessageByte.length; i++, counter++) {
+                    output[counter] = outputMessageByte[i];
+                }
+            }
+        }
+        return output;
+    }
+
+    public byte[] shortToBytes(short num) {
+
+        byte[] bytesArr = new byte[2];
+
+        bytesArr[0] = (byte) ((num >> 8) & 0xFF);
+
+        bytesArr[1] = (byte) (num & 0xFF);
+
+        return bytesArr;
+
+    }
 
     private void pushByte(byte nextByte) {
         if (len >= bytes.length) {
@@ -179,13 +236,13 @@ public class EncDec<T> implements MessageEncoderDecoder<T> {
         for (int i = 2; i < bytes.length; i++) {
             if (bytes[i] == ';') break;
             if (bytes[i] == '\0') {
-                String accu = new String(bytes, start, i-start+1, StandardCharsets.UTF_8);
-                System.out.println("accu: "+accu);
+                String accu = new String(bytes, start, i - start + 1, StandardCharsets.UTF_8);
+                System.out.println("accu: " + accu);
                 result = result + accu + ":";
-                start = i+1;
+                start = i + 1;
             }
         }
-        result = result.substring(0,result.length()-2);
+        result = result.substring(0, result.length() - 2);
         //String result = new String(bytes, 2, len, StandardCharsets.UTF_8);
         if (opcode <= 9)
             result = "0" + opcode + result;
