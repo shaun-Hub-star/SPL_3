@@ -18,11 +18,17 @@ public class EncDec<T> implements MessageEncoderDecoder<T> {
         //notice that the top 128 ascii characters have the same representation as their utf-8 counterparts
         //this allow us to do the following comparison
         if (opcodeSize == 2) {
-            pushByte(nextByte);
+            pushByte(nextByte);//the 3rd byte
             opcode = bytesToShort(new byte[]{bytes[0], bytes[1]});
+            System.out.println((int) opcode + "*****");
             numberOfWords += 1;
+            opcodeSize++;
         } else {
-            pushByte(nextByte);
+            if (nextByte == '\0') {
+                pushByte(nextByte);
+                numberOfWords += 1;
+            }else
+                pushByte(nextByte);
             opcodeSize++;
         }
         if (opcodeSize > 2 && numberOfWords == 1 && (opcode == 4 || opcode == 9)) {
@@ -30,40 +36,38 @@ public class EncDec<T> implements MessageEncoderDecoder<T> {
             pushByte(b);
             numberOfWords += 1;
         }
-        if (nextByte == '\0') {
-            //pushByte(SPACE_BYTE);
-            numberOfWords += 1;
-        }
+
         if (opcode == 2 && numberOfWords == 3 && nextByte != '\0') captcha = true;
-        switch (opcode) {
-            case (1)://register
-                if (numberOfWords == 4) {
-                    return (T) popString();
-                }
-                break;
-            case (2)://login
-                if (numberOfWords == 3 && captcha) {
-                    return (T) popString();
-                }
-                break;
-            case (3 | 7)://logout logstat
-                if (numberOfWords == 1)
-                    return (T) popString();
-                break;
-            case (4)://follow
-                if (numberOfWords == 3)//opcode follow username \0
-                    return (T) popString();
-                break;
-            case (5 | 8)://post | stat
-                if (numberOfWords == 2)
-                    return (T) popString();
-                break;
-            case (6 | 9)://pm
-                if (numberOfWords == 4)
-                    return (T) popString();
-                break;
+        if (opcodeSize > 2) {
+            switch (opcode) {
+                case (1)://register
+                    if (numberOfWords == 4) {
+                        return (T) popString();
+                    }
+                    break;
+                case (2)://login
+                    if (numberOfWords == 3 && captcha) {
+                        return (T) popString();
+                    }
+                    break;
+                case (3 | 7)://logout logstat
+                    if (numberOfWords == 1)
+                        return (T) popString();
+                    break;
+                case (4)://follow
+                    if (numberOfWords == 3)//opcode follow username \0
+                        return (T) popString();
+                    break;
+                case (5 | 8)://post | stat
+                    if (numberOfWords == 2)
+                        return (T) popString();
+                    break;
+                case (6 | 9)://pm
+                    if (numberOfWords == 4)
+                        return (T) popString();
+                    break;
 
-
+            }
         }
         return null; //not a line yet
     }
@@ -168,6 +172,7 @@ public class EncDec<T> implements MessageEncoderDecoder<T> {
         len = 0;
         captcha = false;
         numberOfWords = 0;
+        opcodeSize = 0;
         return result;
     }
 

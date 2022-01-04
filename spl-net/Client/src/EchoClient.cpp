@@ -16,13 +16,16 @@ int main (int argc, char *argv[]) {
     std::string host = argv[1];
     short port = atoi(argv[2]);
     ConnectionHandler connectionHandler(host, port);
-
+    if (!connectionHandler.connect()) {
+        std::cerr << "Cannot connect to " << host << ":" << port << std::endl;
+        return 1;
+    }
     Keyboard keyboard(connectionHandler);
     ServerListener serverListener(connectionHandler);
     std::thread thread1(&Keyboard::run, &keyboard);
-    std::thread thread2(&ServerListener::run, &serverListener);
+    //std::thread thread2(&ServerListener::run, &serverListener);
     thread1.join();
-    thread2.join();
+    //thread2.join();
 
     return 0;
 }

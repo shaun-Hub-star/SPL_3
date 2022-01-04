@@ -23,10 +23,12 @@ public class ClientProtocol implements BidiMessagingProtocol<String> {
 
     @Override
     public void process(String msg) {
+        System.out.println("process");
         if (msg != null) {
-            String[] separatedBySpace = msg.split("\0");
+            String[] separatedBySpace = msg.split("/");
             switch (getOpcode(msg)) {
                 case 1://register
+                    System.out.println("register");
                     register(separatedBySpace);
                     break;
                 case 2://login
@@ -292,6 +294,7 @@ public class ClientProtocol implements BidiMessagingProtocol<String> {
 
     @Override
     public void start(int connectionId, Connections<String> connections) {
+        System.out.println("initialized");
         this.connectionId = connectionId;
         this.connections = connections;
         userName = "";

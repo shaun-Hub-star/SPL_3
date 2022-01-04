@@ -6,7 +6,7 @@
 #include "../include/Keyboard.h"
 #include "../include/ConnectionHandler.h"
 
-Keyboard::Keyboard(ConnectionHandler &handler) : handler(handler), loggedIn(false) {}
+Keyboard::Keyboard(ConnectionHandler &handler) : handler(handler), loggedIn(true) {}
 
 Keyboard::~Keyboard() {
 
@@ -24,7 +24,7 @@ void Keyboard::run() {
         getline(std::cin, result);
 
         handler.sendLine(result);
-
+        std::cout <<"debug"<<result<<std::endl;
         result = keyWordsList.at(0);
 
         //std::string out = "ACK signout succeeded\n";

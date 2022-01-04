@@ -365,7 +365,7 @@ ConnectionHandler::registerCommand(std::vector<string> keyWordsList, string fram
 
         return sendBytes(opcodeBytes, 2) && sendBytes(userNameBytes, (int) userName.size()) &&
                sendBytes(separator, 1) && sendBytes(passwordBytes, (int) password.size()) &&
-               sendBytes(separator, 1) && sendBytes(dateBytes, (int) date.size());
+               sendBytes(separator, 1) && sendBytes(dateBytes, (int) date.size())&& sendBytes(separator,1);
     } else return false;
 
 }
