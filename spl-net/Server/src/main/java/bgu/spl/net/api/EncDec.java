@@ -4,7 +4,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.lang.Integer;
 
-public class EncDec<T> implements MessageEncoderDecoder<T>{
+public class EncDec<T> implements MessageEncoderDecoder<T> {
     private byte[] bytes = new byte[1 << 10]; //start with 1k
     private int len = 0;//current word size. we use in the pop string method
     private int counter = 0;
@@ -80,164 +80,87 @@ public class EncDec<T> implements MessageEncoderDecoder<T>{
 
     @Override
     public byte[] encode(T message) throws Exception {
-        String messageS=(String)message;
-        String opcode =(messageS.substring(0, messageS.indexOf(" ")));
+
+        String[] splitBySpace = ((String) message).split(" ");
+        String opcode = splitBySpace[0];
         byte[] output;
-        int length=1;
+        int length = 1;
         int counter;
+        String[] tobytes = new String[6];
+
 
         switch (opcode) {
-            case "NOTIFICATION": {//TODO: NOTIFICATION- Public- Rick- Gubba @Bird-person Gubba
-                length = opcode.length();
+            case "NOTIFICATION": {
+                tobytes[0] = "09";//NOTIFICATION
+                tobytes[1] = splitBySpace[1];//Public/PM
+                tobytes[2] = splitBySpace[2];//PostingUser
+                tobytes[3] = "0";
+                switch (splitBySpace[1]) {
+                    case ("PM"): {
 
-                char notificationType = messageS.substring(length + 1, messageS.indexOf(" ")).charAt(0);
-                length++;//the notificationType is 0/1 - one step foreword
+                        tobytes[4] = ((String) message).substring(15);//Content
+                    }
+                    case ("PUBLIC"): {
+                        tobytes[4] = ((String) message).substring(19);//Content
 
-                String postingUser = messageS.substring(messageS.indexOf(" ") + length);
-                byte[] postingUserBytes = postingUser.getBytes();
-                length = length + postingUser.length() + 1;
-                String Content = messageS.substring(messageS.indexOf(" ") + length);
-                byte[] ContentByts = Content.getBytes();
-                output = new byte[5 + postingUserBytes.length + ContentByts.length];
-                String[] number = new String[]{"0", "9", Character.toString(notificationType)};
-                this.counter = 3;
-                initializationOpcode(number, output);
-                String[] messageOutput = {postingUser, Content};
-                bytes(messageOutput, output);
-                output[output.length - 1] = 0;
-                return output;
-            }
-            case "ACK":
-                length = opcode.length();
-                String MessageOpcode = messageS.substring(length + 1, messageS.indexOf(" "));//TODO check if charat 1/0
-
-                String outputMessage = "";
-                if (MessageOpcode.equals("1") | MessageOpcode.equals("2") | MessageOpcode.equals("3") | MessageOpcode.equals("5") | MessageOpcode.equals("6")) {
-                    switch (MessageOpcode) {
-                        case "1":
-                            outputMessage = "successful register";
-                            break;
-                        case "2":
-                            outputMessage = "successful Login";
-                            break;
-                        case "3":
-                            outputMessage = "LOGOUT";
-                            break;
-                        case "5":
-                            outputMessage = "successful POST Messages";
-                            break;
-                        case "6":
-                            outputMessage = "successful PM Messages";
-                            break;
                     }
 
-                    output = toByetsOutput(MessageOpcode, outputMessage);
-                    return output;
-
-
-                } else if (MessageOpcode.equals("4")) {
-                    String[] messageOutput = new String[1];
-                    messageOutput[0] = messageS.substring(4, messageS.indexOf(" "));
-                    byte[] mesBackByte = messageOutput[0].getBytes();
-                    output = new byte[4 + mesBackByte.length];
-                    String[] number = new String[]{"1", "0", "0", "4"};
-                    this.counter = 4;
-                    initializationOpcode(number, output);
-                    bytes(messageOutput, output);
-                    output[output.length - 1] = Byte.parseByte("0");
-                    return output;
-
-
-
-                } else if (MessageOpcode.equals("7") | MessageOpcode.equals("8"))
-                {
-                    String[] number = new String[4];
-                    if (MessageOpcode.equals("7")) {
-                        number = new String[]{"1", "0", "0", "7"};
-                    } else number = new String[]{"1", "0", "0", "8"};
-                    output = new byte[12];
-                    initializationOpcode(number, output);
-                    this.counter = 4;
-                    String[] Messages = new String[4];
-                    Messages[0] = messageS.substring(4, messageS.indexOf(" "));//age
-                    length = 4 + Messages[0].length() + 1;
-                    Messages[1] = messageS.substring(length, messageS.indexOf(" "));//numPost
-                    length += Messages[1].length() + 1;
-                    Messages[2] = messageS.substring(length, messageS.indexOf(" "));//NumFollowers
-                    length += Messages[2].length() + 1;
-                    Messages[3] = messageS.substring(length, messageS.indexOf(" "));//NumFollowing
-                    bytes(Messages, output);
-                    return output;
                 }
-
-
-
-            case "ERROR": {
-                length = opcode.length();
-                String mesBack = messageS.substring(messageS.indexOf(" ") + 1);
-                byte[] mesBackByte = mesBack.getBytes();
-                output = new byte[4 + mesBackByte.length];
-                String[] number = new String[]{"1", "0", "1", "1"};
-                initializationOpcode(number, output);
-                counter = 4;
-                for (int i = 0; i < mesBackByte.length; i++, counter++) {
-                    output[counter] = mesBackByte[i];
-                }
-                output[counter] = Byte.parseByte("0");
-                return output;
-
+                tobytes[5] = "0";
+                return bytes(tobytes);
             }
-        }
-            /*
-            else if(opcode==12){
-                String[] messageOutput=new String[1];
-                messageOutput[0]=messageS.substring(messageS.indexOf(" ")+1);
-                byte[] mesBackByte = messageOutput[0].getBytes();
-                output=new byte[4+mesBackByte.length];
-                String [] number=new String[]{"1","0","1","2"};
-                output=initializationOpcode(number,output);
-                counter=4;
-                for (int i =0;i<mesBackByte.length;i++,counter++)
-                {
-                    output[counter]=mesBackByte[i];
+
+
+            case "ACK":
+                tobytes[0] = "10";//ACK
+                tobytes[1] = splitBySpace[1];//Message Opcode
+                switch (Integer.parseInt(splitBySpace[1])) {
+                    case (1 | 2 | 3 | 5 | 6): {//Message Opcode
+                        return bytes(tobytes);
+                    }
+                    case (4): {
+                        tobytes[2] = splitBySpace[3];//username;
+                        tobytes[3] = "0";//end of byts
+                        return bytes(tobytes);
+                    }
+                    case (7 | 8): {
+                        tobytes[2] = splitBySpace[2];//age
+                        tobytes[3] = splitBySpace[3];//NumPosts
+                        tobytes[4] = splitBySpace[4];//NumFollowers
+                        tobytes[5] = splitBySpace[5];//NumFollowing
+                        return bytes(tobytes);
+                    }
                 }
-                output[counter]=Byte.parseByte("0");
-                return output;
-            }*/
-            throw new Exception("Illegal");
-    }
 
-    private byte[] toByetsOutput(String MessageOpcode,String messageOutput) {
-        byte[] outputMessageByte = messageOutput.getBytes();
-        byte[] first =shortToBytes((short) 10);
-        int num = (Integer.parseInt(MessageOpcode));
-        byte[] second =shortToBytes((short) num);
-        byte[]output = new byte[first.length+second.length + outputMessageByte.length];
-        int conter=0;
-        for(int i= 0;i< first.length;i++,conter++)
-            output[conter]=first[i];
-        for(int i= 0;i< second.length;i++,conter++)
-            output[conter]=second[i];
-        for(int i= 0;i< outputMessageByte.length;i++,conter++)
-            output[conter]=outputMessageByte[i];
-
-        return output;
-    }
-
-    private void initializationOpcode(String [] number, byte[] output){
-        for (int i=0;i<number.length;i++){
-            output[i]=Byte.parseByte(number[i]);
+             case "ERROR": {
+                 tobytes[0] = "10";//ERROR
+                 tobytes[1]=splitBySpace[1];//Message Opcode
+                 return bytes(tobytes);
         }
     }
+    throw new Exception("illegal");
 
-    private void bytes(String[] messageOutput, byte[] output)
-    {
+}
+
+
+
+
+
+    private byte[] bytes(String[] messageOutput) {
+        int length = 0;
+        int counter = 0;
         for (String s : messageOutput) {
             byte[] outputMessageByte = s.getBytes();
-            for (int i = 0; i < outputMessageByte.length; i++, this.counter++) {
+            length += outputMessageByte.length;
+        }
+        byte[] output = new byte[length];
+        for (String s : messageOutput) {
+            byte[] outputMessageByte = s.getBytes();
+            for (int i = 0; i < outputMessageByte.length; i++, counter++) {
                 output[counter] = outputMessageByte[i];
             }
         }
+        return output;
     }
 
 
@@ -257,14 +180,6 @@ public class EncDec<T> implements MessageEncoderDecoder<T>{
         captcha = false;
         numberOfWords = 0;
         return result;
-    }
-
-    public byte[] shortToBytes(short num)
-    {
-        byte[] bytesArr = new byte[2];
-        bytesArr[0] = (byte)((num >> 8) & 0xFF);
-        bytesArr[1] = (byte)(num & 0xFF);
-        return bytesArr;
     }
 
 }
