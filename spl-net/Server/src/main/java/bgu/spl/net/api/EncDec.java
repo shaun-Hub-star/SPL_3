@@ -83,67 +83,56 @@ public class EncDec<T> implements MessageEncoderDecoder<T> {
 
         String[] splitBySpace = ((String) message).split(" ");
         String opcode = splitBySpace[0];
-        byte[] output;
-        int length = 1;
-        int counter;
-        String[] tobytes = new String[6];
-
-
+        String[] toBytes = new String[6];
         switch (opcode) {
             case "NOTIFICATION": {
-                tobytes[0] = "09";//NOTIFICATION
-                tobytes[1] = splitBySpace[1];//Public/PM
-                tobytes[2] = splitBySpace[2];//PostingUser
-                tobytes[3] = "0";
+                toBytes[0] = "09";//NOTIFICATION
+                toBytes[1] = splitBySpace[1];//Public/PM
+                toBytes[2] = splitBySpace[2];//PostingUser
+                toBytes[3] = "0";
                 switch (splitBySpace[1]) {
                     case ("PM"): {
-
-                        tobytes[4] = ((String) message).substring(15);//Content
+                        toBytes[4] = ((String) message).substring(15);//Content
                     }
                     case ("PUBLIC"): {
-                        tobytes[4] = ((String) message).substring(19);//Content
-
+                        toBytes[4] = ((String) message).substring(19);//Content
                     }
-
                 }
-                tobytes[5] = "0";
-                return bytes(tobytes);
+                toBytes[5] = "0";
+                return bytes(toBytes);
             }
 
 
             case "ACK":
-                tobytes[0] = "10";//ACK
-                tobytes[1] = splitBySpace[1];//Message Opcode
+                toBytes[0] = "10";//ACK
+                toBytes[1] = splitBySpace[1];//Message Opcode
                 switch (Integer.parseInt(splitBySpace[1])) {
                     case (1 | 2 | 3 | 5 | 6): {//Message Opcode
-                        return bytes(tobytes);
+                        return bytes(toBytes);
                     }
                     case (4): {
-                        tobytes[2] = splitBySpace[3];//username;
-                        tobytes[3] = "0";//end of byts
-                        return bytes(tobytes);
+                        toBytes[2] = splitBySpace[3];//username;
+                        toBytes[3] = "0";//end of byts
+                        return bytes(toBytes);
                     }
                     case (7 | 8): {
-                        tobytes[2] = splitBySpace[2];//age
-                        tobytes[3] = splitBySpace[3];//NumPosts
-                        tobytes[4] = splitBySpace[4];//NumFollowers
-                        tobytes[5] = splitBySpace[5];//NumFollowing
-                        return bytes(tobytes);
+                        toBytes[2] = splitBySpace[2];//age
+                        toBytes[3] = splitBySpace[3];//NumPosts
+                        toBytes[4] = splitBySpace[4];//NumFollowers
+                        toBytes[5] = splitBySpace[5];//NumFollowing
+                        return bytes(toBytes);
                     }
                 }
 
-             case "ERROR": {
-                 tobytes[0] = "10";//ERROR
-                 tobytes[1]=splitBySpace[1];//Message Opcode
-                 return bytes(tobytes);
+            case "ERROR": {
+                toBytes[0] = "10";//ERROR
+                toBytes[1] = splitBySpace[1];//Message Opcode
+                return bytes(toBytes);
+            }
         }
+        throw new Exception("illegal");
+
     }
-    throw new Exception("illegal");
-
-}
-
-
-
 
 
     private byte[] bytes(String[] messageOutput) {
