@@ -26,7 +26,7 @@ public class EncDec<T> implements MessageEncoderDecoder<T> {
         if (opcodeSize == 2) {
             pushByte(nextByte);//the 3rd byte
             opcode = bytesToShort(new byte[]{bytes[0], bytes[1]});
-            System.out.println((int) opcode + " op code");
+
             numberOfWords += 1;
         } else {
             if (nextByte == '\0') {
@@ -90,9 +90,8 @@ public class EncDec<T> implements MessageEncoderDecoder<T> {
 
     @Override
     public byte[] encode(T message) throws Exception {//ACK 1
-        System.out.println(message.toString());
+      //  System.out.println(message.toString());
         String[] splitBySpace = ((String) message).split(" ");
-        System.out.println("**" + splitBySpace[0] + "**" + splitBySpace[1]);
         String opcode = splitBySpace[0];//ack
         String[] toBytes = new String[6];
         switch (opcode) {
@@ -115,10 +114,9 @@ public class EncDec<T> implements MessageEncoderDecoder<T> {
                 return bytes1(toBytes);
 
             case "ACK":
-                System.out.println("we in ack");
                 toBytes[0] = "10";//ACK
                 toBytes[1] = splitBySpace[1];//Message Opcode
-                System.out.println("in ack" + Integer.parseInt(splitBySpace[1]));
+                System.out.println(" we in ack" + Integer.parseInt(splitBySpace[1]));
                 switch (Integer.parseInt(splitBySpace[1])) {
                     case (1): //Message Opcode//| 2 | 3 | 5 | 6
                         System.out.println("we in case one register");
@@ -184,18 +182,23 @@ public class EncDec<T> implements MessageEncoderDecoder<T> {
         int length = c * 2;
         for (String s : messageOutput) {//take the size
             if (s != null) {
-                if (c <= 0) {
-                    byte[] outputMessageByte = s.getBytes();
-                    c--;
-                    length += outputMessageByte.length;
-                    if(messageOutput[1].equals("4")){//extra short after string
-                        length=length+1;
-                        c+=2;}
-                    if(messageOutput[1].equals("9")&c==-2)
-                        length=length+1;
-                        c+=3;}
-                } else c--;
-            }
+                if (s.equals("0")){ length=length+1;}
+                else {
+                    if (c <= 0) {
+                        byte[] outputMessageByte = s.getBytes();
+                        c--;
+                        length += outputMessageByte.length;
+                        // if(messageOutput[1].equals("4")){//extra short after string
+
+                        //  length=length+1;
+                        //c+=2;}
+                        if (messageOutput[1].equals("9") & c == -2)
+                            length = length + 1;
+                        c += 3;
+                    } else {
+                        c = c - 1;
+                    }
+                }  }}
 
         return length;
     }
@@ -203,10 +206,17 @@ public class EncDec<T> implements MessageEncoderDecoder<T> {
     public byte[] getOutput(String[] messageOutput, byte[] output) {
         byte[] outputMessageByte;
         int counter =0;
+        int stop=20;
+        if(messageOutput[1].equals("4")){stop=3;}
         int c = getC(messageOutput[1]);
         for (String s : messageOutput) {
             if (s != null) {
-                System.out.println(s+ "this is s");
+                if(s.equals("0")){
+                    outputMessageByte=shortToBytes((short) Integer.parseInt("0"));
+                        output[counter] = outputMessageByte[0];}
+
+                else {
+
                 if (c <= 0) {//String
                     outputMessageByte = s.getBytes(StandardCharsets.UTF_8);//if we have messages
                     c--;
@@ -216,13 +226,12 @@ public class EncDec<T> implements MessageEncoderDecoder<T> {
                         c=c+3;
                 } else {//short
                     outputMessageByte = shortToBytes((short) Integer.parseInt(s));
-                    System.out.println(bytesToShort(outputMessageByte));
                     c--;
                 }
                 for (int i = 0; i < outputMessageByte.length; i++, counter++) {
                     output[counter] = outputMessageByte[i];
                 }
-            }
+            }}
         }
         return output;
 
@@ -295,7 +304,6 @@ public class EncDec<T> implements MessageEncoderDecoder<T> {
                     result += "0:";
                 } else {
                     String accu = new String(bytes, start, i - start, StandardCharsets.UTF_8);
-                    System.out.println("accu: " + accu);
                     result = result + accu + ":";
                 }
                 start = i + 1;

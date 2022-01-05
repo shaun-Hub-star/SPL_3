@@ -85,7 +85,11 @@ public class DataBaseServer implements DataBaseQueries {
             User currentUser = userMap.get(me);
             User requestedUser = userMap.get(to);
             System.out.println("me:"+me+"to: "+to);
+            System.out.println(sign == 0);
+            System.out.println(!currentUser.getFollowing().contains(requestedUser.getUserName()));
+            System.out.println(!requestedUser.getBlocked().contains(currentUser.getUserName()));
             if (sign == 0 & !currentUser.getFollowing().contains(requestedUser.getUserName()) & !requestedUser.getBlocked().contains(currentUser.getUserName())) {
+                System.out.println("is in !!!!!");
                 backMessage = new BackMessage("ACK 4 0 " + requestedUser.getUserName(), BackMessage.Status.PASSED);
                 currentUser.addFollowing(requestedUser.getUserName());
                 requestedUser.addFollow(currentUser.getUserName());
