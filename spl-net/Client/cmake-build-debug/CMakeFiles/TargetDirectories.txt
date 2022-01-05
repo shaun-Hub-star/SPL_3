@@ -1,3 +1,0 @@
-/cygdrive/c/Users/Shust/Desktop/First_Degree/Courses/SPL/SPL3/SPL_3/spl-net/Client/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/cygdrive/c/Users/Shust/Desktop/First_Degree/Courses/SPL/SPL3/SPL_3/spl-net/Client/cmake-build-debug/CMakeFiles/edit_cache.dir
-/cygdrive/c/Users/Shust/Desktop/First_Degree/Courses/SPL/SPL3/SPL_3/spl-net/Client/cmake-build-debug/CMakeFiles/Client.dir
