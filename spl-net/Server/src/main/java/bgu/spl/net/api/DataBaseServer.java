@@ -45,6 +45,7 @@ public class DataBaseServer implements DataBaseQueries {
             if (!currentUser.isLogin() && captcha == 1) {
                 backMessage = new BackMessage("ACK 2", BackMessage.Status.PASSED);
                 currentUser.setLogin(true);
+                System.out.println(currentUser.isLogin());
             } else
                 backMessage = new BackMessage("ERROR 2", BackMessage.Status.ERROR);
         } else {
@@ -212,6 +213,9 @@ public class DataBaseServer implements DataBaseQueries {
     //CLIENT#1> ACK 8 47 1 2 0 NOT EXACTLY
     public synchronized BackMessage logStat(String me) {
         BackMessage backMessage;
+        System.out.println(userMap.containsKey(me)+" reg");
+        System.out.println(userMap.get(me).isLogin()+" log");
+
         if (userMap.containsKey(me) && userMap.get(me).isLogin()) {
             User currentUser = userMap.get(me);
             List<String> blockByCurrentUser = currentUser.getBlocked();
@@ -220,7 +224,8 @@ public class DataBaseServer implements DataBaseQueries {
                 if (!blockByCurrentUser.contains(userName) && userMap.get(userName).isLogin()) {
                     User loginUser = userMap.get(userName);
                     if (loginUser.details().equals("ERROR")) {
-                        backMessage = new BackMessage("ERROR 7", BackMessage.Status.ERROR);
+                        backMessage = new BackMessage("ERROR 7 ", BackMessage.Status.ERROR);
+                        System.out.println("!!!!!!!!!!!!");
                         return backMessage;
                     } else {
                         logStatMessage.add("ACK 7 " + loginUser.details());
@@ -233,6 +238,7 @@ public class DataBaseServer implements DataBaseQueries {
         }
         else {
             backMessage = new BackMessage("ERROR 7", BackMessage.Status.ERROR);
+            System.out.println("*********8");
         }
         return backMessage;
     }

@@ -86,18 +86,23 @@ public class User {
     }
 
     public int getAge() throws ParseException {
+        System.out.println(birthday+" birthday");
         LocalDate now = LocalDate.now();
         //change the string of birthday to Local Date
-        SimpleDateFormat sdf = new SimpleDateFormat("dd-mm-yyyy");
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
         Date D = sdf.parse(birthday);
         Calendar c = Calendar.getInstance();
         c.setTime(D);
         int year = c.get(Calendar.YEAR);
+        System.out.println(year);
         int month = c.get(Calendar.MONTH);
+        System.out.println(month);
         int date = c.get(Calendar.DATE);
+        System.out.println(date);
         LocalDate l1 = LocalDate.of(year, month, date);
         //calculate the age
         Period diff = Period.between(l1, now);
+        System.out.println(diff.getYears());
         return diff.getYears();
     }
 

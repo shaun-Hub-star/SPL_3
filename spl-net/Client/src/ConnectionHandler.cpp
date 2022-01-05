@@ -142,16 +142,17 @@ bool ConnectionHandler::getFrameAscii(std::string &frame, char delimiter) {
     try {
         char *opcodeBytes = new char[2];
         getBytes(opcodeBytes, 2);
-        //char *opcodeBytes = new char[2]
-        //getBytes(&opcodeBytes,2)
-        //short op
-
         short opcode = bytesToShort(opcodeBytes);
         //std::cout<<"opcode "<<opcode<<std::endl;
         switch (opcode) {
 
-            /*case 9:
+        /*    case 9:
                 messageToClient = "NOTIFICATION";
+                char *opcodeBytes9 = new char[2];
+                getBytes(opcodeBytes9, 2);
+                short opcode9 = bytesToShort(opcodeBytes9);
+
+
                 getBytes(&secondebyts, 1);
                 if (secondebyts == 0)
                     messageToClient += " PM ";
@@ -161,9 +162,10 @@ bool ConnectionHandler::getFrameAscii(std::string &frame, char delimiter) {
                 messageToClient += UserName;
                 string Content = findWord(fourthbytes, '\0');
                 messageToClient += " " + Content;
-                break;*/
+                break;
 
-            case 10:
+*/
+            case (10):{
                 // std::cout << "case 10" << std::endl;
                 messageToClient = "ACK ";
 
@@ -172,7 +174,7 @@ bool ConnectionHandler::getFrameAscii(std::string &frame, char delimiter) {
                 short messageOpcode = bytesToShort(opcodemes);
                 //std::cout << (int) messageOpcode << std::endl;
                 messageToClient += std::to_string((int) messageOpcode);
-                //std::cout << "Message to client" << messageToClient << std::endl;
+                std::cout << "Message to client" << messageToClient << std::endl;
                 if (messageOpcode == 8 | messageOpcode == 7) {
                     char *age = getChar(thirdbytes, 2);
                     char *NumPosts = getChar(thirdbytes, 2);
@@ -188,15 +190,20 @@ bool ConnectionHandler::getFrameAscii(std::string &frame, char delimiter) {
                     messageToClient += UserName;
                 }
                 frame = messageToClient;
-                break;
+                break;}
 
-                /* case 11:
-                     messageToClient = "ERROR ";
-                     getBytes(&secondebyts, 1);
-                     string MessageOpcode = findWord(secondebyts, delimiter);
+            case(11):
+                messageToClient = "ERROR ";
+                std::cout << "Message to client" << messageToClient << std::endl;
+                char *opcodemes11 = new char[2];
+                getBytes(opcodemes11, 2);
+                short messageOpcode11 = bytesToShort(opcodemes11);
+                messageToClient += std::to_string((int) messageOpcode11);
+                std::cout << "Message to client" << messageToClient << std::endl;
+                frame = messageToClient;
                      break;
 
-                 case 12:
+                /* case 12:
                      messageToClient = "BLOCK ";
                      getBytes(&secondebyts, 1);
                      string username = findWord(secondebyts, delimiter);
@@ -206,12 +213,12 @@ bool ConnectionHandler::getFrameAscii(std::string &frame, char delimiter) {
                  default:
                      messageToClient = "";
                      break;*/
-        }
+
 
 
         frame = messageToClient;
         //std::cout<<frame<<std::endl;
-    }
+    }}
     catch (std::exception &e) {
 
         std::cerr << "recv failed (Error: " << e.what() << ')' << std::endl;
