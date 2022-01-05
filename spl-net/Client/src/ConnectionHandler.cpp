@@ -112,7 +112,6 @@ bool ConnectionHandler::sendBytes(const char bytes[], int bytesToWrite) {
 
 
 bool ConnectionHandler::getLine(std::string &line) {
-
     return getFrameAscii(line, '\n');
 
 }
@@ -140,10 +139,11 @@ bool ConnectionHandler::getFrameAscii(std::string &frame, char delimiter) {
     char sixthbyts;
     string messageToClient = "";
     try {
+
         char *opcodeBytes = new char[2];
         getBytes(opcodeBytes, 2);
         short opcode = bytesToShort(opcodeBytes);
-        //std::cout<<"opcode "<<opcode<<std::endl;
+        std::cout<<"opcode "<<opcode<<std::endl;
         switch (opcode) {
 
         /*    case 9:
@@ -163,36 +163,9 @@ bool ConnectionHandler::getFrameAscii(std::string &frame, char delimiter) {
                 string Content = findWord(fourthbytes, '\0');
                 messageToClient += " " + Content;
                 break;
-
 */
-            case (10):{
-                // std::cout << "case 10" << std::endl;
-                messageToClient = "ACK ";
 
-                char *opcodemes = new char[2];
-                getBytes(opcodemes, 2);
-                short messageOpcode = bytesToShort(opcodemes);
-                //std::cout << (int) messageOpcode << std::endl;
-                messageToClient += std::to_string((int) messageOpcode);
-                std::cout << "Message to client" << messageToClient << std::endl;
-                if (messageOpcode == 8 | messageOpcode == 7) {
-                    char *age = getChar(thirdbytes, 2);
-                    char *NumPosts = getChar(thirdbytes, 2);
-                    char *NumFollowers = getChar(thirdbytes, 2);
-                    char *NumFollowing = getChar(thirdbytes, 2);
-                    messageToClient =
-                            messageToClient + " " + age + " " + NumPosts + " " + NumFollowers + " " + NumFollowing;
-
-                } else if (messageOpcode == 4) {
-
-                    getBytes(&thirdbytes, 1);
-                    string UserName = findWord(thirdbytes, '\0');
-                    messageToClient += UserName;
-                }
-                frame = messageToClient;
-                break;}
-
-            case(11):
+            case 11 :
                 messageToClient = "ERROR ";
                 std::cout << "Message to client" << messageToClient << std::endl;
                 char *opcodemes11 = new char[2];
@@ -201,7 +174,62 @@ bool ConnectionHandler::getFrameAscii(std::string &frame, char delimiter) {
                 messageToClient += std::to_string((int) messageOpcode11);
                 std::cout << "Message to client" << messageToClient << std::endl;
                 frame = messageToClient;
-                     break;
+                delete opcodemes11;
+                break;
+
+
+            case 10 :
+                messageToClient = "ACK ";
+                char *opcodemes = new char[2];
+                getBytes(opcodemes, 2);
+                short messageOpcode = bytesToShort(opcodemes);
+                messageToClient += std::to_string((int) messageOpcode);
+                if ((int)messageOpcode == 8 | (int)messageOpcode == 7) {
+               //     std::cout << "Message to client im in" << messageToClient <<" "<<messageOpcode<< std::endl;
+                    char *opcodemes1 = new char[2];
+                    getBytes(opcodemes1, 2);
+                    short messageOpcode1 = bytesToShort(opcodemes1);
+                    messageToClient += " "+std::to_string((int) messageOpcode1);//age
+                    char *opcodemes2 = new char[2];
+                    getBytes(opcodemes2, 2);
+                    short messageOpcode2 = bytesToShort(opcodemes2);
+                    messageToClient +=  " "+std::to_string((int) messageOpcode2);//num
+                    char *opcodemes3 = new char[2];
+                    getBytes(opcodemes3, 2);
+                    short messageOpcode3 = bytesToShort(opcodemes3);
+                    messageToClient +=  " "+std::to_string((int) messageOpcode3);//fol
+                    char *opcodemes4 = new char[2];
+                    getBytes(opcodemes4, 2);
+                    short messageOpcode4 = bytesToShort(opcodemes4);
+                    messageToClient +=  " "+std::to_string((int) messageOpcode4);//folooo
+                    delete opcodemes1;
+                    delete opcodemes2;
+                    delete opcodemes3;
+                    delete opcodemes4;
+
+
+                 /*   char *age = getChar(thirdbytes, 2);
+                    char *NumPosts = getChar(thirdbytes, 2);
+                    char *NumFollowers = getChar(thirdbytes, 2);
+                    char *NumFollowing = getChar(thirdbytes, 2);
+                    messageToClient =
+                            messageToClient + " " + age + " " + NumPosts + " " + NumFollowers + " " + NumFollowing;
+                   */ frame=messageToClient;
+                   // std::cout << "frame 1" << frame << std::endl;
+
+                } else if ((int)messageOpcode == 4) {
+                    char *opcodemes3 = new char[1];
+                    getBytes(opcodemes3, 1);
+                    short messageOpcode3 = bytesToShort(opcodemes3);
+                    messageToClient +=  " "+std::to_string((int) messageOpcode3);//fol
+                    string UserName = findWord(thirdbytes, '\0');
+                    messageToClient += UserName;
+                    frame=messageToClient;
+                }
+                frame = messageToClient;
+                break;
+
+
 
                 /* case 12:
                      messageToClient = "BLOCK ";
@@ -217,7 +245,9 @@ bool ConnectionHandler::getFrameAscii(std::string &frame, char delimiter) {
 
 
         frame = messageToClient;
-        //std::cout<<frame<<std::endl;
+        std::cout<<frame<<std::endl;
+        frame=messageToClient;
+                std::cout << "frame 2" << frame << std::endl;
     }}
     catch (std::exception &e) {
 
@@ -226,6 +256,7 @@ bool ConnectionHandler::getFrameAscii(std::string &frame, char delimiter) {
         return false;
 
     }
+    std::cout << "frame 2" << frame << std::endl;
 
     return true;
 
