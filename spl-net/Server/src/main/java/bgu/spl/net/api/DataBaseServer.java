@@ -4,6 +4,7 @@ import bgu.spl.net.api.MessagePackage.BackMessage;
 import bgu.spl.net.api.MessagePackage.Messages;
 
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
@@ -114,22 +115,30 @@ public class DataBaseServer implements DataBaseQueries {
             List<String> blocking = currentUser.getBlocked();
             currentUser.addPost();
             if (currentUser.isLogin()) {
-                backMessage = new BackMessage("ACK 4", BackMessage.Status.PASSED);
+                backMessage = new BackMessage("ACK 5", BackMessage.Status.PASSED);
                 backMessage.setMessage(notification);
 
                 Messages keepMessage = null;
                 try {
-                    keepMessage = new Messages(msg, LocalDateTime.now().toString());
+                    System.out.println("!!!!!!!!!!!!0");
+
+                    keepMessage = new Messages(msg, LocalDateTime.now());
                 } catch (ParseException e) {
+                    System.out.println("!!!!!!!!!!!!1");
                     e.printStackTrace();
                 }
-                if (!userMap.containsKey(userName)) {
+                if (!userToHerMessages.containsKey(userName)) {
                     List<Messages> messages = new LinkedList<>();
                     userToHerMessages.put(currentUser.getUserName(), messages);
+                    System.out.println("!!!!!!!!!!!!2");
 
                 }
+                System.out.println(currentUser.getUserName()+" currentUser.getUserName() **** ");
+                System.out.println("keepMessage "+keepMessage.getMessage() );
                 userToHerMessages.get(currentUser.getUserName()).add(keepMessage);
+                System.out.println("!!!!!!!!!!!!3");
                 for (String tag : tags) {
+                    System.out.println("!!!!!!!!!!!!4");
                     if (blocking.contains(tag)) continue;
                     if (userMap.containsKey(tag)) {
                         User tagUser = userMap.get(tag);
@@ -138,7 +147,7 @@ public class DataBaseServer implements DataBaseQueries {
                             tags.remove(tag);
                         }
                     } else {
-                        backMessage = new BackMessage("ERROR 4", BackMessage.Status.ERROR);
+                        backMessage = new BackMessage("ERROR 5", BackMessage.Status.ERROR);
                         return backMessage;
                     }
                 }
@@ -154,10 +163,10 @@ public class DataBaseServer implements DataBaseQueries {
                     }
                 }
             } else
-                backMessage = new BackMessage("ERROR 4", BackMessage.Status.ERROR);
+                backMessage = new BackMessage("ERROR 5", BackMessage.Status.ERROR);
             // }
         } else {
-            backMessage = new BackMessage("ERROR 4", BackMessage.Status.ERROR);
+            backMessage = new BackMessage("ERROR 5", BackMessage.Status.ERROR);
         }
         return backMessage;
     }

@@ -312,7 +312,7 @@ public class ClientProtocol implements BidiMessagingProtocol<String> {
     }
 
     private String getUserName(String[] separated) {//in login and in register
-        return separated[1];
+        return separated[0];
     }
 }
 

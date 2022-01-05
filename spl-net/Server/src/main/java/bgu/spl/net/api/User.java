@@ -123,7 +123,7 @@ public class User {
     }
 
     public void addPost() {
-        this.numPosts = numPosts++;
+        this.numPosts = numPosts+1;
     }
     public Queue<String> getNotification() {
         return notification;

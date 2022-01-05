@@ -23,6 +23,12 @@ public class Messages {
         this.date = getDate(date);
         this.filter = new LinkedList<>(filter);
     }
+    public Messages(String message,LocalDateTime localDateTime) throws ParseException {
+        this.message = fixFilter(message);
+        this.date = localDateTime;
+        this.filter = new LinkedList<>();
+        System.out.println("finish tim message "+ message);
+    }
 
     public LocalDateTime getDate(String massageDate) throws ParseException {
         //change the string of birthday to Local Date
@@ -44,6 +50,7 @@ public class Messages {
     }
 
     public String fixFilter(String msg){//TODO - change the word
+        if(filter!=null){
         StringBuilder output = new StringBuilder();
         String[] splitBySpace = msg.split(" ");
         for(String word : splitBySpace){
@@ -54,7 +61,9 @@ public class Messages {
             }
         }
 
-        return output.toString();
+        return output.toString();}
+        return msg;
+
     }
 
     public LocalDateTime getDate() {
