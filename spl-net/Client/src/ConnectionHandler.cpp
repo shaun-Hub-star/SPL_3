@@ -125,7 +125,6 @@ bool ConnectionHandler::sendLine(std::string &line) {
 
 
 bool ConnectionHandler::getFrameAscii(std::string &frame, char delimiter) {
-    std::cout << "are you in?1" << std::endl;
     char ch;
 
     // Stop when we encounter the null character.
@@ -206,14 +205,15 @@ bool ConnectionHandler::getFrameAscii(std::string &frame, char delimiter) {
                 frame = messageToClient;
 
             } else if ((int) messageOpcode == 4) {
-                char *opcodemes3 = new char[1];
-                getBytes(opcodemes3, 1);
-                short messageOpcode3 = bytesToShort(opcodemes3);
-                messageToClient += " " + std::to_string((int) messageOpcode3);//fol
+              //  char *opcodemes3 = new char[1];
+              //  getBytes(opcodemes3, 1);
+              //  short messageOpcode3 = bytesToShort(opcodemes3);
+              //  messageToClient += " " + std::to_string((int) messageOpcode3);//fol
+              //  std::cout << "messageToClient " << messageToClient <<" "<<messageOpcode<< std::endl;
                 string UserName = findWord(thirdbytes, '\0');
                 messageToClient += UserName;
                 frame = messageToClient;
-                delete opcodemes3;
+
             }
             frame = messageToClient;
         }
@@ -231,7 +231,6 @@ bool ConnectionHandler::getFrameAscii(std::string &frame, char delimiter) {
 
 
         frame = messageToClient;
-       std::cout << "frame 2" << frame << std::endl;
     }
     catch (std::exception &e) {
 
@@ -247,12 +246,13 @@ bool ConnectionHandler::getFrameAscii(std::string &frame, char delimiter) {
 }
 
 std::string ConnectionHandler::findWord(char ch, char delimiter) {
-    string output = "";
+    string output = " ";
     getBytes(&ch, 1);
     while (ch != delimiter) {
         output += ch;
         getBytes(&ch, 1);
     }
+    std::cout<<"we in foundword- outut send "<<output<<std::endl;
     return output;
 }
 

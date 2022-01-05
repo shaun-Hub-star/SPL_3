@@ -32,7 +32,8 @@ int main (int argc, char *argv[]) {
 
 //REGISTER shaun 123 28-04-2002
 //REGISTER lior 123 27-08-1997
-// LOGIN shaun 123 1
+//LOGIN shaun 123 1
 // LOGIN lior 123 1
 //LOGSTAT
+//FOLLOW 0 lior
 //POST lior levy
