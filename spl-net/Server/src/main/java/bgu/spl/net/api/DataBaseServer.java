@@ -81,9 +81,11 @@ public class DataBaseServer implements DataBaseQueries {
     public synchronized BackMessage follow(String me, String to, int sign) {//backMessage(1) holds the actual message
         BackMessage backMessage;
         if (userMap.containsKey(me) && userMap.containsKey(to) & userMap.get(me).isLogin()) {
+            System.out.println("in follow");
             User currentUser = userMap.get(me);
             User requestedUser = userMap.get(to);
-            if (sign == 0 & !currentUser.getFollowing().contains(requestedUser.getUserName()) & requestedUser.getBlocked().contains(currentUser.getUserName())) {
+            System.out.println("me:"+me+"to: "+to);
+            if (sign == 0 & !currentUser.getFollowing().contains(requestedUser.getUserName()) & !requestedUser.getBlocked().contains(currentUser.getUserName())) {
                 backMessage = new BackMessage("ACK 4 0 " + requestedUser.getUserName(), BackMessage.Status.PASSED);
                 currentUser.addFollowing(requestedUser.getUserName());
                 requestedUser.addFollow(currentUser.getUserName());
@@ -120,7 +122,6 @@ public class DataBaseServer implements DataBaseQueries {
 
                 Messages keepMessage = null;
                 try {
-                    System.out.println("!!!!!!!!!!!!0");
 
                     keepMessage = new Messages(msg, LocalDateTime.now());
                 } catch (ParseException e) {
@@ -345,6 +346,11 @@ public class DataBaseServer implements DataBaseQueries {
     }
     @Override
     public int getId(String userName) {//todo make sure when there is no such user
+        for(String key : userMap.keySet()) System.out.println(key.equals("lior")||key.equals("shaun"));
+        System.out.println();
+        System.out.println("user name "+userName);
+        System.out.println("user map: "+userMap.containsKey(userName));
+        System.out.println("user map "+userMap.get(userName).getPassword());
         return userMap.get(userName).getId();
     }
 }

@@ -294,7 +294,7 @@ public class EncDec<T> implements MessageEncoderDecoder<T> {
                 if (i == 2 && opcode == 4) {
                     result += "0:";
                 } else {
-                    String accu = new String(bytes, start, i - start + 1, StandardCharsets.UTF_8);
+                    String accu = new String(bytes, start, i - start, StandardCharsets.UTF_8);
                     System.out.println("accu: " + accu);
                     result = result + accu + ":";
                 }
@@ -303,8 +303,8 @@ public class EncDec<T> implements MessageEncoderDecoder<T> {
         }
         System.out.println(result);
         if (result.length() >= 3)
-            result = result.substring(0, result.length() - 2);
-
+            result = result.substring(0, result.length() -1);
+        System.out.println(result+"check");
         //String result = new String(bytes, 2, len, StandardCharsets.UTF_8);
         if (opcode <= 9)
             result = "0" + opcode + result;

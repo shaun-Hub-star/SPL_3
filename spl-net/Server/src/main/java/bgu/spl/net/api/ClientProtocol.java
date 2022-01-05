@@ -24,9 +24,9 @@ public class ClientProtocol implements BidiMessagingProtocol<String> {
 
     @Override
     public void process(String msg) {
-        System.out.println("process "+msg);
+        System.out.println("process " + msg);
         if (msg != null) {
-            String opcode = msg.substring(0,2);
+            String opcode = msg.substring(0, 2);
             msg = msg.substring(2);
             System.out.println(msg);
             String[] separatedBySpace = msg.split(":");
@@ -158,7 +158,19 @@ public class ClientProtocol implements BidiMessagingProtocol<String> {
             }
         }
     }
-
+    private void sendMessageFollow(BackMessage backMessage, String name, List<Integer> tags) {//only to tag and not for followers
+        for (Integer tag_id : tags) {
+            if (backMessage.getStatus() == BackMessage.Status.PASSED) {//logical
+                if (!connections.send(tag_id, backMessage.getMessages().get(0))) {//connection error
+                    System.out.println("failed to send " + name + " message");//debugging
+                }
+            } else {
+                if (!connections.send(tag_id, backMessage.getMessages().get(0))) {//ERROR 1
+                    System.out.println("failed to send error " + name + " message");//connection problem
+                }
+            }
+        }
+    }
     private void post(String[] separated) {
         BackMessage backMessage;
         String content = getContent(separated);
@@ -181,7 +193,7 @@ public class ClientProtocol implements BidiMessagingProtocol<String> {
         int id = dataBaseServer.getId(follow);
         List<Integer> lst = new LinkedList<>();
         lst.add(id);
-        sendMessage(backMessage, name, lst);
+        sendMessageFollow(backMessage, name,lst);
     }
 
     private int getSign(String[] separated) {
@@ -209,7 +221,7 @@ public class ClientProtocol implements BidiMessagingProtocol<String> {
         String password = getUserPassword(separated);
         int captcha = getUserCaptcha(separated);
 
-        backMessage = dataBaseServer.login(userName,password,captcha);
+        backMessage = dataBaseServer.login(userName, password, captcha);
         if (backMessage.getStatus() == BackMessage.Status.PASSED) {// i need to send ACK 2 notification1
             if (!connections.send(connectionId, backMessage.getMessage())) {//send ACK 2
                 System.out.println("error while sending login ack");
@@ -295,6 +307,7 @@ public class ClientProtocol implements BidiMessagingProtocol<String> {
     }
 
     private String getFollow(String[] separated) {//the person i want to follow
+        System.out.println("get follow" + separated[1] + "follopw or unfollow" + separated[0]);
         return separated[1];
     }
 
