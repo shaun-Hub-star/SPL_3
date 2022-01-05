@@ -144,26 +144,26 @@ bool ConnectionHandler::getFrameAscii(std::string &frame, char delimiter) {
         getBytes(opcodeBytes, 2);
         short opcode = bytesToShort(opcodeBytes);
         std::cout<<"opcode "<<opcode<<std::endl;
-        switch (opcode) {
+        delete opcodeBytes;
+        switch ((int)opcode) {
 
-        /*    case 9:
+           case 9 :
                 messageToClient = "NOTIFICATION";
-                char *opcodeBytes9 = new char[2];
-                getBytes(opcodeBytes9, 2);
-                short opcode9 = bytesToShort(opcodeBytes9);
-
-
-                getBytes(&secondebyts, 1);
-                if (secondebyts == 0)
+                char *opcodeBytes1 = new char[1];
+                getBytes(opcodeBytes1, 1);
+                short opcode1 = bytesToShort(opcodeBytes1);
+                if ((int)opcode1 == 0)
                     messageToClient += " PM ";
-                else if (secondebyts == 1)
+                else if ((int)opcode1 == 1)
                     messageToClient += " Public ";
-                string UserName = findWord(thirdbytes, '\0');
+                string UserName = findWord(firstbytes, '\0');
                 messageToClient += UserName;
-                string Content = findWord(fourthbytes, '\0');
+                string Content = findWord(secondebyts, '\0');
                 messageToClient += " " + Content;
+                frame=messageToClient;
+                delete opcodeBytes1;
                 break;
-*/
+
 
             case 11 :
                 messageToClient = "ERROR ";
@@ -202,20 +202,12 @@ bool ConnectionHandler::getFrameAscii(std::string &frame, char delimiter) {
                     getBytes(opcodemes4, 2);
                     short messageOpcode4 = bytesToShort(opcodemes4);
                     messageToClient +=  " "+std::to_string((int) messageOpcode4);//folooo
+                    delete opcodemes;
                     delete opcodemes1;
                     delete opcodemes2;
                     delete opcodemes3;
                     delete opcodemes4;
-
-
-                 /*   char *age = getChar(thirdbytes, 2);
-                    char *NumPosts = getChar(thirdbytes, 2);
-                    char *NumFollowers = getChar(thirdbytes, 2);
-                    char *NumFollowing = getChar(thirdbytes, 2);
-                    messageToClient =
-                            messageToClient + " " + age + " " + NumPosts + " " + NumFollowers + " " + NumFollowing;
-                   */ frame=messageToClient;
-                   // std::cout << "frame 1" << frame << std::endl;
+                     frame=messageToClient;
 
                 } else if ((int)messageOpcode == 4) {
                     char *opcodemes3 = new char[1];
@@ -225,6 +217,7 @@ bool ConnectionHandler::getFrameAscii(std::string &frame, char delimiter) {
                     string UserName = findWord(thirdbytes, '\0');
                     messageToClient += UserName;
                     frame=messageToClient;
+                    delete opcodemes3;
                 }
                 frame = messageToClient;
                 break;
@@ -238,16 +231,10 @@ bool ConnectionHandler::getFrameAscii(std::string &frame, char delimiter) {
                      messageToClient += username;
                      break;
 
-                 default:
-                     messageToClient = "";
-                     break;*/
-
 
 
         frame = messageToClient;
-        std::cout<<frame<<std::endl;
-        frame=messageToClient;
-                std::cout << "frame 2" << frame << std::endl;
+       std::cout << "frame 2" << frame << std::endl;
     }}
     catch (std::exception &e) {
 
@@ -256,7 +243,7 @@ bool ConnectionHandler::getFrameAscii(std::string &frame, char delimiter) {
         return false;
 
     }
-    std::cout << "frame 2" << frame << std::endl;
+    std::cout << "frame 2 the TRUE" << frame << std::endl;
 
     return true;
 
