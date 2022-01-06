@@ -200,16 +200,15 @@ public class DataBaseServer implements DataBaseQueries {
 
                     }
                     userToHerMessages.get(currentUser.getUserName()).add(keepMessage);
-                    List<String> back = new LinkedList<>();
-                    back.add(0, "ACK 6");
+                    backMessage = new BackMessage();
+                    backMessage.setMessage("ACK 6");
                     String outputRequestedUser = "NOTIFICATION PM " + me + " " + keepMessage.getMessage();
                     if (requestedUser.isLogin()) {
-                        back.add(1, outputRequestedUser);//TODO check infront shoun
+                        backMessage.setMessage(outputRequestedUser);//TODO check infront shoun
                     } else {
                         requestedUser.addNotification(outputRequestedUser);
                     }
-                    backMessage = new BackMessage(msg, BackMessage.Status.PASSED);
-                    backMessage.setMessages(back, BackMessage.Status.PASSED);
+
 
                 } catch (Exception ParseException) {
                     backMessage = new BackMessage("ERROR 6", BackMessage.Status.ERROR);

@@ -150,7 +150,7 @@ public class ClientProtocol implements BidiMessagingProtocol<String> {
                     System.out.println("failed to send " + name + " message");//debugging
                 }
             } else {
-                if (!connections.send(tag_id, backMessage.getMessages().get(1))) {//ERROR 1
+                if (!connections.send(tag_id, backMessage.getMessages().get(0))) {//ERROR 1
                     System.out.println("failed to send error " + name + " message");//connection problem
                 }
             }
@@ -279,11 +279,11 @@ public class ClientProtocol implements BidiMessagingProtocol<String> {
     }
 
     private String getDateAndTime(String[] separated) {
-        return separated[3];
+        return separated[2];
     }
 
     private String getToSendMessage(String[] separated) {
-        return separated[2];
+        return separated[0];
     }
 
     private String getMessageContent(String[] separated) {
