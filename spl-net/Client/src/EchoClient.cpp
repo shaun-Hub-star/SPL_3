@@ -36,4 +36,4 @@ int main (int argc, char *argv[]) {
 // LOGIN lior 123 1
 //LOGSTAT
 //FOLLOW 0 lior
-//POST lior levy
+//POST new post from lior levy!

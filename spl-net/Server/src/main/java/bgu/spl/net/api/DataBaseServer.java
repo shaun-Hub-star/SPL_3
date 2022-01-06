@@ -39,7 +39,7 @@ public class DataBaseServer implements DataBaseQueries {
 
 
     @Override
-    public synchronized BackMessage login(String userName, String password,int captcha) {//ERROR 2
+    public synchronized BackMessage login(String userName, String password, int captcha) {//ERROR 2
         BackMessage backMessage;
         if (userMap.containsKey(userName)) {
             User currentUser = userMap.get(userName);
@@ -84,11 +84,12 @@ public class DataBaseServer implements DataBaseQueries {
             System.out.println("in follow");
             User currentUser = userMap.get(me);
             User requestedUser = userMap.get(to);
-            System.out.println("me:"+me+"to: "+to);
+            System.out.println("me:" + me + "to: " + to);
             System.out.println(sign == 0);
             System.out.println(!currentUser.getFollowing().contains(requestedUser.getUserName()));
             System.out.println(!requestedUser.getBlocked().contains(currentUser.getUserName()));
-            if (sign == 0 & !currentUser.getFollowing().contains(requestedUser.getUserName()) & !requestedUser.getBlocked().contains(currentUser.getUserName())) {
+            if (sign == 0 & !currentUser.getFollowing().contains(requestedUser.getUserName())
+                    & !requestedUser.getBlocked().contains(currentUser.getUserName())) {
                 System.out.println("is in !!!!!");
                 backMessage = new BackMessage("ACK 4 0 " + requestedUser.getUserName(), BackMessage.Status.PASSED);
                 currentUser.addFollowing(requestedUser.getUserName());
@@ -113,7 +114,7 @@ public class DataBaseServer implements DataBaseQueries {
     public synchronized BackMessage post(String msg, String userName, List<String> tags) {//shaun
 
         List<User> tagged = getUsers(tags);
-        String notification = "NOTIFICATION Public " + msg;
+        String notification = "NOTIFICATION Public "+userName+" " + msg;
         BackMessage backMessage;
 
         if (userMap.containsKey(userName)) {
@@ -126,7 +127,6 @@ public class DataBaseServer implements DataBaseQueries {
 
                 Messages keepMessage = null;
                 try {
-
                     keepMessage = new Messages(msg, LocalDateTime.now());
                 } catch (ParseException e) {
                     System.out.println("!!!!!!!!!!!!1");
@@ -138,8 +138,8 @@ public class DataBaseServer implements DataBaseQueries {
                     System.out.println("!!!!!!!!!!!!2");
 
                 }
-                System.out.println(currentUser.getUserName()+" currentUser.getUserName() **** ");
-                System.out.println("keepMessage "+keepMessage.getMessage() );
+                System.out.println(currentUser.getUserName() + " currentUser.getUserName() **** ");
+                System.out.println("keepMessage " + keepMessage.getMessage());
                 userToHerMessages.get(currentUser.getUserName()).add(keepMessage);
                 System.out.println("!!!!!!!!!!!!3");
                 for (String tag : tags) {
@@ -156,14 +156,15 @@ public class DataBaseServer implements DataBaseQueries {
                         return backMessage;
                     }
                 }
-                for (String followingMe : currentUser.getFollowing()) {
+                for (String followingMe : currentUser.getFollowers()) {
                     User followingMeUser = userMap.get(followingMe);
                     if (!tags.contains(followingMe)) {
                         if (!followingMeUser.isLogin()) {
                             //push to the queue of notifications
-
+                            followingMeUser.addNotification(msg);
                         } else {
                             tags.add(followingMe);
+                            System.out.println(followingMe + "POST in dataBase " + tags.size());
                         }
                     }
                 }
@@ -227,8 +228,8 @@ public class DataBaseServer implements DataBaseQueries {
     //CLIENT#1> ACK 8 47 1 2 0 NOT EXACTLY
     public synchronized BackMessage logStat(String me) {
         BackMessage backMessage;
-        System.out.println(userMap.containsKey(me)+" reg");
-        System.out.println(userMap.get(me).isLogin()+" log");
+        System.out.println(userMap.containsKey(me) + " reg");
+        System.out.println(userMap.get(me).isLogin() + " log");
 
         if (userMap.containsKey(me) && userMap.get(me).isLogin()) {
             User currentUser = userMap.get(me);
@@ -249,8 +250,7 @@ public class DataBaseServer implements DataBaseQueries {
             backMessage = new BackMessage("", BackMessage.Status.PASSED);
             backMessage.setMessages(logStatMessage, BackMessage.Status.PASSED);
             return backMessage;
-        }
-        else {
+        } else {
             backMessage = new BackMessage("ERROR 7", BackMessage.Status.ERROR);
             System.out.println("*********8");
         }
@@ -335,26 +335,27 @@ public class DataBaseServer implements DataBaseQueries {
                 User currentUser = userMap.get(userName);
                 return currentUser.getNotification();
             }
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
     }
+
     @Override
     public void deleteNotifications(String userName) {
-        if( userMap.containsKey(userName)){
+        if (userMap.containsKey(userName)) {
             userMap.get(userName).deleteNotification();
         }
 
     }
+
     @Override
     public int getId(String userName) {//todo make sure when there is no such user
-        for(String key : userMap.keySet()) System.out.println(key.equals("lior")||key.equals("shaun"));
+        for (String key : userMap.keySet()) System.out.println(key.equals("lior") || key.equals("shaun"));
         System.out.println();
-        System.out.println("user name "+userName);
-        System.out.println("user map: "+userMap.containsKey(userName));
-        System.out.println("user map "+userMap.get(userName).getPassword());
+        System.out.println("user name " + userName);
+        System.out.println("user map: " + userMap.containsKey(userName));
+        System.out.println("user map " + userMap.get(userName).getPassword());
         return userMap.get(userName).getId();
     }
 }

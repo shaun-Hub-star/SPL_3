@@ -90,27 +90,29 @@ public class EncDec<T> implements MessageEncoderDecoder<T> {
 
     @Override
     public byte[] encode(T message) throws Exception {//ACK 1
-      //  System.out.println(message.toString());
+        System.out.println(message.toString());
         String[] splitBySpace = ((String) message).split(" ");
         String opcode = splitBySpace[0];//ack
         String[] toBytes = new String[6];
         switch (opcode) {
             case "NOTIFICATION":
-                toBytes[0] = "09";//NOTIFICATION
-                toBytes[1] = splitBySpace[1];//Public/PM
-                toBytes[2] = splitBySpace[2];//PostingUser
-               toBytes[3] = "0";
-                switch (splitBySpace[1]) {
-                    case ("PM"):
-                        toBytes[3] = ((String) message).substring(15);//Content
-                        break;
-
-                    case ("PUBLIC"):
-                        toBytes[3] = ((String) message).substring(19);//Content
-                        break;
-
+                toBytes[0] = "9"; //NOTIFICATION
+                if (splitBySpace[1].equals("PUBLIC")) {
+                    toBytes[1] = "1";
+                } else {
+                    toBytes[1] = "0";
                 }
-                toBytes[5] = "0";
+                //toBytes[1] = splitBySpace[1]; //Public/PM
+                toBytes[2] = splitBySpace[2]; //PostingUser
+                toBytes[3] = "\0";
+
+                String content = "";
+                for (int i = 3; i < splitBySpace.length; i++) {
+                    content += " " + splitBySpace[i];
+                }
+
+                toBytes[4] = content;
+                toBytes[5] = "\0";
                 return bytes1(toBytes);
 
             case "ACK":
@@ -121,18 +123,19 @@ public class EncDec<T> implements MessageEncoderDecoder<T> {
                     case (1): //Message Opcode//| 2 | 3 | 5 | 6
                         System.out.println("we in case one register");
                         return bytes1(toBytes);
-
+                    case (12): //Message Opcode//| 2 | 3 | 5 | 6
+                        System.out.println("we in case block");
+                        return bytes1(toBytes);
                     case (2):
                         System.out.println("we in case two login");
                         return bytes1(toBytes);
                     case (3):
                         System.out.println("we in case three logout");
                         return bytes1(toBytes);
-
                     case (4):
                         // System.out.println("we in case four follow");
                         toBytes[2] = splitBySpace[3];//username;
-                        toBytes[3] = "0";//end of byts
+                        toBytes[3] = "\0";//end of byts
                         return bytes1(toBytes);
 
                     case (5):
@@ -148,6 +151,7 @@ public class EncDec<T> implements MessageEncoderDecoder<T> {
                         toBytes[3] = splitBySpace[3];//NumPosts
                         toBytes[4] = splitBySpace[4];//NumFollowers
                         toBytes[5] = splitBySpace[5];//NumFollowing
+                        System.out.println(toBytes[2] + " " + toBytes[3] + " " + toBytes[4] + " " + toBytes[5] + "After case 7 ");
                         return bytes1(toBytes);
 
                     case (8):
@@ -172,66 +176,89 @@ public class EncDec<T> implements MessageEncoderDecoder<T> {
 
     private byte[] bytes1(String[] messageOutput) {
         System.out.println("we in bytes1");
-        byte[] output = new byte[getOutputLength(messageOutput)];
-        System.out.println("output init" + messageOutput[1]+ " output l= "+getOutputLength(messageOutput));
-        return getOutput(messageOutput, output);
+        System.out.println("output init" + messageOutput[1] + " output l= " + getOutputLength(messageOutput));
+        return getOutput(messageOutput);
     }
 
     public int getOutputLength(String[] messageOutput) {
-        int c = getC(messageOutput[1]);
+        int c;
+        if (messageOutput[0].equals("10") || messageOutput[0].equals("11")) {
+            c = getC(messageOutput[1]);
+        } else {
+            c = 2;//9
+        }
+
         int length = c * 2;
+
+        if (messageOutput[1].equals("8") || messageOutput[1].equals("7"))
+            return length;
         for (String s : messageOutput) {//take the size
             if (s != null) {
-                if (s.equals("0")){ length=length+1;}
-                else {
+                if (s.equals("\0")) {
+                    length = length + 1;
+                } else {
                     if (c <= 0) {
                         byte[] outputMessageByte = s.getBytes();
-                        c--;
+                        //c--;
                         length += outputMessageByte.length;
-                        // if(messageOutput[1].equals("4")){//extra short after string
 
-                        //  length=length+1;
-                        //c+=2;}
-                        if (messageOutput[1].equals("9") & c == -2)
-                            length = length + 1;
-                        c += 3;
                     } else {
                         c = c - 1;
                     }
-                }  }}
+                }
+            }
+        }
 
         return length;
     }
 
-    public byte[] getOutput(String[] messageOutput, byte[] output) {
+    public byte[] getOutput(String[] messageOutput) {
+        byte[] output = new byte[getOutputLength(messageOutput)];
         byte[] outputMessageByte;
-        int counter =0;
-        int stop=20;
-        if(messageOutput[1].equals("4")){stop=3;}
-        int c = getC(messageOutput[1]);
+        for (String ssss : messageOutput) {
+            System.out.println(ssss);
+        }
+        int counter = 0;
+        int c;
+        if (messageOutput[0].equals("10") || messageOutput[0].equals("11")) {
+            c = getC(messageOutput[1]);
+        } else {
+            c = 2;//9
+        }
         for (String s : messageOutput) {
             if (s != null) {
-                if(s.equals("0")){
-                    outputMessageByte=shortToBytes((short) Integer.parseInt("0"));
-                        output[counter] = outputMessageByte[0];}
+                if (s.equals("\0")) {
+                    System.out.println("getOUtput-i am \0");
+                    //outputMessageByte = shortToBytes((short) 0);
 
-                else {
+                    System.out.println("inside the loop for all the \0");
+                    output[counter] = '\0';
+                    System.out.println("counter " + counter + " " + output[counter]);
 
-                if (c <= 0) {//String
-                    outputMessageByte = s.getBytes(StandardCharsets.UTF_8);//if we have messages
-                    c--;
-                    if (messageOutput[1].equals("4"))
-                        c=c+2;
-                    if(messageOutput[1].equals("9")&c==-2)
-                        c=c+3;
-                } else {//short
-                    outputMessageByte = shortToBytes((short) Integer.parseInt(s));
-                    c--;
+
+                } else {
+
+                    if (c <= 0) {//String
+                        outputMessageByte = s.getBytes(StandardCharsets.UTF_8);//if we have messages
+                        System.out.println("getOUtput--" + s);
+
+                        c--;
+                        /*if (messageOutput[1].equals("4"))
+                            c = c + 2;
+                        if (messageOutput[1].equals("9") & c == -2)
+                            c = c + 3;*/
+                    } else {//short
+                        System.out.println("getOUtput**" + s);
+                        outputMessageByte = shortToBytes((short) Integer.parseInt(s));
+                        System.out.println("getOUtput**" + s + " " + outputMessageByte.length);
+                        c--;
+                    }
+                    for (int i = 0; i < outputMessageByte.length; i++, counter++) {
+                        output[counter] = outputMessageByte[i];
+                        System.out.println("counter " + counter + " " + output[counter]);
+                    }
                 }
-                for (int i = 0; i < outputMessageByte.length; i++, counter++) {
-                    output[counter] = outputMessageByte[i];
-                }
-            }}
+            }
         }
         return output;
 
@@ -239,15 +266,16 @@ public class EncDec<T> implements MessageEncoderDecoder<T> {
 
 
     public int getC(String messageOutput) {
-        if (messageOutput.equals("1") | messageOutput.equals("2") | messageOutput.equals("3") | messageOutput.equals("5") | messageOutput.equals("6") | messageOutput.equals("4")| messageOutput.equals("11")) {
+        if (messageOutput.equals("1") | messageOutput.equals("2") | messageOutput.equals("3") | messageOutput.equals("5") | messageOutput.equals("6") | messageOutput.equals("4") | messageOutput.equals("11")) {
             return 2;
         } else if (messageOutput.equals("7") | messageOutput.equals("8"))
             return 6;
-        else if(messageOutput.equals("9"))
+        else if (messageOutput.equals("9"))
             return 1;
         return 444444;//TODO
 
     }
+
     /*
 
         private byte[] bytes(String[] messageOutput) {
@@ -311,8 +339,8 @@ public class EncDec<T> implements MessageEncoderDecoder<T> {
         }
         System.out.println(result);
         if (result.length() >= 3)
-            result = result.substring(0, result.length() -1);
-        System.out.println(result+"check");
+            result = result.substring(0, result.length() - 1);
+        System.out.println(result + "check");
         //String result = new String(bytes, 2, len, StandardCharsets.UTF_8);
         if (opcode <= 9)
             result = "0" + opcode + result;

@@ -1,4 +1,4 @@
-# Install script for directory: /cygdrive/c/Users/USER/Desktop/assignment3/5.01/SPL_3/spl-net/Client
+# Install script for directory: /cygdrive/c/Users/Shust/Desktop/First_Degree/Courses/SPL/NewSPL3/SPL_3/spl-net/Client
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -45,5 +45,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/cygdrive/c/Users/USER/Desktop/assignment3/5.01/SPL_3/spl-net/Client/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/cygdrive/c/Users/Shust/Desktop/First_Degree/Courses/SPL/NewSPL3/SPL_3/spl-net/Client/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

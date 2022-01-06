@@ -138,27 +138,33 @@ bool ConnectionHandler::getFrameAscii(std::string &frame, char delimiter) {
     char sixthbyts;
     string messageToClient = "";
     try {
-
         char *opcodeBytes = new char[2];
         getBytes(opcodeBytes, 2);
         short opcode = bytesToShort(opcodeBytes);
         std::cout << "opcode " << opcode << std::endl;
-        delete opcodeBytes;
+        delete[] opcodeBytes;
+
         if((int) opcode==9) {
 
             messageToClient = "NOTIFICATION";
-            char *opcodeBytes1 = new char[1];
-            getBytes(opcodeBytes1, 1);
+            std::cout << "Message to client" << messageToClient << std::endl;
+           // string notificationType = findWord(ch,'0');
+            char *opcodeBytes1 = new char[2];
+            getBytes(opcodeBytes1, 2);
             short opcode1 = bytesToShort(opcodeBytes1);
+            std::cout<<opcode1<<"this is should be 0/1"<<std::endl;
             if ((int) opcode1 == 0)
-                messageToClient += " PM ";
+                messageToClient += " PUBLIC";
             else if ((int) opcode1 == 1)
-                messageToClient += " Public ";
-            string UserName = findWord(firstbytes, '\0');
+                messageToClient += " PM";
+            std::cout << "Message to client" << messageToClient << std::endl;
+            string UserName = findWord(*opcodeBytes1, '\0');
             messageToClient += UserName;
-            string Content = findWord(secondebyts, '\0');
+            std::cout << "Message to client" << messageToClient << std::endl;
+            string Content = findWord(*opcodeBytes1, '\0');
             messageToClient += " " + Content;
-            delete opcodeBytes1;
+            std::cout << "Message to client" << messageToClient << std::endl;
+            delete[] opcodeBytes1;
             frame = messageToClient;
         }
         else if((int) opcode==11) {
@@ -169,7 +175,7 @@ bool ConnectionHandler::getFrameAscii(std::string &frame, char delimiter) {
             short messageOpcode11 = bytesToShort(opcodemes11);
             messageToClient += std::to_string((int) messageOpcode11);
             std::cout << "Message to client" << messageToClient << std::endl;
-            delete opcodemes11;
+            delete[] opcodemes11;
             frame = messageToClient;
         }
 
@@ -197,11 +203,11 @@ bool ConnectionHandler::getFrameAscii(std::string &frame, char delimiter) {
                 getBytes(opcodemes4, 2);
                 short messageOpcode4 = bytesToShort(opcodemes4);
                 messageToClient += " " + std::to_string((int) messageOpcode4);//folooo
-                delete opcodemes;
-                delete opcodemes1;
-                delete opcodemes2;
-                delete opcodemes3;
-                delete opcodemes4;
+                delete[] opcodemes;
+                delete[] opcodemes1;
+                delete[] opcodemes2;
+                delete[] opcodemes3;
+                delete[] opcodemes4;
                 frame = messageToClient;
 
             } else if ((int) messageOpcode == 4) {
@@ -250,6 +256,7 @@ std::string ConnectionHandler::findWord(char ch, char delimiter) {
     getBytes(&ch, 1);
     while (ch != delimiter) {
         output += ch;
+        std::cout<<"we in foundword- outut "<<output<<std::endl;
         getBytes(&ch, 1);
     }
     std::cout<<"we in foundword- outut send "<<output<<std::endl;

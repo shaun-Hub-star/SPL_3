@@ -4,10 +4,7 @@ import bgu.spl.net.api.MessagePackage.BackMessage;
 import bgu.spl.net.api.MessagePackage.Notification;
 
 import java.text.ParseException;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
+import java.util.*;
 
 public class ClientProtocol implements BidiMessagingProtocol<String> {
 
@@ -110,6 +107,7 @@ public class ClientProtocol implements BidiMessagingProtocol<String> {
         if (backMessage.getStatus() == BackMessage.Status.PASSED) {
             List<String> logStatMessages = backMessage.getMessages();
             for (String log : logStatMessages) {
+                System.out.println("log message check in log stat "+log);
                 if (!connections.send(connectionId, log))
                     System.out.println("failed to send ack logstat message " + log);
             }
@@ -176,6 +174,7 @@ public class ClientProtocol implements BidiMessagingProtocol<String> {
         String content = getContent(separated);
         List<String> tags = getTags(separated);
         backMessage = dataBaseServer.post(content, this.userName, tags);
+        System.out.println(Arrays.toString((tags).toArray()));
         String name = "post";
         List<Integer> tag_ids = dataBaseServer.getIds(tags);
         sendMessage(backMessage, name);

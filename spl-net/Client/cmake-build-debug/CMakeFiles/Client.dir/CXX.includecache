@@ -6,7 +6,7 @@
 
 #IncludeRegexTransform: 
 
-/cygdrive/c/Users/USER/Desktop/assignment3/5.01/SPL_3/spl-net/Client/include/ConnectionHandler.h
+/cygdrive/c/Users/Shust/Desktop/First_Degree/Courses/SPL/NewSPL3/SPL_3/spl-net/Client/include/ConnectionHandler.h
 string
 -
 iostream
@@ -14,9 +14,9 @@ iostream
 boost/asio.hpp
 -
 
-/cygdrive/c/Users/USER/Desktop/assignment3/5.01/SPL_3/spl-net/Client/src/ConnectionHandler.cpp
+/cygdrive/c/Users/Shust/Desktop/First_Degree/Courses/SPL/NewSPL3/SPL_3/spl-net/Client/src/ConnectionHandler.cpp
 ../include/ConnectionHandler.h
-/cygdrive/c/Users/USER/Desktop/assignment3/5.01/SPL_3/spl-net/Client/include/ConnectionHandler.h
+/cygdrive/c/Users/Shust/Desktop/First_Degree/Courses/SPL/NewSPL3/SPL_3/spl-net/Client/include/ConnectionHandler.h
 bits/stdc++.h
 -
 boost/algorithm/string.hpp
