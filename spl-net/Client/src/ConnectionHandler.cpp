@@ -166,7 +166,8 @@ bool ConnectionHandler::getFrameAscii(std::string &frame, char delimiter) {
             std::cout << "Message to client" << messageToClient << std::endl;
             delete[] opcodeBytes1;
             frame = messageToClient;
-        } else if ((int) opcode == 11) {
+        }
+        else if ((int) opcode == 11) {
             messageToClient = "ERROR ";
             std::cout << "Message to client" << messageToClient << std::endl;
             char *opcodemes11 = new char[2];
