@@ -114,7 +114,7 @@ public class DataBaseServer implements DataBaseQueries {
     public synchronized BackMessage post(String msg, String userName, List<String> tags) {//shaun
 
         List<User> tagged = getUsers(tags);
-        String notification = "NOTIFICATION Public "+userName+" " + msg;
+        String notification = "NOTIFICATION Public " + userName + " " + msg;
         BackMessage backMessage;
 
         if (userMap.containsKey(userName)) {
@@ -259,7 +259,7 @@ public class DataBaseServer implements DataBaseQueries {
 
     //
     @Override
-    public BackMessage stat(String userName, List<String> userNames) throws ParseException {//im not allowing any user not to be unregistered.
+    public synchronized BackMessage stat(String userName, List<String> userNames) throws ParseException {//im not allowing any user not to be unregistered.
         BackMessage backMessage;
         User me;
         List<String> messages = new LinkedList<>();
@@ -267,29 +267,29 @@ public class DataBaseServer implements DataBaseQueries {
         if (userMap.containsKey(userName)) {
             me = userMap.get(userName);
             List<String> blocking = me.getBlocked();
-            synchronized (me.getFollowers()) {
-                if (me.isLogin()) {
-                    for (String user : userNames) {
-                        if (blocking.contains(user)) continue;
-                        User currentUser = userMap.get(user);
-                        if (currentUser != null) {
-                            int age = currentUser.getAge();
-                            int numOfPosts = currentUser.getNumPosts();
-                            int numOfFollowers = currentUser.getFollowing().size();
-                            int numOfFollowing = currentUser.getFollowers().size();
-                            String message = "ACK 8 " + age + " " + numOfPosts + " " + numOfFollowers + " " + numOfFollowing;
-                            messages.add(message);
 
-                        } else {//could be changed to do nothing
-                            backMessage = new BackMessage("ERROR 8", BackMessage.Status.ERROR);
-                            return backMessage;
-                        }
+            if (me.isLogin()) {
+                for (String user : userNames) {
+                    if (blocking.contains(user)) continue;
+                    User currentUser = userMap.get(user);
+                    if (currentUser != null) {
+                        int age = currentUser.getAge();
+                        int numOfPosts = currentUser.getNumPosts();
+                        int numOfFollowers = currentUser.getFollowing().size();
+                        int numOfFollowing = currentUser.getFollowers().size();
+                        String message = "ACK 8 " + age + " " + numOfPosts + " " + numOfFollowers + " " + numOfFollowing;
+                        messages.add(message);
+
+                    } else {//could be changed to do nothing
+                        backMessage = new BackMessage("ERROR 8", BackMessage.Status.ERROR);
+                        return backMessage;
                     }
-                } else {
-                    backMessage = new BackMessage("ERROR 8", BackMessage.Status.ERROR);
-                    return backMessage;
                 }
+            } else {
+                backMessage = new BackMessage("ERROR 8", BackMessage.Status.ERROR);
+                return backMessage;
             }
+
         } else {
             backMessage = new BackMessage("ERROR 8", BackMessage.Status.ERROR);
             return backMessage;
@@ -306,7 +306,7 @@ public class DataBaseServer implements DataBaseQueries {
     }
 
     @Override
-    public BackMessage block(String me, String toBlock) {
+    public synchronized BackMessage block(String me, String toBlock) {
         BackMessage backMessage;
         User currentUser;
         User userToBlock;

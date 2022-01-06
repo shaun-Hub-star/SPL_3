@@ -272,7 +272,7 @@ public class ClientProtocol implements BidiMessagingProtocol<String> {
 
     private List<String> getUsers(String[] separated) {
         List<String> users = new LinkedList<>();
-        String usersWithDelimiter = separated[1];
+        String usersWithDelimiter = separated[0];
         String[] usersArray = usersWithDelimiter.split("\\|");
         Collections.addAll(users, usersArray);
         return users;

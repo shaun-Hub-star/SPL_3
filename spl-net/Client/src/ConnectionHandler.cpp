@@ -304,7 +304,7 @@ bool ConnectionHandler::sendFrameAscii(const std::string &frame, char delimiter)
         return pmCommand(keyWordsList, opcodeBytes);
     } else if (frame == "LOGSTAT") {
         return logStatCommand(opcodeBytes);
-    } else if (frame == "STAT") {
+    } else if (keyWord == "STAT") {
         return statCommand(keyWordsList, opcodeBytes);
     } else {
         return false;
@@ -527,6 +527,7 @@ bool ConnectionHandler::logStatCommand(char *opcodeBytes) {
 }
 
 bool ConnectionHandler::statCommand(std::vector<std::string> keyWordsList, char *opcodeBytes) {
+    std::cout<<keyWordsList.size()<<std::endl;
     if (keyWordsList.size() == 1) {
         //std::vector<std::string> users;
         //boost::split(users, keyWordsList.at(0), boost::is_any_of("|"));

@@ -266,7 +266,9 @@ public class EncDec<T> implements MessageEncoderDecoder<T> {
 
 
     public int getC(String messageOutput) {
-        if (messageOutput.equals("1") | messageOutput.equals("2") | messageOutput.equals("3") | messageOutput.equals("5") | messageOutput.equals("6") | messageOutput.equals("4") | messageOutput.equals("11")) {
+        if (messageOutput.equals("1") | messageOutput.equals("2") | messageOutput.equals("3") |
+                messageOutput.equals("5") | messageOutput.equals("6") | messageOutput.equals("4") |
+                messageOutput.equals("11") | messageOutput.equals("12")) {
             return 2;
         } else if (messageOutput.equals("7") | messageOutput.equals("8"))
             return 6;
