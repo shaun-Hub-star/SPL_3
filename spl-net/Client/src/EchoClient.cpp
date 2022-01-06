@@ -35,6 +35,7 @@ int main (int argc, char *argv[]) {
 //LOGIN shaun 123 1
 // LOGIN lior 123 1
 //LOGSTAT
+//FOLLOW 0 shaun
 //FOLLOW 0 lior
 //FOLLOW 1 lior
 //POST new post from lior levy!
@@ -44,3 +45,5 @@ int main (int argc, char *argv[]) {
 //FOLLOW 1 lior
 //REGISTER noam 123 02-11-2003
 //LOGIN noam 123 1
+//REGISTER inbar 123 01-10-1992
+//LOGIN inbar 123 1

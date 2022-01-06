@@ -36,8 +36,8 @@ public class EncDec<T> implements MessageEncoderDecoder<T> {
                 pushByte(nextByte);
         }
         opcodeSize++;
-        if (opcodeSize > 2 &&numberOfWords==2&& (opcode == 4 || opcode == 9)) {
-            System.out.println(bytes[0]+" "+bytes[1]+" "+bytes[2]+" "+bytes[3]+"******** ");
+        if (opcodeSize > 2 && numberOfWords == 2 && (opcode == 4 || opcode == 9)) {
+            System.out.println(bytes[0] + " " + bytes[1] + " " + bytes[2] + " " + bytes[3] + "******** ");
             byte b = 0;
             pushByte(b);
             numberOfWords += 1;
@@ -94,26 +94,30 @@ public class EncDec<T> implements MessageEncoderDecoder<T> {
         System.out.println(message.toString());
         String[] splitBySpace = ((String) message).split(" ");
         String opcode = splitBySpace[0];//ack
-        String[] toBytes = new String[6];
+        String[] toBytes = new String[8];
         switch (opcode) {
             case "NOTIFICATION":
                 toBytes[0] = "9"; //NOTIFICATION
-                if (splitBySpace[1].equals("PUBLIC")) {
-                    toBytes[1] = "1";
-                } else {
+                if (splitBySpace[1].equals("PM")) {
                     toBytes[1] = "0";
+                } else {
+                    toBytes[1] = "1";
                 }
-                //toBytes[1] = splitBySpace[1]; //Public/PM
                 toBytes[2] = splitBySpace[2]; //PostingUser
                 toBytes[3] = "\0";
 
                 String content = "";
-                for (int i = 3; i < splitBySpace.length; i++) {
+                for (int i = 3; i < splitBySpace.length -2; i++) {//TODO stop at the  "\0" delimiter
                     content += " " + splitBySpace[i];
                 }
 
                 toBytes[4] = content;
                 toBytes[5] = "\0";
+                if (splitBySpace[1].equals("PM")) {
+                    String date = splitBySpace[splitBySpace.length-1];
+                    toBytes[6] = date;
+                    toBytes[7] = "\0";
+                }
                 return bytes1(toBytes);
 
             case "ACK":
@@ -229,25 +233,14 @@ public class EncDec<T> implements MessageEncoderDecoder<T> {
         for (String s : messageOutput) {
             if (s != null) {
                 if (s.equals("\0")) {
-                    System.out.println("getOUtput-i am \0");
-                    //outputMessageByte = shortToBytes((short) 0);
-
-                    System.out.println("inside the loop for all the \0");
                     output[counter] = '\0';
                     System.out.println("counter " + counter + " " + output[counter]);
-
-
                 } else {
 
                     if (c <= 0) {//String
                         outputMessageByte = s.getBytes(StandardCharsets.UTF_8);//if we have messages
                         System.out.println("getOUtput--" + s);
-
                         c--;
-                        /*if (messageOutput[1].equals("4"))
-                            c = c + 2;
-                        if (messageOutput[1].equals("9") & c == -2)
-                            c = c + 3;*/
                     } else {//short
                         System.out.println("getOUtput**" + s);
                         outputMessageByte = shortToBytes((short) Integer.parseInt(s));
@@ -275,33 +268,10 @@ public class EncDec<T> implements MessageEncoderDecoder<T> {
             return 6;
         else if (messageOutput.equals("9"))
             return 1;
-        return 444444;//TODO
+        return 1;//TODO
 
     }
 
-    /*
-
-        private byte[] bytes(String[] messageOutput) {
-            int length = 0;
-            int counter = 0;
-            for (String s : messageOutput) {
-                if (s != null) {
-                    byte[] outputMessageByte = s.getBytes();
-                    length += outputMessageByte.length;
-                }
-            }
-            byte[] output = new byte[length];
-            for (String s : messageOutput) {
-                if (s != null) {
-                    byte[] outputMessageByte = s.getBytes();
-                    for (int i = 0; i < outputMessageByte.length; i++, counter++) {
-                        output[counter] = outputMessageByte[i];
-                    }
-                }
-            }
-            return output;
-        }
-    */
     public byte[] shortToBytes(short num) {
 
         byte[] bytesArr = new byte[2];
@@ -338,10 +308,9 @@ public class EncDec<T> implements MessageEncoderDecoder<T> {
                     result = result + accu + ":";
                 }
                 start = i + 1;
-            }
-            else if(i==2 && opcode == 4 && bytes[2] == '1'){
+            } else if (i == 2 && opcode == 4 && bytes[2] == '1') {
                 result += "1";
-                start = i+1;
+                start = i + 1;
             }
         }
         System.out.println(result);

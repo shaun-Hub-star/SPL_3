@@ -41,7 +41,7 @@ public class User {
 
     public void addBlock(String userToBlock) {
         if (!blocked.contains(userToBlock)) {
-            blocked.add(userName);
+            blocked.add(userToBlock);
         }
     }
 

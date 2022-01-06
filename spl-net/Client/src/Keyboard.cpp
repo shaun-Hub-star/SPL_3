@@ -32,6 +32,7 @@ void Keyboard::run() {
         if (result == "LOGOUT") {
             std::cout << "need to sign out" << std::endl;
             logout();
+            break;
         }
         // }
     }

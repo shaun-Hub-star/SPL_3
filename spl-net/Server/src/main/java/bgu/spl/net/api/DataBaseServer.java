@@ -2,6 +2,7 @@ package bgu.spl.net.api;
 
 import bgu.spl.net.api.MessagePackage.BackMessage;
 import bgu.spl.net.api.MessagePackage.Messages;
+import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader;
 
 import java.text.ParseException;
 import java.time.LocalDateTime;
@@ -45,7 +46,6 @@ public class DataBaseServer implements DataBaseQueries {
             if (!currentUser.isLogin() && captcha == 1 && currentUser.getPassword().equals(password)) {
                 backMessage = new BackMessage("ACK 2", BackMessage.Status.PASSED);
                 currentUser.setLogin(true);
-                System.out.println(currentUser.isLogin());
             } else
                 backMessage = new BackMessage("ERROR 2", BackMessage.Status.ERROR);
         } else {
@@ -80,17 +80,9 @@ public class DataBaseServer implements DataBaseQueries {
     public synchronized BackMessage follow(String me, String to, int sign) {//backMessage(1) holds the actual message
         BackMessage backMessage;
         if (userMap.containsKey(me) && userMap.containsKey(to) & userMap.get(me).isLogin()) {
-            System.out.println("in follow");
             User currentUser = userMap.get(me);
             User requestedUser = userMap.get(to);
-            System.out.println("me:" + me + "to: " + to);
-            System.out.println(sign);
-            System.out.println("currentUser.getFollowing().contains(requestedUser.getUserName())" + currentUser.getFollowing().contains(requestedUser.getUserName()));
-            // System.out.println(!currentUser.getFollowing().contains(requestedUser.getUserName()));
-            // System.out.println(!requestedUser.getBlocked().contains(currentUser.getUserName()));
-            if (sign == 0 & !currentUser.getFollowing().contains(requestedUser.getUserName())
-                    & !requestedUser.getBlocked().contains(currentUser.getUserName())) {
-                System.out.println("is in !!!!!");
+            if (sign == 0 & !currentUser.getFollowing().contains(requestedUser.getUserName())&& !requestedUser.getBlocked().contains(currentUser.getUserName())) {
                 backMessage = new BackMessage("ACK 4 0 " + requestedUser.getUserName(), BackMessage.Status.PASSED);
                 currentUser.addFollowing(requestedUser.getUserName());
                 requestedUser.addFollow(currentUser.getUserName());
@@ -100,13 +92,11 @@ public class DataBaseServer implements DataBaseQueries {
                 requestedUser.moveFollower(currentUser.getUserName());
 
             } else {
-                System.out.println("ERROR IS HERE LOOK 1");
                 backMessage = new BackMessage("ERROR 4", BackMessage.Status.ERROR);
 
             }
         } else {
             backMessage = new BackMessage("ERROR 4", BackMessage.Status.ERROR);
-            System.out.println("ERROR IS HERE LOOK 2");
         }
         return backMessage;
 
@@ -116,7 +106,7 @@ public class DataBaseServer implements DataBaseQueries {
     public synchronized BackMessage post(String msg, String userName, List<String> tags) {//shaun
 
         List<User> tagged = getUsers(tags);
-        String notification = "NOTIFICATION Public " + userName + " " + msg;
+        String notification;
         BackMessage backMessage;
 
         if (userMap.containsKey(userName)) {
@@ -124,36 +114,30 @@ public class DataBaseServer implements DataBaseQueries {
             List<String> blocking = currentUser.getBlocked();
             currentUser.addPost();
             if (currentUser.isLogin()) {
-                backMessage = new BackMessage("ACK 5", BackMessage.Status.PASSED);
-                backMessage.setMessage(notification);
-
                 Messages keepMessage = null;
                 try {
                     keepMessage = new Messages(msg, LocalDateTime.now());
                 } catch (ParseException e) {
-                    System.out.println("!!!!!!!!!!!!1");
                     e.printStackTrace();
                 }
                 if (!userToHerMessages.containsKey(userName)) {
                     List<Messages> messages = new LinkedList<>();
                     userToHerMessages.put(currentUser.getUserName(), messages);
-                    System.out.println("!!!!!!!!!!!!2");
 
                 }
-                System.out.println(currentUser.getUserName() + " currentUser.getUserName() **** ");
-                System.out.println("keepMessage " + keepMessage.getMessage());
+                backMessage = new BackMessage("ACK 5", BackMessage.Status.PASSED);
+                notification = "NOTIFICATION Public " + userName + " " + keepMessage.getMessage();
+                backMessage.setMessage(notification);
                 userToHerMessages.get(currentUser.getUserName()).add(keepMessage);
                 for (String s : userToHerMessages.keySet()) {
                     for (Messages m : userToHerMessages.get(s)) {
-                        System.out.println(m.getMessage());
                     }
-                    System.out.println(userToHerMessages.get(s));
                 }
-                System.out.println("!!!!!!!!!!!!3");
                 for (String tag : tags) {
-                    System.out.println("!!!!!!!!!!!!4");
-                    if (blocking.contains(tag)) continue;
-                    if (userMap.containsKey(tag)) {
+                    if (blocking.contains(tag)){
+                        tags.remove(tag);
+                        continue;}
+                    else if (userMap.containsKey(tag)) {
                         User tagUser = userMap.get(tag);
                         if (!tagUser.isLogin()) {
                             //push to the queue of notifications
@@ -173,7 +157,6 @@ public class DataBaseServer implements DataBaseQueries {
                             followingMeUser.addNotification(notification);
                         } else {
                             tags.add(followingMe);
-                            System.out.println(followingMe + "POST in dataBase " + tags.size());
                         }
                     }
                 }
@@ -197,32 +180,21 @@ public class DataBaseServer implements DataBaseQueries {
     @Override//NOTIFICATION PM Morty Bird-personaaaa [1]
     public synchronized BackMessage PM(String me, String userTo, String msg, LocalDateTime dateAndTime) {
         BackMessage backMessage;
-        System.out.println("userMap.containsKey(me) " + userMap.containsKey(me));
-        System.out.println("serMap.get(me).isLogin() " + userMap.get(me).isLogin());
-        System.out.println("userMap.containsKey(userTo) " + userMap.containsKey(userTo));
         if (userMap.containsKey(me) && userMap.get(me).isLogin() && userMap.containsKey(userTo)) {
-            System.out.println(" move 1");
             User currentUser = userMap.get(me);
             User requestedUser = userMap.get(userTo);
             if (currentUser.getFollowing().contains(requestedUser.getUserName()) && !currentUser.getBlocked().contains(userTo)) {
                 try {
-                    System.out.println("move 2");
                     Messages keepMessage = new Messages(msg, dateAndTime);
-                    System.out.println("move 3");
                     if (!userToHerMessages.containsKey(me)) {
-                        System.out.println("move 4");
                         List<Messages> messages = new LinkedList<>();
                         userToHerMessages.put(currentUser.getUserName(), messages);
-                        System.out.println("move 5");
-
                     }
                     userToHerMessages.get(currentUser.getUserName()).add(keepMessage);
-                    System.out.println("move 6");
                     backMessage = new BackMessage();
                     backMessage.setMessage("ACK 6");
-                    String outputRequestedUser = "NOTIFICATION PM " + me + " " + keepMessage.getMessage();
+                    String outputRequestedUser = "NOTIFICATION PM " + me + " " + keepMessage.getMessage()+keepMessage.getDateByStringOfMessage();
                     if (requestedUser.isLogin()) {
-                        System.out.println("move 7");
                         backMessage.setMessage(outputRequestedUser);//TODO check infront shoun
                     } else {
                         requestedUser.addNotification(outputRequestedUser);
@@ -230,16 +202,13 @@ public class DataBaseServer implements DataBaseQueries {
 
 
                 } catch (Exception ParseException) {
-                    System.out.println("move 8");
                     backMessage = new BackMessage("ERROR 6", BackMessage.Status.ERROR);
                 }
             } else {
-                System.out.println("move 9");
                 backMessage = new BackMessage("ERROR 6", BackMessage.Status.ERROR);
             }
 
         } else {
-            System.out.println("move 10");
             backMessage = new BackMessage("ERROR 6", BackMessage.Status.ERROR);
         }
 
@@ -258,7 +227,6 @@ public class DataBaseServer implements DataBaseQueries {
                     User loginUser = userMap.get(userName);
                     if (loginUser.details().equals("ERROR")) {
                         backMessage = new BackMessage("ERROR 7 ", BackMessage.Status.ERROR);
-                        System.out.println("!!!!!!!!!!!!");
                         return backMessage;
                     } else {
                         logStatMessage.add("ACK 7 " + loginUser.details());
@@ -270,7 +238,6 @@ public class DataBaseServer implements DataBaseQueries {
             return backMessage;
         } else {
             backMessage = new BackMessage("ERROR 7", BackMessage.Status.ERROR);
-            System.out.println("*********8");
         }
         return backMessage;
     }
@@ -288,22 +255,24 @@ public class DataBaseServer implements DataBaseQueries {
 
             if (me.isLogin()) {
                 for (String user : userNames) {
-                    if (blocking.contains(user)) continue;
-                    User currentUser = userMap.get(user);
-                    System.out.println(currentUser.getUserName());
+                    if (blocking.contains(user)) {
+                        backMessage = new BackMessage("ERROR 8", BackMessage.Status.ERROR);
+                        return backMessage;
+                    }
+                    else{
+                           User currentUser = userMap.get(user);
                     if (currentUser != null) {
                         int age = currentUser.getAge();
                         int numOfPosts = currentUser.getNumPosts();
                         int numOfFollowers = currentUser.getFollowing().size();
                         int numOfFollowing = currentUser.getFollowers().size();
                         String message = "ACK 8 " + age + " " + numOfPosts + " " + numOfFollowers + " " + numOfFollowing;
-                        System.out.println(message);
                         messages.add(message);
 
                     } else {//could be changed to do nothing
                         backMessage = new BackMessage("ERROR 8", BackMessage.Status.ERROR);
                         return backMessage;
-                    }
+                    }}
                 }
                 backMessage = new BackMessage(" ", BackMessage.Status.PASSED);
                 backMessage.setMessages(messages, BackMessage.Status.PASSED);
@@ -375,8 +344,10 @@ public class DataBaseServer implements DataBaseQueries {
     @Override
     public int getId(String userName) {//todo make sure when there is no such user
         if (userMap.containsKey(userName)) {
-            return userMap.get(userName).getId();
+            if(userMap.get(userName).isLogin()){
+            return userMap.get(userName).getId();}
+            else return -1;
         }
-        return -1;
+        return -2;
     }
 }

@@ -144,10 +144,10 @@ bool ConnectionHandler::getFrameAscii(std::string &frame, char delimiter) {
         std::cout << "opcode " << opcode << std::endl;
         delete[] opcodeBytes;
 
-        if ((int) opcode == 9) {
-
+        if ((int) opcode == 9)
+        {
             messageToClient = "NOTIFICATION";
-            std::cout << "Message to client" << messageToClient << std::endl;
+          //  std::cout << "Message to client" << messageToClient << std::endl;
             // string notificationType = findWord(ch,'0');
             char *opcodeBytes1 = new char[2];
             getBytes(opcodeBytes1, 2);
@@ -156,14 +156,17 @@ bool ConnectionHandler::getFrameAscii(std::string &frame, char delimiter) {
             if ((int) opcode1 == 0)
                 messageToClient += " PM";
             else if ((int) opcode1 == 1)
-                messageToClient += " PM";
-            std::cout << "Message to client" << messageToClient << std::endl;
+                messageToClient += " PUBLIC";
+            //std::cout << "Message to client" << messageToClient << std::endl;
             string UserName = findWord(*opcodeBytes1, '\0');
             messageToClient += UserName;
-            std::cout << "Message to client" << messageToClient << std::endl;
+            //std::cout << "Message to client" << messageToClient << std::endl;
             string Content = findWord(*opcodeBytes1, '\0');
             messageToClient += " " + Content;
-            std::cout << "Message to client" << messageToClient << std::endl;
+            //std::cout << "Message to client" << messageToClient << std::endl;
+            if((int) opcode1 == 0){
+            string date = findWord(*opcodeBytes1, '\0');
+            messageToClient += " " + date;}
             delete[] opcodeBytes1;
             frame = messageToClient;
         }
@@ -177,14 +180,16 @@ bool ConnectionHandler::getFrameAscii(std::string &frame, char delimiter) {
             std::cout << "Message to client" << messageToClient << std::endl;
             frame = messageToClient;
             delete[] opcodemes11;
-        } else if ((int) opcode == 10) {
+        }
+        else if ((int) opcode == 10)
+        {
             messageToClient = "ACK ";
             char *opcodemes = new char[2];
             getBytes(opcodemes, 2);
             short messageOpcode = bytesToShort(opcodemes);
             messageToClient += std::to_string((int) messageOpcode);
-            if ((int) messageOpcode == 8 | (int) messageOpcode == 7) {
-                //     std::cout << "Message to client im in" << messageToClient <<" "<<messageOpcode<< std::endl;
+            if ((int) messageOpcode == 8 | (int) messageOpcode == 7)
+            {
                 char *opcodemes1 = new char[2];
                 getBytes(opcodemes1, 2);
                 short messageOpcode1 = bytesToShort(opcodemes1);
@@ -208,12 +213,8 @@ bool ConnectionHandler::getFrameAscii(std::string &frame, char delimiter) {
                 delete[] opcodemes4;
                 frame = messageToClient;
 
-            } else if ((int) messageOpcode == 4) {
-                //  char *opcodemes3 = new char[1];
-                //  getBytes(opcodemes3, 1);
-                //  short messageOpcode3 = bytesToShort(opcodemes3);
-                //  messageToClient += " " + std::to_string((int) messageOpcode3);//fol
-                //  std::cout << "messageToClient " << messageToClient <<" "<<messageOpcode<< std::endl;
+            }
+            else if ((int) messageOpcode == 4) {
                 string UserName = findWord(thirdbytes, '\0');
                 messageToClient += UserName;
                 frame = messageToClient;
@@ -254,7 +255,6 @@ std::string ConnectionHandler::findWord(char ch, char delimiter) {
     getBytes(&ch, 1);
     while (ch != delimiter) {
         output += ch;
-        std::cout << "we in foundword- outut " << output << std::endl;
         getBytes(&ch, 1);
     }
     std::cout << "we in foundword- outut send " << output << std::endl;
@@ -306,7 +306,7 @@ bool ConnectionHandler::sendFrameAscii(const std::string &frame, char delimiter)
     } else if (keyWord == "STAT") {
         return statCommand(keyWordsList, opcodeBytes);
     } else if (keyWord == "BLOCK") {
-        return blockCommand(result,opcodeBytes);
+        return blockCommand(result, opcodeBytes);
     } else {
         return false;
     }
@@ -550,7 +550,7 @@ bool ConnectionHandler::statCommand(std::vector<std::string> keyWordsList, char 
 
 }
 
-bool ConnectionHandler::blockCommand(const std::string& user, char *opcodeBytes) {
+bool ConnectionHandler::blockCommand(const std::string &user, char *opcodeBytes) {
     short opcode = 12;
     string endLineString = ";";
     const char *endOfLine = endLineString.c_str();

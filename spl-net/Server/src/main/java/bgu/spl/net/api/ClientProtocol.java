@@ -30,7 +30,6 @@ public class ClientProtocol implements BidiMessagingProtocol<String> {
             String[] separatedBySpace = msg.split(":");
             switch (getOpcode(opcode)) {
                 case 1://register
-                    System.out.println("register");
                     register(separatedBySpace);
                     break;
                 case 2://login
@@ -124,11 +123,10 @@ public class ClientProtocol implements BidiMessagingProtocol<String> {
         String messageContent = getMessageContent(separated);
         LocalDateTime time = LocalDateTime.now();
         backMessage = dataBaseServer.PM(userName, to, messageContent, time);
-        System.out.println("move 11");
         String name = "pm";
         sendMessage(backMessage, name);//ack
         int to_id = dataBaseServer.getId(to);
-        if (to_id != -1) {//if errorr -to_id is not on the map
+        if (to_id >=0) {//if errorr -to_id is not on the map
             List<Integer> lst = new LinkedList<>();
             lst.add(to_id);
             sendMessage(backMessage, name, lst);//actual message
@@ -181,7 +179,6 @@ public class ClientProtocol implements BidiMessagingProtocol<String> {
         String content = getContent(separated);
         List<String> tags = getTags(separated);
         backMessage = dataBaseServer.post(content, this.userName, tags);
-        System.out.println(Arrays.toString((tags).toArray()));
         String name = "post";
         List<Integer> tag_ids = dataBaseServer.getIds(tags);
         sendMessage(backMessage, name);
@@ -196,14 +193,13 @@ public class ClientProtocol implements BidiMessagingProtocol<String> {
         backMessage = dataBaseServer.follow(userName, follow, sign);
         String name = "follow";
         sendMessage(backMessage, name);
-        int id = dataBaseServer.getId(follow);
+      //  int id = dataBaseServer.getId(follow);
         List<Integer> lst = new LinkedList<>();
-        lst.add(id);
-        sendMessageFollow(backMessage, name, lst);
+      //  lst.add(id);
+       sendMessageFollow(backMessage, name, lst);
     }
 
     private int getSign(String[] separated) {
-        System.out.println("the sign " + Integer.parseInt(separated[0]));
         return Integer.parseInt(separated[0]);
     }
 
@@ -303,12 +299,10 @@ public class ClientProtocol implements BidiMessagingProtocol<String> {
     private List<String> getTags(String[] separated) {
         List<String> userNameList = new LinkedList<>();
         String[] spaceSeparated = separated[0].split(" ");
-        System.out.println("get tags");
         Arrays.toString(spaceSeparated);
         for (String s : spaceSeparated) {
             if (s.charAt(0) == '@') {
                 userNameList.add(s.substring(1));
-                System.out.println("should be lior!!!!!!"+s.substring(1));
             }
         }
         return userNameList;
@@ -319,7 +313,6 @@ public class ClientProtocol implements BidiMessagingProtocol<String> {
     }
 
     private String getFollow(String[] separated) {//the person i want to follow
-        System.out.println("get follow" + separated[1] + "follopw or unfollow" + separated[0]);
         return separated[1];
     }
 

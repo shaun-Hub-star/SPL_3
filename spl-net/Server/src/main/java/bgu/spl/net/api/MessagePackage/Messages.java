@@ -14,10 +14,9 @@ public class Messages {
     private List<String> filter;
 
     public Messages(String message, String date) throws ParseException {
-        System.out.println("move new message befor constarctor");
-        this.message = fixFilter(message);
         this.date = getDate(date);
         this.filter = new LinkedList<>();
+        this.message = fixFilter(message);
     }
     public Messages(String message, String date,List<String> filter) throws ParseException {
         this.message = fixFilter(message);
@@ -25,10 +24,9 @@ public class Messages {
         this.filter = new LinkedList<>(filter);
     }
     public Messages(String message,LocalDateTime localDateTime) throws ParseException {
-        this.message = fixFilter(message);
         this.date = localDateTime;
         this.filter = new LinkedList<>();
-        System.out.println("finish tim message "+ message);
+        this.message = fixFilter(message);
     }
 
     public LocalDateTime getDate(String massageDate) throws ParseException {
@@ -52,6 +50,22 @@ public class Messages {
         System.out.println("LocalDateTime "+l1.toString());
         return l1;
     }
+    public String getDateByString(LocalDateTime localDateTime){
+        String output="";
+        int date=localDateTime.getDayOfMonth();
+        int month=localDateTime.getMonthValue();
+        int year =localDateTime.getYear();
+        output=date+"-"+month+"-"+year;
+        return output;
+    }
+    public String getDateByStringOfMessage(){
+        String output="";
+        int date1=date.getDayOfMonth();
+        int month=date.getMonthValue();
+        int year =date.getYear();
+        output=date1+"-"+month+"-"+year;
+        return output;
+    }
 
     public String getMessage() {
         return message;
@@ -68,9 +82,7 @@ public class Messages {
                 output.append(word).append(" ");
             }
         }
-            System.out.println("move getMessage finish "+output.toString());
         return output.toString();}
-        System.out.println("move getMessage finish "+msg);
         return msg;
 
     }
