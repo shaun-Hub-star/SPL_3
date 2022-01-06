@@ -154,7 +154,7 @@ bool ConnectionHandler::getFrameAscii(std::string &frame, char delimiter) {
             short opcode1 = bytesToShort(opcodeBytes1);
             std::cout << opcode1 << "this is should be 0/1" << std::endl;
             if ((int) opcode1 == 0)
-                messageToClient += " PUBLIC";
+                messageToClient += " PM";
             else if ((int) opcode1 == 1)
                 messageToClient += " PM";
             std::cout << "Message to client" << messageToClient << std::endl;
@@ -166,7 +166,8 @@ bool ConnectionHandler::getFrameAscii(std::string &frame, char delimiter) {
             std::cout << "Message to client" << messageToClient << std::endl;
             delete[] opcodeBytes1;
             frame = messageToClient;
-        } else if ((int) opcode == 11) {
+        }
+        else if ((int) opcode == 11) {
             messageToClient = "ERROR ";
             std::cout << "Message to client" << messageToClient << std::endl;
             char *opcodemes11 = new char[2];
@@ -174,8 +175,8 @@ bool ConnectionHandler::getFrameAscii(std::string &frame, char delimiter) {
             short messageOpcode11 = bytesToShort(opcodemes11);
             messageToClient += std::to_string((int) messageOpcode11);
             std::cout << "Message to client" << messageToClient << std::endl;
-            delete[] opcodemes11;
             frame = messageToClient;
+            delete[] opcodemes11;
         } else if ((int) opcode == 10) {
             messageToClient = "ACK ";
             char *opcodemes = new char[2];

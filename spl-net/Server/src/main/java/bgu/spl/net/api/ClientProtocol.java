@@ -4,6 +4,7 @@ import bgu.spl.net.api.MessagePackage.BackMessage;
 import bgu.spl.net.api.MessagePackage.Notification;
 
 import java.text.ParseException;
+import java.time.LocalDateTime;
 import java.util.*;
 
 public class ClientProtocol implements BidiMessagingProtocol<String> {
@@ -89,7 +90,8 @@ public class ClientProtocol implements BidiMessagingProtocol<String> {
             if (backMessage.getStatus() == BackMessage.Status.PASSED) {
                 List<String> ackStatMessages = backMessage.getMessages();
                 for (String message : ackStatMessages) {
-                    if (!connections.send(connectionId, backMessage.getMessage())) {
+                    System.out.println("messages in the gggggg "+message);
+                    if (!connections.send(connectionId,message)) {
                         System.out.println("failed to send ack message " + message);
                     }
                 }
@@ -107,7 +109,7 @@ public class ClientProtocol implements BidiMessagingProtocol<String> {
         if (backMessage.getStatus() == BackMessage.Status.PASSED) {
             List<String> logStatMessages = backMessage.getMessages();
             for (String log : logStatMessages) {
-                System.out.println("log message check in log stat "+log);
+                System.out.println("log message check in log stat " + log);
                 if (!connections.send(connectionId, log))
                     System.out.println("failed to send ack logstat message " + log);
             }
@@ -120,14 +122,17 @@ public class ClientProtocol implements BidiMessagingProtocol<String> {
         BackMessage backMessage;
         String to = getToSendMessage(separated);
         String messageContent = getMessageContent(separated);
-        String time = getDateAndTime(separated);
+        LocalDateTime time = LocalDateTime.now();
         backMessage = dataBaseServer.PM(userName, to, messageContent, time);
+        System.out.println("move 11");
         String name = "pm";
         sendMessage(backMessage, name);//ack
         int to_id = dataBaseServer.getId(to);
-        List<Integer> lst = new LinkedList<>();
-        lst.add(to_id);
-        sendMessage(backMessage, name, lst);//actual message
+        if (to_id != -1) {//if errorr -to_id is not on the map
+            List<Integer> lst = new LinkedList<>();
+            lst.add(to_id);
+            sendMessage(backMessage, name, lst);//actual message
+        }
     }
 
     private void sendMessage(BackMessage backMessage, String name) {
@@ -146,7 +151,7 @@ public class ClientProtocol implements BidiMessagingProtocol<String> {
     private void sendMessage(BackMessage backMessage, String name, List<Integer> tags) {//only to tag and not for followers
         for (Integer tag_id : tags) {
             if (backMessage.getStatus() == BackMessage.Status.PASSED) {//logical
-                if (!connections.send(tag_id, backMessage.getMessages().get(1))) {//connection error
+                if (!tags.isEmpty() && !connections.send(tag_id, backMessage.getMessages().get(1))) {//connection error
                     System.out.println("failed to send " + name + " message");//debugging
                 }
             } else {
@@ -156,6 +161,7 @@ public class ClientProtocol implements BidiMessagingProtocol<String> {
             }
         }
     }
+
     private void sendMessageFollow(BackMessage backMessage, String name, List<Integer> tags) {//only to tag and not for followers
         for (Integer tag_id : tags) {
             if (backMessage.getStatus() == BackMessage.Status.PASSED) {//logical
@@ -169,6 +175,7 @@ public class ClientProtocol implements BidiMessagingProtocol<String> {
             }
         }
     }
+
     private void post(String[] separated) {
         BackMessage backMessage;
         String content = getContent(separated);
@@ -192,10 +199,11 @@ public class ClientProtocol implements BidiMessagingProtocol<String> {
         int id = dataBaseServer.getId(follow);
         List<Integer> lst = new LinkedList<>();
         lst.add(id);
-        sendMessageFollow(backMessage, name,lst);
+        sendMessageFollow(backMessage, name, lst);
     }
 
     private int getSign(String[] separated) {
+        System.out.println("the sign " + Integer.parseInt(separated[0]));
         return Integer.parseInt(separated[0]);
     }
 
@@ -272,9 +280,11 @@ public class ClientProtocol implements BidiMessagingProtocol<String> {
 
     private List<String> getUsers(String[] separated) {
         List<String> users = new LinkedList<>();
-        String usersWithDelimiter = separated[0];
-        String[] usersArray = usersWithDelimiter.split("\\|");
-        Collections.addAll(users, usersArray);
+        if (separated[0] != null) {
+            String usersWithDelimiter = separated[0];
+            String[] usersArray = usersWithDelimiter.split("\\|");
+            Collections.addAll(users, usersArray);
+        }
         return users;
     }
 

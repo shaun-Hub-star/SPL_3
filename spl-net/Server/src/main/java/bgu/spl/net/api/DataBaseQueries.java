@@ -4,6 +4,7 @@ import bgu.spl.net.api.MessagePackage.BackMessage;
 import bgu.spl.net.api.MessagePackage.Notification;
 
 import java.text.ParseException;
+import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
@@ -19,7 +20,7 @@ public interface DataBaseQueries {
 
     BackMessage post(String msg, String userName, List<String> tags);
 
-    BackMessage PM(String me, String userTo, String msg, String dateAndTimeD);
+    BackMessage PM(String me, String userTo, String msg, LocalDateTime dateAndTimeD);
 
     BackMessage logStat(String me);
 
