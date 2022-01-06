@@ -36,7 +36,8 @@ public class EncDec<T> implements MessageEncoderDecoder<T> {
                 pushByte(nextByte);
         }
         opcodeSize++;
-        if (opcodeSize > 2 && numberOfWords == 1 && (opcode == 4 || opcode == 9)) {
+        if (opcodeSize > 2 &&numberOfWords==2&& (opcode == 4 || opcode == 9)) {
+            System.out.println(bytes[0]+" "+bytes[1]+" "+bytes[2]+" "+bytes[3]+"******** ");
             byte b = 0;
             pushByte(b);
             numberOfWords += 1;
@@ -337,6 +338,10 @@ public class EncDec<T> implements MessageEncoderDecoder<T> {
                     result = result + accu + ":";
                 }
                 start = i + 1;
+            }
+            else if(i==2 && opcode == 4 && bytes[2] == '1'){
+                result += "1";
+                start = i+1;
             }
         }
         System.out.println(result);

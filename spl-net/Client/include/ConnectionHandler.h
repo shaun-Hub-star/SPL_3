@@ -129,6 +129,8 @@ public:
     bool logStatCommand(char *opcodeBytes);
 
     bool statCommand(std::vector<std::string> keyWordsList, char *opcodeBytes);
+
+    bool blockCommand(const std::string& basicString, char *bytes);
 }; //class ConnectionHandler
 
 

@@ -38,9 +38,13 @@ public class User {
     public void setBlocked(List<String> blocked) {
         this.blocked = blocked;
     }
-    public void addBlock(String userToBlock){
-        blocked.add(userName);
+
+    public void addBlock(String userToBlock) {
+        if (!blocked.contains(userToBlock)) {
+            blocked.add(userName);
+        }
     }
+
     public String getUserName() {
         return userName;
     }
@@ -86,7 +90,7 @@ public class User {
     }
 
     public int getAge() throws ParseException {
-        System.out.println(birthday+" birthday");
+        System.out.println(birthday + " birthday");
         LocalDate now = LocalDate.now();
         //change the string of birthday to Local Date
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
@@ -114,17 +118,23 @@ public class User {
         this.following.add(userName);
     }
 
+
     public void moveFollower(String userName) {
-        this.followers.remove(userName);
+        if (followers.contains(userName)) {
+            this.followers.remove(userName);
+        }
     }
 
     public void stopFollowing(String userName) {
-        this.following.remove(userName);
+        if (following.contains(userName)) {
+            this.following.remove(userName);
+        }
     }
 
     public void addPost() {
-        this.numPosts = numPosts+1;
+        this.numPosts = numPosts + 1;
     }
+
     public Queue<String> getNotification() {
         return notification;
     }
@@ -133,20 +143,19 @@ public class User {
         notification.add(msg);
     }
 
-    public void deleteNotification()
-    {
-        while (!notification.isEmpty()){
-            notification.remove();}
+    public void deleteNotification() {
+        while (!notification.isEmpty()) {
+            notification.remove();
+        }
     }
 
 
-    public String details(){
+    public String details() {
         String output;
         try {
-            output= this.getAge()+" "+this.getNumPosts()+" "+this.getFollowers().size()+" "+this.getFollowers().size();
-        }
-        catch (ParseException e){
-            output="ERROR";
+            output = this.getAge() + " " + this.getNumPosts() + " " + this.getFollowers().size() + " " + this.getFollowers().size();
+        } catch (ParseException e) {
+            output = "ERROR";
         }
         return output;
 

@@ -154,7 +154,7 @@ bool ConnectionHandler::getFrameAscii(std::string &frame, char delimiter) {
             short opcode1 = bytesToShort(opcodeBytes1);
             std::cout << opcode1 << "this is should be 0/1" << std::endl;
             if ((int) opcode1 == 0)
-                messageToClient += " PUBLIC";
+                messageToClient += " PM";
             else if ((int) opcode1 == 1)
                 messageToClient += " PM";
             std::cout << "Message to client" << messageToClient << std::endl;
@@ -174,8 +174,8 @@ bool ConnectionHandler::getFrameAscii(std::string &frame, char delimiter) {
             short messageOpcode11 = bytesToShort(opcodemes11);
             messageToClient += std::to_string((int) messageOpcode11);
             std::cout << "Message to client" << messageToClient << std::endl;
-            delete[] opcodemes11;
             frame = messageToClient;
+            delete[] opcodemes11;
         } else if ((int) opcode == 10) {
             messageToClient = "ACK ";
             char *opcodemes = new char[2];
@@ -281,6 +281,7 @@ bool ConnectionHandler::sendFrameAscii(const std::string &frame, char delimiter)
 
     string keyWord = frame.substr(0, indexOfEndOfFirstWord);
     string result = frame.substr(indexOfEndOfFirstWord + 1, frame.size());
+
     std::vector<string> keyWordsList;
 
     boost::split(keyWordsList, result, boost::is_any_of(" "));
@@ -303,11 +304,13 @@ bool ConnectionHandler::sendFrameAscii(const std::string &frame, char delimiter)
         return logStatCommand(opcodeBytes);
     } else if (keyWord == "STAT") {
         return statCommand(keyWordsList, opcodeBytes);
+    } else if (keyWord == "BLOCK") {
+        return blockCommand(result,opcodeBytes);
     } else {
         return false;
     }
-
 }
+
 
 
 // Close down the connection properly.
@@ -429,12 +432,12 @@ bool ConnectionHandler::followCommand(std::vector<string> keyWordsList, char *op
         string endLineString = ";";
         const char *endOfLine = endLineString.c_str();
         shortToBytes(opcode, opcodeBytes);
-        short follow = std::stoi(keyWordsList.at(0));
-        char *followBytes = new char[2];
+        string sign = keyWordsList.at(0);
+        const char *signBytes = sign.c_str();
         char *delimiter = new char('\0');
-        shortToBytes(follow, followBytes);
+        //shortToBytes(follow, followBytes);
         const char *userNameBytes = keyWordsList.at(1).c_str();
-        return sendBytes(opcodeBytes, 2) && sendBytes(followBytes, 1) &&
+        return sendBytes(opcodeBytes, 2) && sendBytes(signBytes, 1) &&
                sendBytes(userNameBytes, (int) keyWordsList.at(1).size()) && sendBytes(delimiter, 1) &&
                sendBytes(endOfLine, 1);
 
@@ -503,11 +506,11 @@ bool ConnectionHandler::pmCommand(std::vector<std::string> keyWordsList, char *o
     char *delimiter = new char('\0');
     string userName = keyWordsList.at(0);
     string content;
-    for(int i=0;i<keyWordsList.size();i++){
-        if(i<keyWordsList.size()-1)
-            content+=keyWordsList.at(i)+" ";
+    for (int i = 0; i < keyWordsList.size(); i++) {
+        if (i < keyWordsList.size() - 1)
+            content += keyWordsList.at(i) + " ";
         else
-            content+=keyWordsList.at(i);
+            content += keyWordsList.at(i);
     }
     const char *userNameBytes = userName.c_str();
     const char *contentBytes = content.c_str();
@@ -544,6 +547,17 @@ bool ConnectionHandler::statCommand(std::vector<std::string> keyWordsList, char 
                && sendBytes(delimiter, 1) && sendBytes(endOfLine, 1);
     } else return false;
 
+}
+
+bool ConnectionHandler::blockCommand(const std::string& user, char *opcodeBytes) {
+    short opcode = 12;
+    string endLineString = ";";
+    const char *endOfLine = endLineString.c_str();
+    const char *usersByte = user.c_str();
+    const char *delimiter = new char('\0');
+    shortToBytes(opcode, opcodeBytes);
+    return sendBytes(opcodeBytes, 2) && sendBytes(usersByte, (int) user.size())
+           && sendBytes(delimiter, 1) && sendBytes(endOfLine, 1);
 }
 
 
