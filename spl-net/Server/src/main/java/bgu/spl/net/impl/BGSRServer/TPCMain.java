@@ -1,11 +1,11 @@
-package bgu.spl.net.impl.BGSRunner;
+package bgu.spl.net.impl.BGSRServer;
 
 import bgu.spl.net.api.ClientProtocol;
 import bgu.spl.net.api.DataBaseServer;
 import bgu.spl.net.api.EncDec;
 import bgu.spl.net.srv.Server;
 
-public class ThreadPerClient {
+public class TPCMain {
     public static void main(String[] args){
         if (args.length < 1)
             throw new IllegalArgumentException("requires port");
