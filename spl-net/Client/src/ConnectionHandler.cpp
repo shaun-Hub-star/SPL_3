@@ -269,6 +269,7 @@ char *ConnectionHandler::getChar(char ch, int a) {
         getBytes(&ch, 1);
         bytestoChar[counter] = ch;
     }
+    delete[] bytestoChar;
     return bytestoChar;
 }
 

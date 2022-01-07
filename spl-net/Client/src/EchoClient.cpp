@@ -1,7 +1,7 @@
 #include <iostream>
 #include <thread>
 #include <boost/thread/thread.hpp>
-#include "../include/connectionHandler.h"
+#include "../include/ConnectionHandler.h"
 #include "../include/Keyboard.h"
 #include "../include/ServerListener.h"
 
