@@ -5,8 +5,7 @@
 #include "../include/ServerListener.h"
 #include "../include/ConnectionHandler.h"
 
-ServerListener::ServerListener(ConnectionHandler &handler1) : handler(handler1), loggedIn(true), bufsize(1024) {
-    buf[bufsize];
+ServerListener::ServerListener(ConnectionHandler &handler1) : handler(handler1), loggedIn(true){
 }
 
 ServerListener::~ServerListener() {

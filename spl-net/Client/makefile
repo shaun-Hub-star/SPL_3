@@ -8,10 +8,10 @@ OBJS = $(patsubst ./src/%.cpp,./bin/%.o, $(SRCS))
 DEPS := $(patsubst %.o,%.d, $(OBJS))
 
 # default target
-all: ./bin/BGSclient
+all: ./bin/BGSClient
 
 # build studio
-./bin/BGSclient: $(OBJS)
+./bin/BGSClient: $(OBJS)
 	@echo "Building ..."
 	$(CXX) $(OBJS) -o $@ $(LDFLAGS)
 	@echo "Finished building"

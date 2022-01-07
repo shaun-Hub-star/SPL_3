@@ -125,17 +125,13 @@ bool ConnectionHandler::sendLine(std::string &line) {
 
 
 bool ConnectionHandler::getFrameAscii(std::string &frame, char delimiter) {
-    char ch;
 
     // Stop when we encounter the null character.
 
     // Notice that the null character is not appended to the frame string.
-    char firstbytes;
-    char secondebyts;
-    char thirdbytes;
-    char fourthbytes;
-    char fiftbyts;
-    char sixthbyts;
+
+    char thirdBytes;
+
     string messageToClient = "";
     try {
         char *opcodeBytes = new char[2];
@@ -153,9 +149,9 @@ bool ConnectionHandler::getFrameAscii(std::string &frame, char delimiter) {
             getBytes(opcodeBytes1, 2);
             short opcode1 = bytesToShort(opcodeBytes1);
             std::cout << opcode1 << "this is should be 0/1" << std::endl;
-            if ((int) opcode1 == 0)
+            if (((int) opcode1) == 0)
                 messageToClient += " PM";
-            else if ((int) opcode1 == 1)
+            else if (((int) opcode1) == 1)
                 messageToClient += " PUBLIC";
             //std::cout << "Message to client" << messageToClient << std::endl;
             string UserName = findWord(*opcodeBytes1, '\0');
@@ -164,13 +160,13 @@ bool ConnectionHandler::getFrameAscii(std::string &frame, char delimiter) {
             string Content = findWord(*opcodeBytes1, '\0');
             messageToClient += " " + Content;
             //std::cout << "Message to client" << messageToClient << std::endl;
-            if((int) opcode1 == 0){
+            if(((int) opcode1) == 0){
             string date = findWord(*opcodeBytes1, '\0');
             messageToClient += " " + date;}
             delete[] opcodeBytes1;
             frame = messageToClient;
         }
-        else if ((int) opcode == 11) {
+        else if (((int) opcode) == 11) {
             messageToClient = "ERROR ";
             std::cout << "Message to client" << messageToClient << std::endl;
             char *opcodemes11 = new char[2];
@@ -181,14 +177,14 @@ bool ConnectionHandler::getFrameAscii(std::string &frame, char delimiter) {
             frame = messageToClient;
             delete[] opcodemes11;
         }
-        else if ((int) opcode == 10)
+        else if (((int) opcode) == 10)
         {
             messageToClient = "ACK ";
             char *opcodemes = new char[2];
             getBytes(opcodemes, 2);
             short messageOpcode = bytesToShort(opcodemes);
             messageToClient += std::to_string((int) messageOpcode);
-            if ((int) messageOpcode == 8 | (int) messageOpcode == 7)
+            if (((int) messageOpcode) == 8 | ((int)messageOpcode) == 7)
             {
                 char *opcodemes1 = new char[2];
                 getBytes(opcodemes1, 2);
@@ -214,13 +210,16 @@ bool ConnectionHandler::getFrameAscii(std::string &frame, char delimiter) {
                 frame = messageToClient;
 
             }
-            else if ((int) messageOpcode == 4) {
-                string UserName = findWord(thirdbytes, '\0');
+            else if (((int) messageOpcode) == 4) {
+                string UserName = findWord(thirdBytes, '\0');
                 messageToClient += UserName;
                 frame = messageToClient;
+                delete[] opcodemes;
 
             }
             frame = messageToClient;
+            delete[] opcodemes;
+
         }
 
 
@@ -233,7 +232,6 @@ bool ConnectionHandler::getFrameAscii(std::string &frame, char delimiter) {
              messageToClient += username;
              break;
 */
-
 
         frame = messageToClient;
     }
@@ -308,7 +306,7 @@ bool ConnectionHandler::sendFrameAscii(const std::string &frame, char delimiter)
     } else if (keyWord == "BLOCK") {
         b = blockCommand(result, opcodeBytes);
     } else {
-        return false;
+        b = false;
     }
     delete[] opcodeBytes;
     delete separator;

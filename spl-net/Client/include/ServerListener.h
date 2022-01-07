@@ -11,8 +11,6 @@ class ServerListener {
 private:
     ConnectionHandler &handler;
     bool loggedIn;
-    const int bufsize = 1024;
-    char buf[];
 public:
     ServerListener(ConnectionHandler &);
 
