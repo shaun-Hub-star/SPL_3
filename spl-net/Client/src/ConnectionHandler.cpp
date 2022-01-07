@@ -498,9 +498,12 @@ bool ConnectionHandler::pmCommand(std::vector<std::string> keyWordsList, char *o
     time_t now = time(0);
     tm *ltm = localtime(&now);
     int day = ltm->tm_mday;
-    int month = ltm->tm_mon;
-    int year = ltm->tm_year;
-    string date(std::to_string(day) + "--" + std::to_string(month) + "--" + std::to_string(year) + " " +
+    int month = ltm->tm_mon+1;
+    int year = ltm->tm_year+1900;
+    string s_month = std::to_string(month);
+    if(month<=9)
+        s_month = "0"+s_month;
+    string date(std::to_string(day) + "--" + s_month + "--" + std::to_string(year) + " " +
                 std::to_string(ltm->tm_hour) + "--" + std::to_string(ltm->tm_min));
     const char *dateBytes = date.c_str();
     shortToBytes(opcode, opcodeBytes);

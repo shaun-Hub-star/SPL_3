@@ -121,8 +121,8 @@ public class ClientProtocol implements BidiMessagingProtocol<String> {
         BackMessage backMessage;
         String to = getToSendMessage(separated);
         String messageContent = getMessageContent(separated);
-        LocalDateTime time = LocalDateTime.now();
-        backMessage = dataBaseServer.PM(userName, to, messageContent, time);
+        String date = getDateAndTime(separated);
+        backMessage = dataBaseServer.PM(userName, to, messageContent, date);
         String name = "pm";
         sendMessage(backMessage, name);//ack
         int to_id = dataBaseServer.getId(to);

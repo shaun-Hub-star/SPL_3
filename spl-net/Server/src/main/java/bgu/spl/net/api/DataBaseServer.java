@@ -126,9 +126,10 @@ public class DataBaseServer implements DataBaseQueries {
                 }
                 backMessage = new BackMessage("ACK 5", BackMessage.Status.PASSED);
                 notification = "NOTIFICATION Public " + userName + " " + keepMessage.getMessage();
+                System.out.println("notification" + notification);
                 backMessage.setMessage(notification);
                 userToHerMessages.get(currentUser.getUserName()).add(keepMessage);
-                for (String s : userToHerMessages.keySet()) {
+                for (String s : userToHerMessages.keySet()) {//WHAT is this???
                     for (Messages m : userToHerMessages.get(s)) {
                     }
                 }
@@ -177,22 +178,22 @@ public class DataBaseServer implements DataBaseQueries {
     }
 
     @Override//NOTIFICATION PM Morty Bird-personaaaa [1]
-    public synchronized BackMessage PM(String me, String userTo, String msg, LocalDateTime dateAndTime) {
+    public synchronized BackMessage PM(String me, String userTo, String msg, String dateAndTime) {
         BackMessage backMessage;
         if (userMap.containsKey(me) && userMap.get(me).isLogin() && userMap.containsKey(userTo)) {
             User currentUser = userMap.get(me);
             User requestedUser = userMap.get(userTo);
             if (currentUser.getFollowing().contains(requestedUser.getUserName()) && !currentUser.getBlocked().contains(userTo)) {
                 try {
-                    Messages keepMessage = new Messages(msg, dateAndTime);
+                    /*Messages keepMessage = new Messages(msg);
                     if (!userToHerMessages.containsKey(me)) {
                         List<Messages> messages = new LinkedList<>();
                         userToHerMessages.put(currentUser.getUserName(), messages);
-                    }
-                    userToHerMessages.get(currentUser.getUserName()).add(keepMessage);
+                    }*/
+                    //userToHerMessages.get(currentUser.getUserName()).add(keepMessage);
                     backMessage = new BackMessage();
                     backMessage.setMessage("ACK 6");
-                    String outputRequestedUser = "NOTIFICATION PM " + me + " " + keepMessage.getMessage()+keepMessage.getDateByStringOfMessage();
+                    String outputRequestedUser = "NOTIFICATION PM " + me + " " + msg+" "+dateAndTime;//+keepMessage.getDateByStringOfMessage();
                     if (requestedUser.isLogin()) {
                         backMessage.setMessage(outputRequestedUser);//TODO check infront shoun
                     } else {

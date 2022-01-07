@@ -20,7 +20,7 @@ public interface DataBaseQueries {
 
     BackMessage post(String msg, String userName, List<String> tags);
 
-    BackMessage PM(String me, String userTo, String msg, LocalDateTime dateAndTimeD);
+    BackMessage PM(String me, String userTo, String msg, String dateAndTimeD);
 
     BackMessage logStat(String me);
 

@@ -94,7 +94,7 @@ public class EncDec<T> implements MessageEncoderDecoder<T> {
         System.out.println(message.toString());
         String[] splitBySpace = ((String) message).split(" ");
         String opcode = splitBySpace[0];//ack
-        String[] toBytes = new String[8];
+        String[] toBytes = new String[7];
         switch (opcode) {
             case "NOTIFICATION":
                 toBytes[0] = "9"; //NOTIFICATION
@@ -107,7 +107,7 @@ public class EncDec<T> implements MessageEncoderDecoder<T> {
                 toBytes[3] = "\0";
 
                 String content = "";
-                for (int i = 3; i < splitBySpace.length -2; i++) {//TODO stop at the  "\0" delimiter
+                for (int i = 3; i < splitBySpace.length; i++) {//TODO stop at the  "\0" delimiter
                     content += " " + splitBySpace[i];
                 }
 
@@ -115,8 +115,8 @@ public class EncDec<T> implements MessageEncoderDecoder<T> {
                 toBytes[5] = "\0";
                 if (splitBySpace[1].equals("PM")) {
                     String date = splitBySpace[splitBySpace.length-1];
-                    toBytes[6] = date;
-                    toBytes[7] = "\0";
+                    //toBytes[6] = date;
+                    toBytes[6] = "\0";
                 }
                 return bytes1(toBytes);
 
