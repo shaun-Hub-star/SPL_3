@@ -28,7 +28,6 @@ public class BackMessage {
     }
     public void setMessage(String msg){
         this.messages.add(msg);
-        System.out.println("the messages "+Arrays.toString(messages.toArray()));
     }
 
     public List<String> getMessages() {

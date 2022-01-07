@@ -137,28 +137,19 @@ bool ConnectionHandler::getFrameAscii(std::string &frame, char delimiter) {
         char *opcodeBytes = new char[2];
         getBytes(opcodeBytes, 2);
         short opcode = bytesToShort(opcodeBytes);
-        std::cout << "opcode " << opcode << std::endl;
-        delete[] opcodeBytes;
-
         if ((int) opcode == 9) {
             messageToClient = "NOTIFICATION";
-            //  std::cout << "Message to client" << messageToClient << std::endl;
-            // string notificationType = findWord(ch,'0');
             char *opcodeBytes1 = new char[2];
             getBytes(opcodeBytes1, 2);
             short opcode1 = bytesToShort(opcodeBytes1);
-            std::cout << opcode1 << "this is should be 0/1" << std::endl;
             if (((int) opcode1) == 0)
                 messageToClient += " PM";
             else if (((int) opcode1) == 1)
                 messageToClient += " PUBLIC";
-            //std::cout << "Message to client" << messageToClient << std::endl;
             string UserName = findWord(*opcodeBytes1, '\0');
             messageToClient += UserName;
-            //std::cout << "Message to client" << messageToClient << std::endl;
             string Content = findWord(*opcodeBytes1, '\0');
             messageToClient += " " + Content;
-            //std::cout << "Message to client" << messageToClient << std::endl;
             if (((int) opcode1) == 0) {
                 string date = findWord(*opcodeBytes1, '\0');
                 messageToClient += " " + date;
@@ -167,12 +158,10 @@ bool ConnectionHandler::getFrameAscii(std::string &frame, char delimiter) {
             frame = messageToClient;
         } else if (((int) opcode) == 11) {
             messageToClient = "ERROR ";
-            std::cout << "Message to client" << messageToClient << std::endl;
             char *opcodemes11 = new char[2];
             getBytes(opcodemes11, 2);
             short messageOpcode11 = bytesToShort(opcodemes11);
             messageToClient += std::to_string((int) messageOpcode11);
-            std::cout << "Message to client" << messageToClient << std::endl;
             frame = messageToClient;
             delete[] opcodemes11;
         } else if (((int) opcode) == 10) {
@@ -213,20 +202,10 @@ bool ConnectionHandler::getFrameAscii(std::string &frame, char delimiter) {
 
             }
             frame = messageToClient;
-            delete[] opcodemes;
+
+            delete[] opcodeBytes;
 
         }
-
-
-
-
-        /* case 12:
-             messageToClient = "BLOCK ";
-             getBytes(&secondebyts, 1);
-             string username = findWord(secondebyts, delimiter);
-             messageToClient += username;
-             break;
-*/
 
         frame = messageToClient;
     }
@@ -237,8 +216,6 @@ bool ConnectionHandler::getFrameAscii(std::string &frame, char delimiter) {
         return false;
 
     }
-    std::cout << "frame 2 the TRUE" << frame << std::endl;
-
     return true;
 
 }
@@ -250,7 +227,6 @@ std::string ConnectionHandler::findWord(char ch, char delimiter) {
         output += ch;
         getBytes(&ch, 1);
     }
-    std::cout << "we in foundword- outut send " << output << std::endl;
     return output;
 }
 
@@ -395,7 +371,7 @@ bool ConnectionHandler::loginCommandValidator(std::vector<string> keyWordsList) 
 bool ConnectionHandler::loginCommand(std::vector<string> keyWordsList, const string &basicString, char *opcodeBytes,
                                      char *separator) {
     if (loginCommandValidator(keyWordsList)) {
-        std::cout << "login" << std::endl;
+        // std::cout << "login" << std::endl;
         string endLineString = ";";
         const string userName = keyWordsList.at(0);
         const string password = keyWordsList.at(1);

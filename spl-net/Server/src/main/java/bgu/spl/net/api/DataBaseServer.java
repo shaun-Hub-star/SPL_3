@@ -126,7 +126,6 @@ public class DataBaseServer implements DataBaseQueries {
                 }
                 backMessage = new BackMessage("ACK 5", BackMessage.Status.PASSED);
                 notification = "NOTIFICATION Public " + userName + " " + keepMessage.getMessage();
-                System.out.println("notification" + notification);
                 backMessage.setMessage(notification);
                 userToHerMessages.get(currentUser.getUserName()).add(keepMessage);
                 for (String s : userToHerMessages.keySet()) {//WHAT is this???

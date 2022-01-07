@@ -33,23 +33,16 @@ public class Messages {
 
     public LocalDateTime getDate(String massageDate) throws ParseException {
         //change the string of birthday to Local Date
-        System.out.println("move getDate " + massageDate);
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy-HH:mm");
-        System.out.println("1*********");
         Date D = sdf.parse(massageDate);
-        System.out.println("2*********");
         Calendar c = Calendar.getInstance();
-        System.out.println("3*********");
         c.setTime(D);
-        System.out.println("4*********");
         int year = c.get(Calendar.YEAR);
         int month = c.get(Calendar.MONTH);
         int date = c.get(Calendar.DATE);
         int hour = c.get(Calendar.HOUR_OF_DAY);
         int minutes = c.get(Calendar.MINUTE);
-        System.out.println("5********* " + year + " " + month + " " + date + " " + hour + " " + minutes);
         LocalDateTime l1 = LocalDateTime.of(year, month, date, hour, minutes);
-        System.out.println("LocalDateTime " + l1.toString());
         return l1;
     }
 

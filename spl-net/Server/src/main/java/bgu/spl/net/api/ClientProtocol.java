@@ -22,11 +22,9 @@ public class ClientProtocol implements BidiMessagingProtocol<String> {
 
     @Override
     public void process(String msg) {
-        System.out.println("process " + msg);
-        if (msg != null) {
+         if (msg != null) {
             String opcode = msg.substring(0, 2);
             msg = msg.substring(2);
-            System.out.println(msg);
             String[] separatedBySpace = msg.split(":");
             switch (getOpcode(opcode)) {
                 case 1://register
@@ -89,8 +87,7 @@ public class ClientProtocol implements BidiMessagingProtocol<String> {
             if (backMessage.getStatus() == BackMessage.Status.PASSED) {
                 List<String> ackStatMessages = backMessage.getMessages();
                 for (String message : ackStatMessages) {
-                    System.out.println("messages in the gggggg "+message);
-                    if (!connections.send(connectionId,message)) {
+                      if (!connections.send(connectionId,message)) {
                         System.out.println("failed to send ack message " + message);
                     }
                 }
@@ -126,7 +123,7 @@ public class ClientProtocol implements BidiMessagingProtocol<String> {
         String name = "pm";
         sendMessage(backMessage, name);//ack
         int to_id = dataBaseServer.getId(to);
-        if (to_id >=0) {//if errorr -to_id is not on the map
+        if ((to_id >=0)&&(backMessage.getMessages().size()>1)) {//if errorr -to_id is not on the map
             List<Integer> lst = new LinkedList<>();
             lst.add(to_id);
             sendMessage(backMessage, name, lst);//actual message
@@ -135,7 +132,6 @@ public class ClientProtocol implements BidiMessagingProtocol<String> {
 
     private void sendMessage(BackMessage backMessage, String name) {
         if (backMessage.getStatus() == BackMessage.Status.PASSED) {//logical
-            System.out.println(backMessage.getMessage());
             if (!connections.send(connectionId, backMessage.getMessage())) {//connection error
                 System.out.println("failed to send ack " + name + " message");//debugging
             }
