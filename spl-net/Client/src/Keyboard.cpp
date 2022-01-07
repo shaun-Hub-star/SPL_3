@@ -22,20 +22,20 @@ void Keyboard::run() {
 
 
         getline(std::cin, result);
-
+        std::string shouldTerminate = keyWordsList.at(0);
         handler.sendLine(result);
-        std::cout <<"debug"<<result<<std::endl;
-        result = keyWordsList.at(0);
+
 
         //std::string out = "ACK signout succeeded\n";
 
-        if (result == "LOGOUT") {
+        if (shouldTerminate == "LOGOUT") {
             std::cout << "need to sign out" << std::endl;
             logout();
-            break;
+            return;
         }
         // }
     }
+
 }
 
 void Keyboard::logout() {
