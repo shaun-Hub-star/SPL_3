@@ -24,6 +24,7 @@ void ServerListener::run() {
         std::cout<<answer<<std::endl;
         if (answer == "ACK 3") {
             loggedIn = false;
+            return;
         }
 
     }

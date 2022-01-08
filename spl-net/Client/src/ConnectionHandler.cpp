@@ -131,10 +131,10 @@ bool ConnectionHandler::getFrameAscii(std::string &frame, char delimiter) {
     // Notice that the null character is not appended to the frame string.
 
     char thirdBytes;
-
+    char *opcodeBytes = new char[2];
     string messageToClient = "";
     try {
-        char *opcodeBytes = new char[2];
+        
         getBytes(opcodeBytes, 2);
         short opcode = bytesToShort(opcodeBytes);
         if ((int) opcode == 9) {
@@ -200,22 +200,23 @@ bool ConnectionHandler::getFrameAscii(std::string &frame, char delimiter) {
                 frame = messageToClient;
                 delete[] opcodemes;
 
+            }else{
+                delete[] opcodemes;
             }
             frame = messageToClient;
 
-            delete[] opcodeBytes;
 
         }
 
         frame = messageToClient;
     }
     catch (std::exception &e) {
-
+        delete[] opcodeBytes;
         std::cerr << "recv failed (Error: " << e.what() << ')' << std::endl;
-
         return false;
 
     }
+    delete[] opcodeBytes;
     return true;
 
 }

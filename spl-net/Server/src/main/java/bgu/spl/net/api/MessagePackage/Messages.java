@@ -7,27 +7,16 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.*;
 
 public class Messages {
     private String message;
     private LocalDateTime date;
-    private List<String> filter;
+    private String[] filter = new String[]{"nudity","tramp","war","porn"};
 
-    public Messages(String message, String date) throws ParseException {
-        this.date = getDate(date);
-        this.filter = new LinkedList<>();
-        this.message = fixFilter(message);
-    }
-
-    public Messages(String message, String date, List<String> filter) throws ParseException {
-        this.message = fixFilter(message);
-        this.date = getDate(date);
-        this.filter = new LinkedList<>(filter);
-    }
 
     public Messages(String message, LocalDateTime localDateTime) throws ParseException {
         this.date = localDateTime;
-        this.filter = new LinkedList<>();
         this.message = fixFilter(message);
     }
 
@@ -72,8 +61,9 @@ public class Messages {
         if (filter != null) {
             StringBuilder output = new StringBuilder();
             String[] splitBySpace = msg.split(" ");
+            List<String> list = Arrays.asList(filter);
             for (String word : splitBySpace) {
-                if (filter.contains(word)) {
+                if (list.contains(word)) {
                     output.append("<filtered> ");
                 } else {
                     output.append(word).append(" ");

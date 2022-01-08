@@ -95,11 +95,14 @@ public class EncDec<T> implements MessageEncoderDecoder<T> {
         String[] toBytes = new String[8];
         switch (opcode) {
             case "NOTIFICATION":
+                int i;
                 toBytes[0] = "9"; //NOTIFICATION
                 if (splitBySpace[1].equals("PM")) {
                     toBytes[1] = "0";
+                    i=4;
                 } else {
                     toBytes[1] = "1";
+                    i=3;
                 }
                 toBytes[2] = splitBySpace[2]; //PostingUser
                 toBytes[3] = "\0";
@@ -108,8 +111,9 @@ public class EncDec<T> implements MessageEncoderDecoder<T> {
                 int stop= splitBySpace.length;
                 if(splitBySpace[1].equals("PM"))
                     stop=splitBySpace.length-2;
-                for (int i = 3; i < stop; i++) {//TODO stop at the  "\0" delimiter
+                while(i < stop) {//TODO stop at the  "\0" delimiter
                     content += " " + splitBySpace[i];
+                    i++;
                 }
                 toBytes[4] = content;
                 toBytes[5] = "\0";
