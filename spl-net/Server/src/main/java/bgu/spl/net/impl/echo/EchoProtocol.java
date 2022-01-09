@@ -11,7 +11,6 @@ public class EchoProtocol implements MessagingProtocol<String> {
     @Override
     public String process(String msg) {
         shouldTerminate = "bye".equals(msg);
-        System.out.println("[" + LocalDateTime.now() + "]: " + msg);
         return createEcho(msg);
     }
 
